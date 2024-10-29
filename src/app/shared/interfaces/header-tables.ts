@@ -3,4 +3,17 @@ export interface HeaderTable {
   namePropiedad: string;
   checklist?: string;
   currency?: string;
+  button?: Button[]
+  disable?: boolean
+}
+
+export interface Button {
+  label?: string;
+  fun?: () => void;
+  menu?: Menu[]
+}
+
+export interface Menu {
+  label?: string;
+  fun: () => void;
 }
