@@ -77,14 +77,21 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'prospectos',
+    loadComponent: () =>
+      import(
+        './modules/buscador-prospectos/buscador-prospectos.component'
+      ).then((c) => c.BuscadorProspectosComponent),
+  },
+  {
     path: 'concurso',
     // canActivate: [accesoEscolarConfGuard],
     loadChildren: () =>
       import(
         './modules/grupo-concurso-maestro/grupo-concurso-maestro.module'
       ).then((m) => m.GrupoConcursoMaestroModule),
-    },
-    {
+  },
+  {
     path: 'busqueda-pagares',
     loadComponent: () =>
       import(

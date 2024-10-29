@@ -1,6 +1,6 @@
 [
   {
-    "name": "Pagares",
+    "name": "Contraloria",
     "img": "fact_check",
     "sub_nodes": [
       {
@@ -17,7 +17,13 @@
         "name": "Configuración",
         "path": "./pagares/config",
         "img": "settings"
+      },
+      {
+        "name": "Prospectos",
+        "path": "./prospectos",
+        "img": "how_to_reg"
       }
+
     ]
   },
   {

@@ -1,0 +1,16 @@
+.icon-container{
+  background-color: #f2f6f9;
+  width: 10rem;
+  height: 5rem;
+  border-radius: 15px;
+  &:hover{
+    background-color: #ff5722 !important;
+  }
+}
+
+.big-button{
+  border-radius: 25px;
+  padding: 1.5rem;
+  font-family: 'Roboto', serif;
+  font-size: 0.9rem;
+}

@@ -1,4 +1,5 @@
 @use 'iest-theme-material/iest-theme';
+@import "./app/shared/scss/style-v3";
 
 .material-icons {
   font-family: 'Material Icons';
@@ -24,7 +25,6 @@
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
-
 table {
   .mat-mdc-header-cell {
     background-color: #3f3f3f !important;

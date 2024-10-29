@@ -1,0 +1,9 @@
+.icon-container{
+  color: var(--color-slate-500);
+  background-color: #f2f6f9;
+  border-radius: 15px;
+  &:hover{
+    color: white !important;
+    background-color: #ff5722 !important;
+  }
+}

@@ -14,7 +14,7 @@ export const environment = {
   /**
    * URL del servidor donde se está ejecutando el proyecto.
    */
-  server: 'http://localhost',
+  server: 'http://localhost/',
   /**
    * URL absoluta del proyecto incluyendo subdirectorios.
    */

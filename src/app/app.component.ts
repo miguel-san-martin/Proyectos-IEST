@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // this.drawer.close();
   }
 
-  title = 'Contraloría';
+  title = 'IEST';
 
   protected readonly close = close;
 

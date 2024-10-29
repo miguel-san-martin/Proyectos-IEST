@@ -11,10 +11,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { TableIESTComponent } from '@shared/components/table-iest/table-iest.component';
-import { PartidasPresupuestalesMainPageComponent } from '../modules/partidas-presupuestales/pages/partidas-presupuestales-main-page/partidas-presupuestales-main-page.component';
 import { ShrdSpinnerComponent } from '@shared/components/shrd-spinner/shrd-spinner.component';
 import { ToastIestComponent } from '@shared/components/toast-iest/toast-iest.component';
 import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
+import { ShrdAutocompleteComponent } from '@shared/components/shrd-autocomplete/shrd-autocomplete.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { ContainerIconComponent } from '@shared/components/container-icon/container-icon.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
     TableIESTComponent,
     ShrdSpinnerComponent,
     ToastIestComponent,
+    ShrdAutocompleteComponent,
+    ContainerIconComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +43,9 @@ import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
     RouterOutlet,
     RouterLinkActive,
     RouterLink,
+    MatMenuItem,
+    MatMenu,
+    MatMenuTrigger,
   ],
   exports: [
     NumberToMxnPipe,
@@ -54,6 +61,8 @@ import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
     TableIESTComponent,
     ShrdSpinnerComponent,
     ToastIestComponent,
+    ShrdAutocompleteComponent,
+    ContainerIconComponent,
   ],
 })
 export class SharedModule {}
