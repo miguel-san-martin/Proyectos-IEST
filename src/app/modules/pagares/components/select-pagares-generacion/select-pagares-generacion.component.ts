@@ -20,7 +20,6 @@ import { SharedModule } from '@shared/shared.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-select-pagares',
@@ -62,7 +61,7 @@ export class SelectPagaresGeneracionComponent implements OnInit {
         this.listaCatalogos.forEach((element) => {
           this.map.set(element.id, element.descripcion);
         });
-        console.log(this.map);
+        // console.log(this.map);
       },
       (error: HttpErrorResponse) => {
         console.log(error);
@@ -77,7 +76,7 @@ export class SelectPagaresGeneracionComponent implements OnInit {
     );
 
     this.Service.GetAlumnosAmbos().subscribe((response) => {
-      console.log(response);
+      // console.log(response);
       this.listaAmboss = response;
     });
   }

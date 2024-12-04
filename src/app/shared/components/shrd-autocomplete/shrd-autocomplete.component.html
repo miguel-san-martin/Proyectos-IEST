@@ -1,17 +1,17 @@
-<form class="example-form" >
+<form>
   <mat-form-field class="my-3" style="width: 100%">
     <mat-label>ID o Nombre</mat-label>
     <input  #input
            type="text"
-           placeholder="Pick one"
            matInput
-           [matAutocomplete]="auto"
-            [formControl]="searchControl"
+           [matAutocomplete]="auto" [formControl]="searchControl"
             (input)="searching($event)"
     >
-    <mat-autocomplete requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="displayName" #auto="matAutocomplete">
+    <mat-autocomplete requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="functionDisplayName" #auto="matAutocomplete">
       @for (item of filteredOptions(); track item) {
-        <mat-option [value]="item">{{item['Nombre'] ?? 'NA'}}</mat-option>
+        <mat-option [value]="item"><b>{{item['IDPERSON']}}</b> {{item['Nombre']}}</mat-option>
+      } @empty {
+        <mat-option>No hay resultado.</mat-option>
       }
     </mat-autocomplete>
 

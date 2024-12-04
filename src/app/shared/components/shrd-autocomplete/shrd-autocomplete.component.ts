@@ -1,17 +1,18 @@
 import {
   Component,
-  ElementRef,
   input,
-  InputSignal,
+  OnDestroy,
   output,
+  OutputEmitterRef,
   signal,
-  ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import {
   debounceTime,
   distinctUntilChanged,
   Observable,
   Subject,
+  Subscription,
   switchMap,
 } from 'rxjs';
 import { ServicioBase } from '../../../services/servicio-base.service';
@@ -22,61 +23,79 @@ import { FormControl } from '@angular/forms';
   templateUrl: './shrd-autocomplete.component.html',
   styleUrl: './shrd-autocomplete.component.scss',
 })
-export class ShrdAutocompleteComponent extends ServicioBase {
+export class ShrdAutocompleteComponent
+  extends ServicioBase
+  implements OnDestroy
+{
   private inputSubject = new Subject<string>();
-  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') auto!: ElementRef<any>;
-  filteredOptions = signal<any>('');
-  searchControl = new FormControl();
-  opcion!: any;
-  service: InputSignal<(arg: string) => Observable<string>> =
-    input.required<(arg: string) => Observable<any>>();
 
-  keyTitle: InputSignal<string> = input<string>('Nombre');
+  filteredOptions: WritableSignal<any> = signal<any>('');
+  functionDisplayName!: (item: { [key: string]: string }) => string;
+  searchControl: FormControl<any> = new FormControl();
 
-  outputItem = output();
+  /**
+   *  Recibe la llamada de un servicio. propiedad-inyectada.metodo.bind(this.propiedad-inyectada)
+   *  SIN EL ().
+   *  @example [service] = "ProspectosService.search.bind(this.ProspectosService)"
+   */
+  service =
+    input.required<(arg: string) => Observable<NonNullable<unknown>[]>>();
+  /**
+   * Recibe el nombre de la propiedad del Observable que retornara la function (STRING).
+   * @param {string} keyTitle
+   * @default 'Nombre'
+   * @example
+   */
+  keyTitle = input<string>('Nombre');
+
+  /**
+   * Devuelve 1 elemento del Array de respuesta.
+   * @Returns {unknown}
+   */
+  outputItem: OutputEmitterRef<void> = output();
+  subscription!: Subscription;
 
   constructor() {
     super();
-    // Configura el debounce en el Subject
-    this.inputSubject
+    this.initDebounce(); // Iniciamos el debounce.
+
+    // Función que muestra la etiqueta, asignada aqui.
+    this.functionDisplayName = (item: { [key: string]: string }): string => {
+      if (!item) return '';
+      return item[this.keyTitle()]; // Devuelve solo el nombre o una cadena vacía si no hay opción
+    };
+  }
+
+  searching(value: Event) {
+    const input = (value.target as HTMLInputElement).value;
+    if (input.length < 3) {
+      this.filteredOptions.set([]);
+      return console.log('Menor a 3');
+    } else {
+      this.inputSubject.next(input);
+    }
+  }
+
+  /**
+  Funcion de debounce
+  @param {number} dueTime - Tiempo en milisegundos.
+   **/
+  protected initDebounce(dueTime: number = 500) {
+    this.subscription = this.inputSubject
       .pipe(
-        debounceTime(500), // Espera 300 ms después de la última entrada
+        debounceTime(dueTime), // Espera 300 ms después de la última entrada
         distinctUntilChanged(), // Evita valores repetidos consecutivos
         switchMap((value) => this.service()(value)),
       )
       .subscribe({
-        next: (value: any) => {
+        next: (value: NonNullable<unknown>) => {
           this.filteredOptions.set(value);
         },
         error: (err) => console.error(err),
       });
   }
-  // .subscribe((r) => {
-  //   console.log(r);
-  // this.filteredOptions.set(r);
-  // console.log(this.filteredOptions());
-  // });
-  // this.service()(value)
-  //   .subscribe({
-  //   next: (r) => this.filteredOptions.set(r),
-  //   error: (err) => console.log(err),
-  // }); // Llama a la función cuando el debounce se completa
-  // });
 
-  searching(value: Event) {
-    const input = (value.target as HTMLInputElement).value;
-    if (input.length < 4) return console.log('Menor a 3');
-    // this.service()(input).subscribe((r) => this.filteredOptions.set(r));
-    this.inputSubject.next(input);
-  }
-
-  emitir(item: any) {
-    console.log(this.searchControl.value);
-    this.outputItem.emit();
-  }
-
-  displayName(item: any): string {
-    return item[`Nombre`] ?? 'N/A'; // Devuelve solo el nombre o una cadena vacía si no hay opción
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

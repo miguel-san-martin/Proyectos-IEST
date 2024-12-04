@@ -4,63 +4,76 @@
 <div class="grid" style="max-width: 1024px">
   <app-shrd-autocomplete style="width: 100%" class="m-5" [service]="ProspectosService.search.bind(this.ProspectosService)" (outputItem)="showCard($event)" />
 
-  <mat-card class="w-full mx-5 p-3">
-    <!--  <mat-card-header>{{subject().nombre ?? "Lorem Ipsum"}}</mat-card-header>-->
-    <!--  <img style="max-width: 5rem" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
-    <mat-card-content >
-      <div class="grid">
-        <!--  IMAGEN -->
-        <div class="col-2 hidden-md">
-          <div class="circle col-2" style="align-content: center;">
-            <img style="max-width: 6rem" src="assets/usuario.png" alt="imagen" />
-          </div>
-        </div>
-        <div class="col-10">
-          <div class="grid">
-<!--            Texto-->
-            <div class="col-11">
-              <div class="flex flex-col m-3">
+
+    <mat-card class="w-full mx-5 p-3">
+      <!--  <mat-card-header>{{subject().nombre ?? "Lorem Ipsum"}}</mat-card-header>-->
+      <!--  <img style="max-width: 5rem" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+
+      <mat-card-content >
+        @switch (dataSemaforo()){
+          @case ('No Solicitada') {
+            Use el espacio de buscar para encontrar un prospecto.
+          }
+          @case ('Recibida') {
+            <div class="grid">
+              <!--  IMAGEN -->
+              <div class="col-2 hidden-md">
+                <div class="circle col-2" style="align-content: center;">
+                  <img style="max-width: 6rem" src="assets/usuario.png" alt="imagen" />
+                </div>
+              </div>
+              <div class="col-10">
+                <div class="grid">
+                  <!--            Texto-->
+                  <div class="col-11">
+                    <div class="flex flex-col m-3">
               <span
-                class="font-roboto text-base text-slate-500 f-bold text-3xl my-2">{{ subject().Nombre ?? "Lorem Ipsum" }}</span>
-                <span class="font-roboto text-slate-500 my-2"><b>ID-IEST: </b>{{ subject().IDPERSON ?? "N/A" }}</span>
-                <span class="font-roboto text-slate-500 my-2"><b>Fecha de Captura: </b>{{ subject().abrCarrera ?? "Sin captura" }}</span>
+                class="font-roboto text-base text-slate-500 f-bold text-3xl my-2">{{ subject()?.Nombre ?? "Lorem Ipsum" }}</span>
+                      <span class="font-roboto text-slate-500 my-2"><b>ID-IEST: </b>{{ subject()?.IDPERSON ?? "N/A" }}</span>
+                      <span class="font-roboto text-slate-500 my-2"><b>Fecha de Captura: </b>{{ subject()?.fechaRegistro ?? "Sin captura" }}</span>
+                    </div>
+                  </div>
+                  <!--            Menu-->
+                  <div class="col-1">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item >
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>trending_up</mat-icon>
+                        <span>Cambiar semestre completo</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                  <!--            Buttons-->
+                  <div class="col-12">
+                    <div class="grid" style="flex-direction: row">
+                      <app-container-icon *ngIf="subject()?.porcentajePromocion" class="col-12 md:col-3" style="margin:auto" [titulo]="'Promoción'"  [iconName]="'percent'" [leyenda]=" subject()?.porcentajePromocion + '%'" ></app-container-icon>
+                      <app-container-icon *ngIf="subject()?.porcentajeBeca" class="col-12 md:col-3" style="margin:auto" [titulo]="'Beca'"  [iconName]="'paid'" [leyenda]="subject()?.porcentajeBeca+'%'" ></app-container-icon>
+                      <app-container-icon class="col-12 md:col-3" style="margin:auto" [iconName]="getIcon(subject()?.abrCarrera ?? 'NA')" [titulo]="'Carrera'" [leyenda]="subject()?.abrCarrera ?? ''" ></app-container-icon>
+                      <app-container-icon class="col-12 md:col-3" style="margin:auto" [iconName]="'payments'" [titulo]="'Monto'" [leyenda]="formatoMoneda.format(subject()?.montoRegistro ?? 0)" ></app-container-icon>
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
             </div>
-<!--            Menu-->
-            <div class="col-1">
-              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="edit()">
-                  <mat-icon>edit</mat-icon>
-                  <span>Editar</span>
-                </button>
-                <button mat-menu-item>
-                  <mat-icon>trending_up</mat-icon>
-                  <span>Cambiar semestre</span>
-                </button>
-              </mat-menu>
-            </div>
-<!--            Buttons-->
-            <div class="col-12">
-              <div class="grid" style="flex-direction: row">
-                <app-container-icon class="col-12 md:col-4" style="margin:auto" [iconName]="'percent'" [leyenda]="'Beca: '+subject().beca ?? 'N/D'" ></app-container-icon>
-                <app-container-icon class="col-12 md:col-4" style="margin:auto" [iconName]="'gavel'" [leyenda]="'Carrera: '+subject().abrCarrera ?? 'N/D'" ></app-container-icon>
-                <app-container-icon class="col-12 md:col-4" style="margin:auto"[iconName]="'payments'" [leyenda]="'Monto: '+subject().monto ?? 'N/D'" ></app-container-icon>
-              </div>
+          }
+          @default {
+              No se encontraron resultados
+          }
+        }
 
-            </div>
-          </div>
-
-        </div>
+      </mat-card-content>
+    </mat-card>
 
 
 
-
-      </div>
-    </mat-card-content>
-  </mat-card>
 </div>
 
 <!--}-->

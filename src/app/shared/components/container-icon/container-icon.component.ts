@@ -9,4 +9,5 @@ import { Component, input } from '@angular/core';
 export class ContainerIconComponent {
   iconName = input('check_box_outline_blank');
   leyenda = input('');
+  titulo = input('');
 }

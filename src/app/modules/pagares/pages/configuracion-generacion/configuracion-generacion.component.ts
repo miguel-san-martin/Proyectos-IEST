@@ -1,12 +1,12 @@
 import {
   Component,
   ElementRef,
-  ViewChild,
   inject,
-  signal,
   OnInit,
+  signal,
+  ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { RequestOperationGen } from '../../../../interfaces/request/request-operation-gen';
 import { ConsultaFecha } from '../../../../interfaces/responses/consulta-fecha';
 import { CostoPromesaResponse } from '../../../../interfaces/responses/costo-promesas.interface';
@@ -90,30 +90,33 @@ export class ConfiguracionGeneracionComponent implements OnInit {
 
     // Get
     this.Service.ConsultarCostoPromesas(extra)
-      .pipe(map((value) => value[0]))
+      .pipe(map((value: CostoPromesaResponse[]) => value[0]))
       .subscribe(
-        (response: CostoPromesaResponse) => {
-          const { promesas, costo, idOperacion, id } = response;
-          this.idOperacion = idOperacion;
-          this.sliderValue = Number(promesas);
-          this.idRegistro = id;
+        {
+          next: (response: CostoPromesaResponse) => {
+            // console.log(response);
+            const { promesas, costo, idOperacion, id } = response;
+            this.idOperacion = idOperacion;
+            this.sliderValue = Number(promesas);
+            this.idRegistro = id;
 
-          this.myForm.patchValue({
-            monto: Number(costo),
-            cantidadPromesas: Number(promesas),
-          });
+            this.myForm.patchValue({
+              monto: Number(costo),
+              cantidadPromesas: Number(promesas),
+            });
 
-          if (extra.idOperacion == '572') {
-            this.myForm.get('monto')?.patchValue(0);
-            this.showMontoField = false;
-          } else {
-            this.showMontoField = true;
-          }
+            if (extra.idOperacion == '572') {
+              this.myForm.get('monto')?.patchValue(0);
+              this.showMontoField = false;
+            } else {
+              this.showMontoField = true;
+            }
+          },
+          error: () => {
+            this.showSnackBar(true);
+          },
         },
         // Si hay algun error
-        () => {
-          this.showSnackBar(true);
-        },
       );
 
     //Set Fechas
@@ -121,8 +124,8 @@ export class ConfiguracionGeneracionComponent implements OnInit {
       (response: ConsultaFecha[]) => {
         const fechasDate: Date[] = [];
         response.forEach(({ FechaVencimiento }) => {
-          console.log(fechasDate.length + 1);
-          console.log(response);
+          // console.log(fechasDate.length + 1);
+          // console.log(response);
 
           //Regla de negocio, si el back menda que son 2 deben ser 2
           if (fechasDate.length < this.sliderValue)
@@ -196,7 +199,7 @@ export class ConfiguracionGeneracionComponent implements OnInit {
       };
     }
 
-    console.log(`Informacion que se mandara`, payload);
+    // console.log(`Informacion que se mandara`, payload);
     this.Service.PostAltaPagares(payload).subscribe(() => {
       this.showSnackBar();
     });
