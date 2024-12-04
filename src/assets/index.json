@@ -9,94 +9,11 @@
         "img": "workspaces"
       },
       {
-        "name": "Especifico",
-        "path": "./pagares/especific",
-        "img": "fiber_manual_record"
-      },
-      {
         "name": "Configuración",
         "path": "./pagares/config",
         "img": "settings"
-      },
-      {
-        "name": "Prospectos",
-        "path": "./prospectos",
-        "img": "how_to_reg"
       }
 
     ]
-  },
-  {
-    "name": "Campamento",
-    "img": "camping",
-    "sub_nodes": [
-      {
-        "name": "Captura de costos",
-        "path": "./camp",
-        "img": "monetization_on"
-      }
-    ]
-  },
-  {
-    "name": "Escolares",
-    "img": "square_foot",
-    "sub_nodes": [
-      {
-        "name": "Configuración Horarios",
-        "img": "schedule",
-        "path": "config-escolares"
-      },
-      {
-        "name": "Concursos de Maestros",
-        "img": "editor_choice",
-        "path": "concurso/concursos-maestro"
-        }
-      ]
-    },
-    {
-    "name": "Consulta Toga",
-    "path": "./busqueda-pagares",
-    "img": "school"
-  },
-  {
-    "name": "Paginas Templates",
-    "img": "grid_guides",
-    "sub_nodes": [
-      {
-        "name": "Modulo Cerrado",
-        "img": "star_rate",
-        "path": "module-closed"
-      },
-      {
-        "name": "Sin Permisos",
-        "img": "star_rate",
-        "path": "no-permits"
-      },
-      {
-        "name": "Inicia Session",
-        "img": "star_rate",
-        "path": "login-screen"
-      },
-      {
-        "name": "Nu",
-        "path": "./nu",
-        "img": "school"
-      },
-      {
-        "name": "Partidas Prosupuestales",
-        "img": "send_money",
-        "path": "partidas-presupuestales"
-      }
-    ]
-  },
-  {
-    "name": "Modulo Playeras",
-    "img": "apparel",
-    "path": "shirt-sale"
-  },
-  {
-    "name": "Especialidades",
-    "img": "hotel_class",
-    "path": "esp-bachiller"
   }
 ]
