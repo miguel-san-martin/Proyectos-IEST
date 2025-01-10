@@ -97,7 +97,7 @@ export class GeneradorMasivoComponent implements OnDestroy {
         (response: CostoPromesaResponse[]) => {
           if (response.length > 0) {
             const { costo, promesas } = response[0];
-            console.log(costo);
+            // console.log(costo);
             this.infoBar.costo = costo;
             this.infoBar.promesas = promesas;
           } else {
@@ -130,7 +130,7 @@ export class GeneradorMasivoComponent implements OnDestroy {
       idOperacion: idOperacion ?? '',
       idGeneracion: idGeneracion ?? '',
     };
-    console.log(extra);
+    // console.log(extra);
     this.showLoader.set(true);
     this.data = [];
     this.selectedCatalog = extra.idOperacion || '0';
@@ -172,12 +172,12 @@ export class GeneradorMasivoComponent implements OnDestroy {
       sub.unsubscribe();
       subs++;
     });
-    console.log(subs, 'borrados');
+    // console.log(subs, 'borrados');
   }
 
   generateExcel() {
-    console.log(this.selectedCatalog);
-    console.log(this.pagare.map.get(this.selectedCatalog));
+    // console.log(this.selectedCatalog);
+    // console.log(this.pagare.map.get(this.selectedCatalog));
 
     this.Excel.generateExcel(
       this.data,
@@ -205,7 +205,7 @@ export class GeneradorMasivoComponent implements OnDestroy {
       },
       error: (err) => {
         console.error(err);
-        console.log('error');
+        // console.log('error');
         this.mensajeRetro.set({
           mensaje: 'Ha habido un error',
           mostrar: true,

@@ -14,7 +14,7 @@ export const environment = {
   /**
    * URL absoluta del proyecto incluyendo subdirectorios.
    */
-  url: 'https//sie.iest.edu.mx/app/contraloria/consultaPagaresToga',
+  url: 'https://sie.iest.edu.mx/app/contraloria/reinscripciones/generaciondePagares/',
   /**
    * Nombre del proyecto.
    */
