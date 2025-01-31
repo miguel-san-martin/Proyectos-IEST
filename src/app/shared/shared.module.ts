@@ -17,6 +17,8 @@ import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
 import { ShrdAutocompleteComponent } from '@shared/components/shrd-autocomplete/shrd-autocomplete.component';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ContainerIconComponent } from '@shared/components/container-icon/container-icon.component';
+import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
+import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ContainerIconComponent } from '@shared/components/container-icon/contai
     ToastIestComponent,
     ShrdAutocompleteComponent,
     ContainerIconComponent,
+    TableIestV2Component,
   ],
   imports: [
     CommonModule,
@@ -46,6 +49,7 @@ import { ContainerIconComponent } from '@shared/components/container-icon/contai
     MatMenuItem,
     MatMenu,
     MatMenuTrigger,
+    BodyTemplateDirective,
   ],
   exports: [
     NumberToMxnPipe,
@@ -63,6 +67,8 @@ import { ContainerIconComponent } from '@shared/components/container-icon/contai
     ToastIestComponent,
     ShrdAutocompleteComponent,
     ContainerIconComponent,
+    TableIestV2Component,
+    BodyTemplateDirective,
   ],
 })
 export class SharedModule {}

@@ -89,6 +89,7 @@ export class ShrdAutocompleteComponent
       )
       .subscribe({
         next: (value: NonNullable<unknown>) => {
+          console.log(value);
           this.filteredOptions.set(value);
         },
         error: (err) => console.error(err),

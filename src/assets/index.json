@@ -50,7 +50,12 @@
         "name": "Concursos de Maestros",
         "img": "editor_choice",
         "path": "concurso/concursos-maestro"
-        }
+        },
+      {
+        "name": "Programas de Liderazgo",
+        "img": "editor_choice",
+        "path": "programas-liderazgo"
+      }
       ]
     },
     {

@@ -9,17 +9,18 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {HeaderTable, Menu} from '@shared/interfaces/header-tables';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import { HeaderTable, Menu } from '@shared/interfaces/header-tables';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'shared-table-iest',
   standalone: false,
-  templateUrl: '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
+  templateUrl:
+    '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
@@ -51,19 +52,19 @@ import {MatSlideToggleChange} from "@angular/material/slide-toggle";
     }
   `,
 })
-
 export class TableIESTComponent<T> {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  readonly tableHead: InputSignal<HeaderTable[]> = input.required<HeaderTable[]>();
+  readonly tableHead: InputSignal<HeaderTable[]> =
+    input.required<HeaderTable[]>();
   readonly data: InputSignal<T[]> = input.required<T[]>();
   public filtering: InputSignal<string> = input<string>('');
+
   //! SECCION PARA FUNCIONALIDAD DE SELECT ROW
   readonly selectionableOutpu = output();
   readonly isSelectionable = input<boolean>(false);
   selectingRow = signal(null);
-
 
   protected dataSource!: MatTableDataSource<T>;
   readonly effectFilter = effect(() => {
@@ -72,7 +73,6 @@ export class TableIESTComponent<T> {
     this.dataSource?.paginator?.firstPage();
   });
   protected effectData = effect(() => {
-
     this.dataSource = new MatTableDataSource(this.data());
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
