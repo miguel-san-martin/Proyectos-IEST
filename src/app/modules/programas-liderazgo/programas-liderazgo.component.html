@@ -1,0 +1,97 @@
+<mat-form-field style="width: 500px">
+  <mat-label> Periodo</mat-label>
+  <mat-select [formControl]="miFormulario.controls.idPeriodo" disableRipple>
+    <mat-option>--</mat-option>
+    @for (periodo of periodos(); track periodo) {
+      <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field style="width: 500px">
+  <mat-label> Programa</mat-label>
+  <mat-select [formControl]="miFormulario.controls.idPrograma" disableRipple>
+    <mat-option>--</mat-option>
+    @for (programa of programas(); track programa) {
+      <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+<!--<shared-table-iest [isSelectionable]="true" [tableHead]="headersTable" [data]="alumnos()"></shared-table-iest>-->
+<app-table-iest-v2 [data]="alumnos()" [tableHead]="headersTable">
+  <ng-template appBodyTemplate let-element class="flex" style="width: 100%">
+    <div class="flex-col justify-center w-full">
+      <span class="min-tit">Informacion de Pago:</span>
+      <mat-divider></mat-divider>
+      <div class="flex justify-center">
+
+    <span class="insignia">
+      <mat-icon style="color: darkgreen">attach_money</mat-icon>
+      <div>
+    <b>Fecha de Pago:</b><br>
+        {{ element.fechaPago }}
+      </div>
+  </span>
+        <span class="insignia">
+
+    <b>Estatus de Pago:</b>
+          @if (element.statusPago==='SI'){
+            <mat-icon>check_circle</mat-icon>
+          } @else {
+            <mat-icon >cancel</mat-icon>
+          }
+  </span>
+      </div >
+      <span> Alta: </span>
+      <mat-divider></mat-divider>
+      <div class="flex justify-center">
+  <span class="insignia">
+    <mat-icon>login</mat-icon>
+    <b>Fecha de alta:</b><br>
+    {{ element.fechaAlta }}
+  </span>
+        <span class="insignia">
+    <b>Semestre de Ingreso:</b><br>
+          {{ element.semestreEntrada }}
+  </span>
+        <span class="insignia">
+    <b>Capturista:</b><br>
+          {{ element.capturadoPor }}
+  </span>
+
+      </div>
+      <span> Baja: </span>
+      <mat-divider></mat-divider>
+      <div class="flex justify-center">
+  <span class="insignia">
+    <mat-icon>logout</mat-icon>
+    <b>Baja:</b><br>
+    {{ element.bajaPor }}
+  </span>
+        <span class="insignia">
+    <b>Fecha de Termino:</b><br>
+          {{ element.fechaTermino }}
+  </span>
+
+
+        <span class="insignia">
+    <b>Fecha de baja:</b>
+          {{ element.fechaBaja }}
+  </span>
+        <span class="insignia">
+    <b>Baja temporal:</b>
+          {{ element.fechaBajaTemporal }}
+  </span>
+        <span class="insignia">
+    <b>Terminado Por:</b>
+          {{ element.terminadoPor }}
+  </span>
+      </div>
+
+
+    </div>
+
+
+  </ng-template>
+</app-table-iest-v2>

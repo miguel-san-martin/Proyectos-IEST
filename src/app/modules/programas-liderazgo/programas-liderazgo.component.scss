@@ -1,0 +1,18 @@
+.insignia{
+  border: solid 2px #b1a59f;
+  border-radius: 4px;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover{
+    border-color: #f26818;
+    background: #e0e5e8;
+  }
+}
+
+.min-tit{
+  color: #474643;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-weight: 700 !important;
+}
