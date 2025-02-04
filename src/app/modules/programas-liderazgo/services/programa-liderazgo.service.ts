@@ -21,28 +21,15 @@ export class LiderazgoService extends ServicioBase {
       '/api/escolares/escolares.php',
     );
   }
-  // public getListadoAlumnos(data: any): Observable<any> {
-  //   const parametros = {
-  //     servicio: 'vertice',
-  //     accion: 'registroAlumnos',
-  //     tipoRespuesta: 'json',
-  //     idAccion: 1,
-  //     idRegistro: '',
-  //     idPersonAlumno: '',
-  //     idAlumnoRegistro: '',
-  //     idPersonCaptura: 18253,
-  //   };
-  //   return this.consulta(
-  //     { ...parametros, ...data },
-  //     '/api/escolares/escolares.php',
-  //   );
-  // }
-  //
   public getListadoAlumnos(data: any): Observable<any> {
     const parametros = {
       servicio: 'vertice',
-      accion: 'Reporte_AlumnosAceptados',
+      accion: 'registroAlumnos',
       tipoRespuesta: 'json',
+      idAccion: 1,
+      idRegistro: '',
+      idPersonAlumno: '',
+      idAlumnoRegistro: '',
       idPersonCaptura: 18253,
     };
     return this.consulta(
@@ -50,6 +37,19 @@ export class LiderazgoService extends ServicioBase {
       '/api/escolares/escolares.php',
     );
   }
+
+  // public getListadoAlumnos(data: any): Observable<any> {
+  //   const parametros = {
+  //     servicio: 'vertice',
+  //     accion: 'Reporte_AlumnosAceptados',
+  //     tipoRespuesta: 'json',
+  //     idPersonCaptura: 18253,
+  //   };
+  //   return this.consulta(
+  //     { ...parametros, ...data },
+  //     '/api/escolares/escolares.php',
+  //   );
+  // }
   public getPeriodos(): Observable<any> {
     const parametros = {
       accion: 'consultaPeriodos',
