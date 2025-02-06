@@ -4,19 +4,23 @@ import { MaterialModule } from '../../shared-material-module/material.module';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '@shared/shared.module';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { Periodo, Programa } from './Periodo.interface';
 import { HeaderTable } from '@shared/interfaces/header-tables';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from './dialogs/dialog.component';
 
 @Component({
   selector: 'app-programas-liderazgo',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, SharedModule],
+  imports: [MaterialModule, ReactiveFormsModule, SharedModule, MatButtonToggle],
   templateUrl: './programas-liderazgo.component.html',
   styleUrl: './programas-liderazgo.component.scss',
 })
 export class ProgramasLiderazgoComponent implements OnInit {
   Service = inject(LiderazgoService);
+  readonly dialog = inject(MatDialog);
 
   periodos = signal<Periodo[] | null>(null);
 
@@ -56,8 +60,8 @@ export class ProgramasLiderazgoComponent implements OnInit {
       namePropiedad: 'fechaAlta',
     },
     {
-      label: 'PAGADO',
-      namePropiedad: 'fechaPago',
+      label: 'PAGO',
+      namePropiedad: 'statusPago',
     },
   ];
 
@@ -73,7 +77,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   private getProgramas() {
     this.Service.getIdProgramas().subscribe((data: Programa[]) => {
-      console.log(data);
+      // console.log(data);
       this.programas.set(data);
     });
   }
@@ -89,7 +93,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
       )
       .subscribe({
         next: (periodos: Periodo[]) => {
-          console.log(periodos);
+          // console.log(periodos);
           this.periodos.set(periodos);
           // this.periodosForm.patchValue(periodos);
         },
@@ -98,13 +102,42 @@ export class ProgramasLiderazgoComponent implements OnInit {
   }
 
   private consultarAlumnos() {
-    console.log(this.miFormulario.value);
+    // console.log(this.miFormulario.value);
     const { idPeriodo, idPrograma } = this.miFormulario.value;
-    this.Service.getListadoAlumnos({ idPrograma, idPeriodo }).subscribe(
-      (data) => {
-        console.log(data);
-        this.alumnos.set(data);
-      },
-    );
+
+    this.Service.getListadoAlumnos({ idPrograma, idPeriodo })
+      .pipe(
+        take(1),
+        //Eliminar espacios en blancos
+        map((data) => {
+          return data.map((alumno: any) => {
+            Object.keys(alumno).forEach((clave) => {
+              if (!alumno[clave]) {
+                alumno[clave] = null;
+              } else {
+                return;
+              }
+            });
+            return alumno;
+          });
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.alumnos.set(data);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  addNuevoIngreso() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(() => {});
   }
 }

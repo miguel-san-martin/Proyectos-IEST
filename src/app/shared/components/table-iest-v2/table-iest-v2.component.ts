@@ -46,6 +46,7 @@ export class TableIestV2Component<T> {
       headers.push(row.label);
     });
     headers.push('expand');
+    // headers.push('delete');
     return headers;
   }
 
