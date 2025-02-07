@@ -37,7 +37,7 @@
               </button>
               <mat-menu #menu="matMenu">
                 @for (menuA of castToArray(element[head.namePropiedad].menu); track menuA) {
-                  <button mat-menu-item (click)="menuA.fun()" aria-hidden="false">{{ menuA.label }}</button>
+                  <button mat-menu-item (click)="menuA.fun()">{{ menuA.label }}</button>
                 }
               </mat-menu>
               <!--              {{ element[head.namePropiedad].menu | json }}-->

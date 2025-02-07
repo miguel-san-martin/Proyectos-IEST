@@ -53,3 +53,17 @@ tr.example-element-row:not(.example-expanded-row):active {
 //  }
 //
 //}
+
+.important{
+  mat-icon{
+    color:#d15050 !important;
+  }
+  color: #d15050 !important;
+  &:hover{
+    mat-icon{
+      color:white !important;
+    }
+    color: white !important;
+    background-color: #d15050 !important;
+  }
+}

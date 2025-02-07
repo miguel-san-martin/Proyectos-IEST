@@ -1,40 +1,38 @@
 <h2 mat-dialog-title>Dar de alta alumno</h2>
 <mat-dialog-content>
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
-    <mat-form-field>
-      <mat-label>Input</mat-label>
-      <input formControlName="1" matInput>
-    </mat-form-field>
+
+    <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)" keyTitle="nombre">
+      <ng-template appBodyTemplate let-element>
+        <button mat-stroked-button> {{element.idperson}} </button>
+        <span>{{element.login}}</span>
+      </ng-template>
+    </app-shrd-autocomplete>
 
     <mat-form-field>
       <mat-label>Generacion</mat-label>
-      <input formControlName="idGeneracion" matInput>
-    </mat-form-field>
-
-
-    <mat-form-field>
-      <mat-label>Periodo</mat-label>
-      <input formControlName="idPeriodo" matInput>
+      <input type="number" max="9" min="1" formControlName="idGeneracion" matInput>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Periodo</mat-label>
-      <input formControlName="idPeriodo" matInput>
+      <mat-label>Select an option</mat-label>
+      <mat-select formControlName="idPeriodo">
+        @for(periodo of data['periodos']; track $index){
+          <mat-option [value]="periodo.idPeriodo">{{periodo.abrPeriodo}}</mat-option>}
+      </mat-select>
     </mat-form-field>
-<!--    <mat-form-field>-->
-<!--      <mat-label>Select</mat-label>-->
-<!--      <mat-select>-->
-<!--        <mat-option value="one">First option</mat-option>-->
-<!--        <mat-option value="two">Second option</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Textarea</mat-label>-->
-<!--      <textarea matInput></textarea>-->
-<!--    </mat-form-field>-->
+
+    <mat-form-field>
+      <mat-label>Select an option</mat-label>
+      <mat-select formControlName="idPrograma">
+        @for(programa of data['programas']; track $index){
+          <mat-option [value]="programa.idPrograma">{{programa.nombre}}</mat-option>}
+      </mat-select>
+    </mat-form-field>
+
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="animal()" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="darDeAlta()" cdkFocusInitial>Crear</button>
 </mat-dialog-actions>

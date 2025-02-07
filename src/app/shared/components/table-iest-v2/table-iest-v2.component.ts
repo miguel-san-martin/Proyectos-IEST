@@ -14,6 +14,7 @@ import {
 } from '@angular/animations';
 import { HeaderTable } from '@shared/interfaces/header-tables';
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
+import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
 
 @Component({
   selector: 'app-table-iest-v2',
@@ -36,6 +37,9 @@ export class TableIestV2Component<T> {
   readonly data: InputSignal<T[]> = input.required<T[]>();
 
   @ContentChild(BodyTemplateDirective, { read: TemplateRef }) bodyTemplate: any;
+  @ContentChild(MenuTemplateDirectiveDirective, { read: TemplateRef })
+  menuTemplate: any;
+
   // @ts-ignore
   expandedElement: PeriodicElement | null;
 
@@ -46,8 +50,12 @@ export class TableIestV2Component<T> {
       headers.push(row.label);
     });
     headers.push('expand');
-    // headers.push('delete');
+    headers.push('menu');
     return headers;
+  }
+
+  buttonMenu($event: any) {
+    $event.stopPropagation();
   }
 
   protected readonly BodyTemplateDirective = BodyTemplateDirective;

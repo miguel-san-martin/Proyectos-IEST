@@ -10,11 +10,21 @@ import { HeaderTable } from '@shared/interfaces/header-tables';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialogs/dialog.component';
+import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
+import { MatMenuItem } from '@angular/material/menu';
 
+export type baja = 'temporal' | 'definitiva';
 @Component({
   selector: 'app-programas-liderazgo',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, SharedModule, MatButtonToggle],
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    SharedModule,
+    MatButtonToggle,
+    MenuTemplateDirectiveDirective,
+    MatMenuItem,
+  ],
   templateUrl: './programas-liderazgo.component.html',
   styleUrl: './programas-liderazgo.component.scss',
 })
@@ -29,8 +39,8 @@ export class ProgramasLiderazgoComponent implements OnInit {
   alumnos = signal([]);
 
   protected miFormulario = new FormGroup({
-    idPeriodo: new FormControl(101),
-    idPrograma: new FormControl(2),
+    idPeriodo: new FormControl(102),
+    idPrograma: new FormControl(1),
   });
 
   readonly headersTable: HeaderTable[] = [
@@ -84,23 +94,19 @@ export class ProgramasLiderazgoComponent implements OnInit {
   private getPeriodos() {
     this.Service.getPeriodos()
       .pipe(
-        // filter((periodo) => periodo.anio > 2010))
-        map((periodos: Periodo[]) =>
-          periodos
-            .filter((periodo) => periodo.anio > 2010)
-            .sort((a, b) => a.anio - b.anio),
+        map((periodos: any) =>
+          periodos.sort((a: any, b: any) => a.anio - b.anio),
         ),
       )
       .subscribe({
-        next: (periodos: Periodo[]) => {
-          // console.log(periodos);
+        next: (periodos: any) => {
+          console.log(periodos);
           this.periodos.set(periodos);
           // this.periodosForm.patchValue(periodos);
         },
         // console.log(periodos),
       });
   }
-
   private consultarAlumnos() {
     // console.log(this.miFormulario.value);
     const { idPeriodo, idPrograma } = this.miFormulario.value;
@@ -135,9 +141,38 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   addNuevoIngreso() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      data: {},
+      data: { programas: this.programas(), periodos: this.periodos() },
     });
 
     dialogRef.afterClosed().subscribe(() => {});
+  }
+
+  bajaAlumno(temporal: baja, idRegistro: number) {
+    switch (temporal) {
+      case 'temporal':
+        this.Service.bajaTemporal(idRegistro, 'Prueba')
+          .pipe(take(1))
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+            },
+            error: (error: any) => {
+              console.error(error);
+            },
+          });
+        break;
+      case 'definitiva':
+        this.Service.bajaNormal(idRegistro, 'Prueba')
+          .pipe(take(1))
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+            },
+            error: (error: any) => {
+              console.error(error);
+            },
+          });
+        break;
+    }
   }
 }

@@ -9,7 +9,11 @@
     >
     <mat-autocomplete requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="functionDisplayName" #auto="matAutocomplete">
       @for (item of filteredOptions(); track item) {
-        <mat-option [value]="item"><b>{{item['IDPERSON']}}</b> {{item['Nombre']}}</mat-option>
+        <mat-option [value]="item">
+          <ng-container *ngTemplateOutlet="bodyTemplate; context: {$implicit:item}">
+          </ng-container>
+
+        </mat-option>
       } @empty {
         <mat-option>No hay resultado.</mat-option>
       }

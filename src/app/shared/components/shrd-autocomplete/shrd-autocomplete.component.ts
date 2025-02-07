@@ -1,10 +1,12 @@
 import {
   Component,
+  ContentChild,
   input,
   OnDestroy,
   output,
   OutputEmitterRef,
   signal,
+  TemplateRef,
   WritableSignal,
 } from '@angular/core';
 import {
@@ -17,6 +19,7 @@ import {
 } from 'rxjs';
 import { ServicioBase } from '../../../services/servicio-base.service';
 import { FormControl } from '@angular/forms';
+import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
 
 @Component({
   selector: 'app-shrd-autocomplete',
@@ -28,7 +31,7 @@ export class ShrdAutocompleteComponent
   implements OnDestroy
 {
   private inputSubject = new Subject<string>();
-
+  @ContentChild(BodyTemplateDirective, { read: TemplateRef }) bodyTemplate: any;
   filteredOptions: WritableSignal<any> = signal<any>('');
   functionDisplayName!: (item: { [key: string]: string }) => string;
   searchControl: FormControl<any> = new FormControl();
