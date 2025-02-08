@@ -21,7 +21,7 @@
 
   <mat-form-field style="padding-top: 10px">
     <mat-label>Filtrar</mat-label>
-    <input matInput (keyup)="querySend($event)" placeholder="No. o Nombre" #input>
+    <input matInput [(ngModel)]="filtersignal" placeholder="No. o Nombre" #input>
   </mat-form-field>
 
   <mat-button-toggle (click)="addNuevoIngreso()">
@@ -159,8 +159,8 @@
 
       @if (alumno.fechaBajaTem){
         <button  mat-menu-item (click)="bajaAlumno('deshacer-temporal',alumno.idRegistro)">
-          <mat-icon fontSet="material-symbols-outlined">person_celebrate</mat-icon>
-          <span>Revivir</span>
+          <mat-icon fontSet="material-symbols-outlined">timer_play</mat-icon>
+          <span>Deshacer Baja Temporal</span>
         </button>
       } @else {
         <button  mat-menu-item (click)="bajaAlumno('temporal',alumno.idRegistro)">
@@ -171,7 +171,7 @@
 
 
       <button mat-menu-item (click)="bajaAlumno('definitiva',alumno.idRegistro)">
-        <mat-icon>person_remove</mat-icon>
+        <mat-icon>block</mat-icon>
         <span>Baja Definitiva</span>
       </button>
       <button mat-menu-item (click)="bajaAlumno('eliminar',alumno.idRegistro)">

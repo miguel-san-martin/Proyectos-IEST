@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   inject,
+  model,
   OnInit,
   signal,
   ViewChild,
@@ -55,7 +56,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   alumnos = signal([]);
 
-  filtersignal = signal('');
+  filtersignal = model('');
 
   public filter: string = '';
 

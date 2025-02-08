@@ -64,7 +64,6 @@ export class TableIestV2Component<T> {
   readonly effectData = effect(() => {
     console.log('Ejecutando data()');
     this.dataSource = new MatTableDataSource(this.data());
-    console.log(this.filtering());
     this.applyFilter(this.filtering());
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -94,4 +93,6 @@ export class TableIestV2Component<T> {
     headers.push('menu');
     return headers;
   }
+
+  getColor() {}
 }
