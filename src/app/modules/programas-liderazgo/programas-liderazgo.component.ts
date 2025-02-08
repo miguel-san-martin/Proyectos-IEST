@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { LiderazgoService } from './services/programa-liderazgo.service';
 import { MaterialModule } from '../../shared-material-module/material.module';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -6,14 +13,21 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { map, take } from 'rxjs';
 import { Periodo, Programa } from './Periodo.interface';
-import { HeaderTable } from '@shared/interfaces/header-tables';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialogs/dialog.component';
 import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
 import { MatMenuItem } from '@angular/material/menu';
+import { HEADERS_TABLE } from './HEADERS_TABLE';
+import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
+import { CommonModule } from '@angular/common';
 
-export type baja = 'temporal' | 'definitiva';
+export type baja =
+  | 'temporal'
+  | 'definitiva'
+  | 'termino'
+  | 'eliminar'
+  | 'deshacer-temporal';
 @Component({
   selector: 'app-programas-liderazgo',
   standalone: true,
@@ -24,13 +38,16 @@ export type baja = 'temporal' | 'definitiva';
     MatButtonToggle,
     MenuTemplateDirectiveDirective,
     MatMenuItem,
+    CommonModule,
   ],
   templateUrl: './programas-liderazgo.component.html',
   styleUrl: './programas-liderazgo.component.scss',
 })
 export class ProgramasLiderazgoComponent implements OnInit {
-  Service = inject(LiderazgoService);
+  readonly Service = inject(LiderazgoService);
   readonly dialog = inject(MatDialog);
+  @ViewChild('table') table!: TableIestV2Component<any>;
+  @ViewChild('input') input!: ElementRef;
 
   periodos = signal<Periodo[] | null>(null);
 
@@ -38,42 +55,14 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   alumnos = signal([]);
 
+  filtersignal = signal('');
+
+  public filter: string = '';
+
   protected miFormulario = new FormGroup({
-    idPeriodo: new FormControl(102),
-    idPrograma: new FormControl(1),
+    idPeriodo: new FormControl(100),
+    idPrograma: new FormControl(2),
   });
-
-  readonly headersTable: HeaderTable[] = [
-    {
-      label: 'IDIEST',
-      namePropiedad: 'idAlumno',
-    },
-    {
-      label: 'NOMBRE',
-      namePropiedad: 'Nombre',
-    },
-    {
-      label: 'CARRERA',
-      namePropiedad: 'abrCarrera',
-    },
-    {
-      label: 'GENERACIÓN',
-      namePropiedad: 'generacion',
-    },
-    {
-      label: 'CORREO',
-      namePropiedad: 'correo',
-    },
-
-    {
-      label: 'FECHA ALTA',
-      namePropiedad: 'fechaAlta',
-    },
-    {
-      label: 'PAGO',
-      namePropiedad: 'statusPago',
-    },
-  ];
 
   ngOnInit(): void {
     this.getPeriodos();
@@ -95,42 +84,25 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.Service.getPeriodos()
       .pipe(
         map((periodos: any) =>
-          periodos.sort((a: any, b: any) => a.anio - b.anio),
+          periodos.sort((a: any, b: any) => b.idPeriodo - a.idPeriodo),
         ),
       )
       .subscribe({
         next: (periodos: any) => {
           console.log(periodos);
           this.periodos.set(periodos);
-          // this.periodosForm.patchValue(periodos);
         },
-        // console.log(periodos),
       });
   }
+
   private consultarAlumnos() {
     // console.log(this.miFormulario.value);
     const { idPeriodo, idPrograma } = this.miFormulario.value;
 
     this.Service.getListadoAlumnos({ idPrograma, idPeriodo })
-      .pipe(
-        take(1),
-        //Eliminar espacios en blancos
-        map((data) => {
-          return data.map((alumno: any) => {
-            Object.keys(alumno).forEach((clave) => {
-              if (!alumno[clave]) {
-                alumno[clave] = null;
-              } else {
-                return;
-              }
-            });
-            return alumno;
-          });
-        }),
-      )
+      .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.alumnos.set(data);
         },
         error: (error) => {
@@ -155,6 +127,9 @@ export class ProgramasLiderazgoComponent implements OnInit {
           .subscribe({
             next: (data: any) => {
               console.log(data);
+              this.consultarAlumnos();
+              // console.log(this.input.nativeElement.value);
+              // this.table.applyFilter(this.input.nativeElement.value);
             },
             error: (error: any) => {
               console.error(error);
@@ -162,7 +137,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
           });
         break;
       case 'definitiva':
-        this.Service.bajaNormal(idRegistro, 'Prueba')
+        this.Service.bajaDefinitiva(idRegistro, 'Prueba')
           .pipe(take(1))
           .subscribe({
             next: (data: any) => {
@@ -173,6 +148,52 @@ export class ProgramasLiderazgoComponent implements OnInit {
             },
           });
         break;
+      case 'termino':
+        this.Service.terminoDelPrograma(idRegistro)
+          .pipe(take(1))
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+            },
+            error: (error: any) => {
+              console.error(error);
+            },
+          });
+        break;
+      case 'eliminar':
+        this.Service.eliminarRegistro(idRegistro, 'Prueba')
+          .pipe(take(1))
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+            },
+            error: (error: any) => {
+              console.error(error);
+            },
+          });
+        break;
+      case 'deshacer-temporal':
+        this.Service.deshacerTemporal(idRegistro, 'Prueba')
+          .pipe(take(1))
+          .subscribe({
+            next: (data: any) => {
+              console.log(data);
+              this.consultarAlumnos();
+              // console.log(this.input.nativeElement.value);
+              // this.table.applyFilter(this.input.nativeElement.value);
+            },
+            error: (error: any) => {
+              console.error(error);
+            },
+          });
+        break;
     }
   }
+
+  protected querySend($event: any) {
+    const filterValue = ($event.target as HTMLInputElement).value;
+    this.table.applyFilter(filterValue);
+  }
+
+  protected readonly HEADERS_TABLE = HEADERS_TABLE;
 }

@@ -92,26 +92,59 @@ export class LiderazgoService extends ServicioBase {
     );
   }
 
-  public bajaNormal(idRegistro: number, motivoBaja: string): Observable<any> {
+  public bajaDefinitiva(
+    idRegistro: number,
+    motivoBaja: string,
+  ): Observable<any> {
     const parametros = {
-      accion: 'buscador',
+      accion: 'registroAlumnosBajasDefinitiva',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, indicador: motivoBaja },
+      { ...parametros, idRegistro, motivoBaja },
       '/api/escolares/escolares.php',
     );
   }
 
-  public terminoDelPrograma(busqueda: string): Observable<any> {
+  public terminoDelPrograma(idRegistro: number): Observable<any> {
     const parametros = {
-      accion: 'buscador',
+      accion: 'registroAlumnosTerminodelPrograma',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, indicador: busqueda },
+      { ...parametros, idRegistro },
+      '/api/escolares/escolares.php',
+    );
+  }
+
+  public eliminarRegistro(
+    idRegistro: number,
+    motivoBaja: string,
+  ): Observable<any> {
+    const parametros = {
+      accion: 'eliminarRegistro',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta(
+      { ...parametros, idRegistro, motivoBaja },
+      '/api/escolares/escolares.php',
+    );
+  }
+
+  public deshacerTemporal(
+    idRegistro: number,
+    indicador: string,
+  ): Observable<any> {
+    const parametros = {
+      accion: 'registroAlumnosRevivirBajaTemporal',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta(
+      { ...parametros, idRegistro, indicador },
       '/api/escolares/escolares.php',
     );
   }

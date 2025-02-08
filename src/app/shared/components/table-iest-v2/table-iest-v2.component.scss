@@ -1,5 +1,37 @@
+@use '@angular/material' as mat;
+
+::ng-deep {
+  .mat-mdc-header-cell {
+    background-color: #27272a !important;
+  }
+
+  .mat-sort-header-container {
+    place-content: center;
+    color: white !important;
+    font-family: 'Saira', sans-serif;
+    font-weight: normal !important;
+  }
+
+  .mat-mdc-raised-button > .mat-icon {
+    margin-right: 0 !important;
+  }
+
+  .isSelectionable {
+    cursor: pointer;
+  }
+
+  .selectedRow {
+    background-color: #bceeff !important;
+
+    &:hover {
+      background-color: #55c9ef !important;
+    }
+  }
+}
+
 table {
   width: 100%;
+
 }
 
 tr.example-detail-row {

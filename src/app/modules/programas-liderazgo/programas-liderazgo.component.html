@@ -1,51 +1,61 @@
 <div class="m-16">
-<mat-form-field style="width: 500px">
-  <mat-label> Ingreso</mat-label>
-  <mat-select [formControl]="miFormulario.controls.idPeriodo" disableRipple>
-    <mat-option [value]="null">--</mat-option>
-    @for (periodo of periodos(); track periodo) {
-      <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+  <mat-form-field style="width: 500px">
+    <mat-label> Ingreso</mat-label>
+    <mat-select [formControl]="miFormulario.controls.idPeriodo" disableRipple>
+      <mat-option [value]="null">--</mat-option>
+      @for (periodo of periodos(); track periodo) {
+        <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
 
-<mat-form-field style="width: 500px">
-  <mat-label> Programa</mat-label>
-  <mat-select [formControl]="miFormulario.controls.idPrograma" disableRipple>
-    <mat-option [value]='null'>--</mat-option>
-    @for (programa of programas(); track programa) {
-      <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+  <mat-form-field style="width: 500px">
+    <mat-label> Programa</mat-label>
+    <mat-select [formControl]="miFormulario.controls.idPrograma" disableRipple>
+      <mat-option [value]='null'>--</mat-option>
+      @for (programa of programas(); track programa) {
+        <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
 
-<mat-button-toggle (click)="addNuevoIngreso()" > <mat-icon>add</mat-icon> </mat-button-toggle>
+  <mat-form-field style="padding-top: 10px">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (keyup)="querySend($event)" placeholder="No. o Nombre" #input>
+  </mat-form-field>
 
-<!--<shared-table-iest [isSelectionable]="true" [tableHead]="headersTable" [data]="alumnos()"></shared-table-iest>-->
+  <mat-button-toggle (click)="addNuevoIngreso()">
+    <mat-icon>add</mat-icon>
+  </mat-button-toggle>
 
-  <app-table-iest-v2  [data]="alumnos()" [tableHead]="headersTable">
+  <app-table-iest-v2 #table [data]="alumnos()" [tableHead]="HEADERS_TABLE" [filtering]="filtersignal()">
     <ng-template appBodyTemplate let-element class="flex" style="width: 100%">
+<!--      PAGOS-->
       <div class="col-4">
         <mat-card style="height: 100%">
           <mat-card-title>
             <mat-icon>payments</mat-icon>
             Pagos
           </mat-card-title>
-          <mat-divider/>
+          <mat-divider />
           <mat-card-content>
-
             <div class="flex justify-between p-2">
               <span class="tupla">Status Pago:</span>
-              <div>{{element.statusPago}}</div>
+              <div>{{ element.statusPago }}</div>
+            </div>
+            <div class="flex justify-between p-2">
+              <span class="tupla">Programa:</span>
+              <div style="color: #f26818">{{ element.programa }}</div>
             </div>
             <div class="flex justify-between p-2">
               <span class="tupla">Fecha de Pago:</span>
-              <div>{{element.fechaPago}}</div>
+              <div>{{ element.fechaPago }}</div>
             </div>
+
           </mat-card-content>
         </mat-card>
       </div>
-
+<!--    ALTA-->
       <div class="col-4">
         <mat-card style="height: 100%">
 
@@ -53,95 +63,127 @@
             <mat-icon>login</mat-icon>
             Alta
           </mat-card-title>
-          <mat-divider/>
+          <mat-divider />
           <mat-card-content class="flex flex-col">
 
             <div class="flex justify-between p-2">
               <span class="tupla">Semestre de entrada:</span>
-              <div>{{element.semestreEntrada}}</div>
+              <div>{{ element.semestreEntrada }}</div>
             </div>
 
             <div class="flex justify-between p-2">
               <span class="tupla">Fecha de Alta:</span>
-              <div>{{element.fechaAlta}}</div>
+              <div>{{ element.fechaAlta }}</div>
             </div>
 
             <div class="flex justify-between p-2">
               <span class="tupla">Dado de alta por:</span>
-              <div>{{element.altaPor ?? 'NA'}}</div>
+              <div>{{ element.altaPor ?? 'NA' }}</div>
             </div>
 
           </mat-card-content>
         </mat-card>
       </div>
-
-      <div class="col-4" >
-        <mat-card style="height: 100%" >
+<!--    BAJAS-->
+      <div class="col-4">
+        <mat-card style="height: 100%">
           <mat-card-title>
             <mat-icon>logout</mat-icon>
             Bajas
           </mat-card-title>
 
-          <mat-divider/>
+          <mat-divider />
           <mat-card-content>
 
-            @if(element.fechaBaja){
+            @if (element.fechaBaja) {
+              <div class="flex justify-between p-2">
+                <span class="tupla">Estatus</span>
+                <div>BAJA DEFINITIVA</div>
+              </div>
               <div class="flex justify-between p-2">
                 <span class="tupla">Fecha de Baja:</span>
-                <div>{{element.fechaBaja}}</div>
+                <div>{{ element.fechaBaja }}</div>
               </div>
 
 
-            }
-
-            @if (element.fechaBajaTem) {
+            } @else if(element.fechaBajaTem) {
+              <div class="flex justify-between p-2">
+                <span class="tupla">Estatus</span>
+                <div>BAJA TEMPORAL</div>
+              </div>
               <div class="flex justify-between p-2">
                 <span class="tupla">Fecha de Baja:</span>
-                <div>{{element.fechaBajaTem}}</div>
+                <div>{{ element.fechaBajaTem }}</div>
               </div>
-            }
-
-            @if (element.fechaTermino){
+            } @else if(element.fechaTermino) {
+              <div class="flex justify-between p-2">
+                <span class="tupla">Estatus</span>
+                <div>TERMINACION DE PROGRAMA</div>
+              </div>
               <div class="flex justify-between p-2">
                 <span class="tupla">Fecha de Baja:</span>
-                <div>{{element.fechaTermino}}</div>
+                <div>{{ element.fechaTermino }}</div>
+              </div>
+              <div class="flex justify-between p-2">
+                <span class="tupla">Dado de Baja:</span>
+                <div>{{ element.bajaPor ?? 'NA' }}</div>
               </div>
 
+              <div class="flex justify-between p-2">
+                <span class="tupla">Terminado por:</span>
+                <div>{{ element.terminadoPor ?? 'NA' }}</div>
+              </div>
+
+            } @else {
+              <div class="flex justify-between p-2">
+                <span class="tupla"></span>
+                <div> 'NA'</div>
+              </div>
             }
-            <div class="flex justify-between p-2">
-              <span class="tupla">Dado de Baja:</span>
-              <div>{{element.bajaPor ?? 'NA'}}</div>
-            </div>
-
-            <div class="flex justify-between p-2">
-              <span class="tupla">Terminado por:</span>
-              <div>{{element.terminadoPor ?? 'NA'}}</div>
-            </div>
-
 
 
           </mat-card-content>
         </mat-card>
       </div>
 
-
-
-
     </ng-template>
 
     <ng-template appMenuTemplateDirective let-alumno>
-      <button mat-menu-item class="important">
+
+
+      <button mat-menu-item class="important" (click)="bajaAlumno('definitiva',alumno.idRegistro)">
         <mat-icon>school</mat-icon>
         <span>Termino</span>
       </button>
-      <button mat-menu-item (click)="bajaAlumno('temporal',alumno.idRegistro)">
-        <mat-icon>timer_pause</mat-icon>
-        <span>Baja Temporal</span>
-      </button>
+
+
+      @if (alumno.fechaBajaTem){
+        <button  mat-menu-item (click)="bajaAlumno('deshacer-temporal',alumno.idRegistro)">
+          <mat-icon fontSet="material-symbols-outlined">person_celebrate</mat-icon>
+          <span>Revivir</span>
+        </button>
+      } @else {
+        <button  mat-menu-item (click)="bajaAlumno('temporal',alumno.idRegistro)">
+          <mat-icon>timer_pause</mat-icon>
+          <span>Baja Temporal</span>
+        </button>
+      }
+
+
       <button mat-menu-item (click)="bajaAlumno('definitiva',alumno.idRegistro)">
         <mat-icon>person_remove</mat-icon>
         <span>Baja Definitiva</span>
       </button>
+      <button mat-menu-item (click)="bajaAlumno('eliminar',alumno.idRegistro)">
+        <mat-icon>remove</mat-icon>
+        <span>Eliminar registro</span>
+      </button>
+
+
+
+
+
+
     </ng-template>
   </app-table-iest-v2>
 </div>

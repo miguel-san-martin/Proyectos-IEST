@@ -1,9 +1,11 @@
 import {
   Component,
   ContentChild,
+  effect,
   input,
   InputSignal,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import {
   animate,
@@ -15,6 +17,9 @@ import {
 import { HeaderTable } from '@shared/interfaces/header-tables';
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
 import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-table-iest-v2',
@@ -35,13 +40,49 @@ export class TableIestV2Component<T> {
   readonly tableHead: InputSignal<HeaderTable[]> =
     input.required<HeaderTable[]>();
   readonly data: InputSignal<T[]> = input.required<T[]>();
+  readonly filtering: InputSignal<string> = input<string>('');
 
-  @ContentChild(BodyTemplateDirective, { read: TemplateRef }) bodyTemplate: any;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  @ContentChild(BodyTemplateDirective, { read: TemplateRef })
+  bodyTemplate: any;
   @ContentChild(MenuTemplateDirectiveDirective, { read: TemplateRef })
   menuTemplate: any;
 
   // @ts-ignore
   expandedElement: PeriodicElement | null;
+
+  readonly effectFilter = effect(() => {
+    console.log('Ejecutando filtering()');
+    if (this.dataSource)
+      this.dataSource.filter = this.filtering().trim().toLowerCase();
+    this.dataSource?.paginator?.firstPage();
+  });
+
+  protected dataSource!: MatTableDataSource<T>;
+  readonly effectData = effect(() => {
+    console.log('Ejecutando data()');
+    this.dataSource = new MatTableDataSource(this.data());
+    console.log(this.filtering());
+    this.applyFilter(this.filtering());
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (item: any, property: string) => {
+      const map = new Map(
+        this.tableHead().map((item: HeaderTable) => [
+          item.label,
+          item.namePropiedad,
+        ]),
+      );
+      const head: string = map.get(property) || 'error';
+      return item[head];
+    };
+  });
+
+  public applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   get displayedColums(): string[] {
     if (!this.tableHead()) return [];
@@ -53,10 +94,4 @@ export class TableIestV2Component<T> {
     headers.push('menu');
     return headers;
   }
-
-  buttonMenu($event: any) {
-    $event.stopPropagation();
-  }
-
-  protected readonly BodyTemplateDirective = BodyTemplateDirective;
 }
