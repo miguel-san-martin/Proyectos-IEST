@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Introdusca el motivo de baja:</h2>
+<mat-dialog-content>
+  <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
+    <mat-form-field class="example-full-width">
+      <mat-label>Motivo:</mat-label>
+      <textarea matInput placeholder="Indique motivo" formControlName="Motivo"></textarea>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">No Thanks</button>
+  <button mat-button (click)="closeDialog()" cdkFocusInitial>Crear</button>
+</mat-dialog-actions>

@@ -54,7 +54,6 @@ export class TableIestV2Component<T> {
   expandedElement: PeriodicElement | null;
 
   readonly effectFilter = effect(() => {
-    console.log('Ejecutando filtering()');
     if (this.dataSource)
       this.dataSource.filter = this.filtering().trim().toLowerCase();
     this.dataSource?.paginator?.firstPage();
@@ -62,7 +61,7 @@ export class TableIestV2Component<T> {
 
   protected dataSource!: MatTableDataSource<T>;
   readonly effectData = effect(() => {
-    console.log('Ejecutando data()');
+    console.log('P');
     this.dataSource = new MatTableDataSource(this.data());
     this.applyFilter(this.filtering());
     this.dataSource.sort = this.sort;
@@ -94,5 +93,15 @@ export class TableIestV2Component<T> {
     return headers;
   }
 
-  getColor() {}
+  getColor(element: any) {
+    const { fechaTermino, fechaBaja, fechaBajaTem } = element;
+    if (fechaBaja) {
+      return { 'border-left': '0.25rem solid #f5174f' };
+    } else if (fechaBajaTem) {
+      return { 'border-left': '0.25rem solid #84f0fd' };
+    } else if (fechaTermino) {
+      return { 'border-left': '0.25rem solid #ccc' };
+    }
+    return { 'border-left': '0.25rem solid #7ff126' };
+  }
 }

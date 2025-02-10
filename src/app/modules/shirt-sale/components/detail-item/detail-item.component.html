@@ -34,7 +34,7 @@
         align-items: center;">
 
       <div class="inferior-pannel">
-        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle-group name="fontStyle" >
           @for (size of data.Tallas; track $index) {
             <mat-button-toggle value="bold">{{ size }}</mat-button-toggle>
           }

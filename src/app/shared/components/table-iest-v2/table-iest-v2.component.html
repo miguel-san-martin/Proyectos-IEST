@@ -1,11 +1,10 @@
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
-
   @for (head of tableHead(); let index= $index; track index) {
     <ng-container matColumnDef="{{head.label}}">
       <th mat-header-cell mat-sort-header  *matHeaderCellDef> {{head.label}} </th>
-      @if (index==0){
-        <td style="border-left: 0.5rem solid orange" mat-cell *matCellDef="let element"> {{element[head.namePropiedad] ?? "NA"}} </td>
+      @if (index === 0){
+        <td [ngStyle]="getColor(element)" style="border-left: 0.5rem solid orange" mat-cell *matCellDef="let element"> {{element[head.namePropiedad] ?? "NA"}} </td>
       } @else {
         <td mat-cell *matCellDef="let element"> {{element[head.namePropiedad] ?? "NA"}} </td>
       }
@@ -33,7 +32,7 @@
   <ng-container matColumnDef="menu">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
-      <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -71,7 +70,6 @@
 <mat-paginator
   class="w-full"
   [pageSizeOptions]="[10, 50, 100]"
-  aria-label="Selecciona el numero de elementos"
 />
 
 

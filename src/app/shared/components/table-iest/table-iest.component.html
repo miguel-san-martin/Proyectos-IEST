@@ -30,7 +30,7 @@
             <!-- SI ES UN MENU CON BOTON-->
             @if (element[head.namePropiedad].menu) {
               <button mat-menu-item [matMenuTriggerFor]="menu" class="justify-center w-fit"
-                      style="justify-content: center" aria-hidden="false">
+                      style="justify-content: center">
                 <mat-icon class="m-0 hov-blue"
                           [fontIcon]="element[head.namePropiedad].label ">
                 </mat-icon>
@@ -79,7 +79,6 @@
 
   <mat-paginator
     [pageSizeOptions]="[10, 50, 100]"
-    aria-label="Selecciona el numero de elementos"
   />
 }
 @if (!data()[0]) {

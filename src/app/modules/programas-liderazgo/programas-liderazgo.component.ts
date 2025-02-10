@@ -1,8 +1,10 @@
 import {
   Component,
+  effect,
   ElementRef,
   inject,
   model,
+  ModelSignal,
   OnInit,
   signal,
   ViewChild,
@@ -16,19 +18,22 @@ import { map, take } from 'rxjs';
 import { Periodo, Programa } from './Periodo.interface';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from './dialogs/dialog.component';
+import { DialogComponent } from './dialogs/dialog-alta/dialog.component';
 import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
 import { MatMenuItem } from '@angular/material/menu';
 import { HEADERS_TABLE } from './HEADERS_TABLE';
 import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
 import { CommonModule } from '@angular/common';
+import { DialogBajaComponent } from './dialogs/dialog-baja/dialog.component';
+import { DialogInfoComponent } from './dialogs/dialog-info/dialog.component';
 
-export type baja =
+export type tipo_baja =
   | 'temporal'
   | 'definitiva'
-  | 'termino'
+  | 'termino-programa'
   | 'eliminar'
   | 'deshacer-temporal';
+
 @Component({
   selector: 'app-programas-liderazgo',
   standalone: true,
@@ -54,9 +59,20 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   programas = signal<Programa[] | null>(null);
 
-  alumnos = signal([]);
+  alumnos = signal<any>([]);
 
   filtersignal = model('');
+
+  filterPago: ModelSignal<string | null> = model<null | string>(null);
+  filterTipoBaja: ModelSignal<string | null> = model<null | string>(null);
+
+  constructor() {
+    effect(() => {
+      console.log(this.filterTipoBaja());
+      console.log(this.filterPago());
+      this.consultarAlumnos();
+    });
+  }
 
   public filter: string = '';
 
@@ -91,6 +107,11 @@ export class ProgramasLiderazgoComponent implements OnInit {
       .subscribe({
         next: (periodos: any) => {
           console.log(periodos);
+
+          // periodos.forEach((periodo: any) => {
+          //   if (periodo.actual == 1)
+          //     this.miFormulario.get('idPeriodo')?.setValue(periodo.idPeriodo);
+          // });
           this.periodos.set(periodos);
         },
       });
@@ -104,7 +125,8 @@ export class ProgramasLiderazgoComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          this.alumnos.set(data);
+          this.postGetFilters(data);
+          // this.alumnos.set(data);
         },
         error: (error) => {
           console.log(error);
@@ -112,83 +134,53 @@ export class ProgramasLiderazgoComponent implements OnInit {
       });
   }
 
-  addNuevoIngreso() {
+  protected addNuevoIngreso() {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: { programas: this.programas(), periodos: this.periodos() },
     });
 
     dialogRef.afterClosed().subscribe(() => {});
   }
+  protected bajaAlumno(accion: tipo_baja, idRegistro: number) {
+    let Service;
 
-  bajaAlumno(temporal: baja, idRegistro: number) {
-    switch (temporal) {
-      case 'temporal':
-        this.Service.bajaTemporal(idRegistro, 'Prueba')
-          .pipe(take(1))
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-              this.consultarAlumnos();
-              // console.log(this.input.nativeElement.value);
-              // this.table.applyFilter(this.input.nativeElement.value);
-            },
-            error: (error: any) => {
-              console.error(error);
-            },
+    const dialogRef = this.dialog.open(DialogBajaComponent, {
+      data: { accion },
+    });
+    dialogRef.afterClosed().subscribe((v) => {
+      if (v === undefined) return;
+      switch (accion) {
+        case 'termino-programa':
+          Service = this.Service.terminoDelPrograma(idRegistro);
+          break;
+        case 'definitiva':
+          Service = this.Service.bajaDefinitiva(idRegistro, v);
+          break;
+        case 'eliminar':
+          Service = this.Service.eliminarRegistro(idRegistro, v);
+          break;
+        case 'temporal':
+          Service = this.Service.bajaTemporal(idRegistro, v);
+          break;
+        case 'deshacer-temporal':
+          Service = this.Service.deshacerTemporal(idRegistro, v);
+          break;
+        default:
+          throw new Error('No se encontraron el programa');
+      }
+
+      Service.pipe(take(1)).subscribe({
+        next: (info: any) => {
+          console.log(info);
+          const dialogRef = this.dialog.open(DialogInfoComponent, {
+            data: { info: info },
           });
-        break;
-      case 'definitiva':
-        this.Service.bajaDefinitiva(idRegistro, 'Prueba')
-          .pipe(take(1))
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-            },
-            error: (error: any) => {
-              console.error(error);
-            },
+          dialogRef.afterClosed().subscribe(() => {
+            this.consultarAlumnos();
           });
-        break;
-      case 'termino':
-        this.Service.terminoDelPrograma(idRegistro)
-          .pipe(take(1))
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-            },
-            error: (error: any) => {
-              console.error(error);
-            },
-          });
-        break;
-      case 'eliminar':
-        this.Service.eliminarRegistro(idRegistro, 'Prueba')
-          .pipe(take(1))
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-            },
-            error: (error: any) => {
-              console.error(error);
-            },
-          });
-        break;
-      case 'deshacer-temporal':
-        this.Service.deshacerTemporal(idRegistro, 'Prueba')
-          .pipe(take(1))
-          .subscribe({
-            next: (data: any) => {
-              console.log(data);
-              this.consultarAlumnos();
-              // console.log(this.input.nativeElement.value);
-              // this.table.applyFilter(this.input.nativeElement.value);
-            },
-            error: (error: any) => {
-              console.error(error);
-            },
-          });
-        break;
-    }
+        },
+      });
+    });
   }
 
   protected querySend($event: any) {
@@ -196,5 +188,36 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.table.applyFilter(filterValue);
   }
 
+  filtroPago() {}
+
   protected readonly HEADERS_TABLE = HEADERS_TABLE;
+
+  postGetFilters(data: any[]) {
+    if (this.filterTipoBaja()) {
+      console.log(this.filterTipoBaja());
+      switch (this.filterTipoBaja()) {
+        case 'Baja Temporal':
+          data = data.filter((a) => a.fechaBajaTem);
+          console.log(data);
+          break;
+        case 'Baja Definitiva':
+          data = data.filter((a) => a.fechaBaja);
+          break;
+        case 'Terminacion de Programa':
+          data = data.filter((a) => a.fechaTermino);
+          break;
+      }
+    }
+    if (this.filterPago()) {
+      switch (this.filterPago()) {
+        case 'SI':
+          data = data.filter((a) => a.statusPago === 'SI');
+          break;
+        case 'NO':
+          data = data.filter((a) => a.statusPago === 'NO');
+          break;
+      }
+    }
+    this.alumnos.set(data);
+  }
 }

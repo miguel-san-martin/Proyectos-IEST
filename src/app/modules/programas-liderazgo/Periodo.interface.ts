@@ -22,3 +22,26 @@ export interface Programa {
   idPrograma: number;
   nombre: string;
 }
+
+export interface AlumnoPrograma {
+  idRegistro: number;
+  idPerson: number;
+  idAlumno: number;
+  Nombre: string;
+  correo: string;
+  abrCarrera: string;
+  generacion: string;
+  statusPago: string;
+  fechaPago: string | null;
+  fechaAlta: string | null;
+  capturadoPor: string | null;
+  semestreEntrada: string;
+  semestreInicio: string;
+  fechaBaja: null | string;
+  bajaPor: string | string;
+  fechaTermino: null | string;
+  terminadoPor: string;
+  fechaBajaTem: null | string;
+  bajaTemporalPor: string | null;
+  programa: string;
+}
