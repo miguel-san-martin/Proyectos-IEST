@@ -1,5 +1,16 @@
 @use 'iest-theme-material/iest-theme';
+
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.form-field-base((
+    ba
+  ));
+}
 @import "./app/shared/scss/style-v3";
+
+
 
 .material-icons {
   font-family: 'Material Icons';
@@ -37,4 +48,5 @@ table {
     background-color: #fff0eb !important;
   }
 }
+
 

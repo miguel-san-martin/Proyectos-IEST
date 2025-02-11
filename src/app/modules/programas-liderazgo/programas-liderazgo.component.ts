@@ -16,7 +16,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { map, take } from 'rxjs';
 import { Periodo, Programa } from './Periodo.interface';
-import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialogs/dialog-alta/dialog.component';
 import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
@@ -41,7 +40,6 @@ export type tipo_baja =
     MaterialModule,
     ReactiveFormsModule,
     SharedModule,
-    MatButtonToggle,
     MenuTemplateDirectiveDirective,
     MatMenuItem,
     CommonModule,
@@ -56,15 +54,14 @@ export class ProgramasLiderazgoComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
 
   periodos = signal<Periodo[] | null>(null);
-
   programas = signal<Programa[] | null>(null);
-
   alumnos = signal<any>([]);
-
   filtersignal = model('');
 
   filterPago: ModelSignal<string | null> = model<null | string>(null);
   filterTipoBaja: ModelSignal<string | null> = model<null | string>(null);
+
+  filterBar = signal(false);
 
   constructor() {
     effect(() => {
@@ -82,6 +79,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.toogleFilterBar();
     this.getPeriodos();
     this.getProgramas();
     this.consultarAlumnos();
@@ -183,13 +181,6 @@ export class ProgramasLiderazgoComponent implements OnInit {
     });
   }
 
-  protected querySend($event: any) {
-    const filterValue = ($event.target as HTMLInputElement).value;
-    this.table.applyFilter(filterValue);
-  }
-
-  filtroPago() {}
-
   protected readonly HEADERS_TABLE = HEADERS_TABLE;
 
   postGetFilters(data: any[]) {
@@ -220,4 +211,6 @@ export class ProgramasLiderazgoComponent implements OnInit {
     }
     this.alumnos.set(data);
   }
+
+  private toogleFilterBar() {}
 }

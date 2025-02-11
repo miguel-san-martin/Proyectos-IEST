@@ -44,7 +44,7 @@
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
   <ng-container matColumnDef="expandedDetail">
-       <td class="detail-pannel" mat-cell *matCellDef="let element" [attr.colspan]="tableHead().length+1">
+       <td class="detail-pannel" mat-cell *matCellDef="let element" [attr.colspan]="tableHead().length+2">
 
       <div class="example-element-detail"
            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">

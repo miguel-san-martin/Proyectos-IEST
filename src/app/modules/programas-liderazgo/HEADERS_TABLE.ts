@@ -14,17 +14,12 @@ export const HEADERS_TABLE: HeaderTable[] = [
     namePropiedad: 'abrCarrera',
   },
   {
-    label: 'GENERACIÓN',
+    label: 'GEN',
     namePropiedad: 'generacion',
   },
   {
     label: 'CORREO',
     namePropiedad: 'correo',
-  },
-
-  {
-    label: 'FECHA ALTA',
-    namePropiedad: 'fechaAlta',
   },
   {
     label: 'PAGO',

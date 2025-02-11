@@ -1,38 +1,57 @@
-<h2 mat-dialog-title>Dar de alta alumno</h2>
+<h2 mat-dialog-title style="    background-color: #ff5722;
+    color: white;">Dar de alta alumno</h2>
+
 <mat-dialog-content>
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
 
-    <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)" keyTitle="nombre">
+    <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)"
+                           keyTitle="nombre">
       <ng-template appBodyTemplate let-element>
-        <button mat-stroked-button> {{element.idperson}} </button>
-        <span>{{element.login}}</span>
+        <button mat-stroked-button> {{ element.idperson }}</button>
+        <span class="px-2">{{ element.nombre }}</span>
       </ng-template>
     </app-shrd-autocomplete>
 
-    <mat-form-field>
+    <mat-form-field class="p-1">
       <mat-label>Generacion</mat-label>
       <input type="number" max="9" min="1" formControlName="idGeneracion" matInput>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Select an option</mat-label>
+    <mat-form-field class="p-1">
+      <mat-label>Periodo</mat-label>
       <mat-select formControlName="idPeriodo">
-        @for(periodo of data['periodos']; track $index){
-          <mat-option [value]="periodo.idPeriodo">{{periodo.abrPeriodo}}</mat-option>}
+        @for (periodo of data['periodos']; track $index) {
+          <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Select an option</mat-label>
+    <mat-form-field class="p-1">
+      <mat-label>Programa</mat-label>
       <mat-select formControlName="idPrograma">
-        @for(programa of data['programas']; track $index){
-          <mat-option [value]="programa.idPrograma">{{programa.nombre}}</mat-option>}
+        @for (programa of data['programas']; track $index) {
+          <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
+    <div>
+      <mat-form-field>
+        <mat-label>Fecha Limite de Pago</mat-label>
+        <input matInput [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <section class="">
+        <mat-checkbox style="background-color: white!important; color: #3f3f3f!important;">Beca</mat-checkbox>
+      </section>
+    </div>
   </form>
+
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button (click)="darDeAlta()" cdkFocusInitial>Crear</button>
+<mat-dialog-actions [align]="'center'">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button style="background-color: rgba(255,255,255,0.91)" (click)="darDeAlta()" cdkFocusInitial>Añadir</button>
 </mat-dialog-actions>
