@@ -7,7 +7,9 @@
            [matAutocomplete]="auto" [formControl]="searchControl"
             (input)="searching($event)"
     >
+
     <mat-autocomplete requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="functionDisplayName" #auto="matAutocomplete">
+
       @for (item of filteredOptions(); track item) {
         <mat-option [value]="item">
           <ng-container *ngTemplateOutlet="bodyTemplate; context: {$implicit:item}">
@@ -15,9 +17,13 @@
 
         </mat-option>
       } @empty {
-        <mat-option>No hay resultado.</mat-option>
       }
     </mat-autocomplete>
+
+    @if (error()?.bool){
+      <mat-hint  class="mat-mdc-form-field-error" style="color: red" >{{error()?.mensaje}}</mat-hint>
+    }
+
 
     @if (input.value) {
       <button matSuffix mat-icon-button (click)="input.value=''">
@@ -25,4 +31,5 @@
       </button>
     }
   </mat-form-field>
+
 </form>

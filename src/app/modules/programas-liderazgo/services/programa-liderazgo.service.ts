@@ -11,6 +11,8 @@ interface altaAlumnosRequest {
   idPersonAlumno: number;
   idAlumnoRegistro: number;
   idGeneracion: number;
+  fechaVencimiento?: string;
+  becaFleishman?: boolean;
 }
 
 @Injectable({

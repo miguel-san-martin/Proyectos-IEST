@@ -3,7 +3,7 @@ import { HeaderTable } from '@shared/interfaces/header-tables';
 export const HEADERS_TABLE: HeaderTable[] = [
   {
     label: 'IDIEST',
-    namePropiedad: 'idAlumno',
+    namePropiedad: 'idPerson',
   },
   {
     label: 'NOMBRE',

@@ -21,6 +21,11 @@ import { ServicioBase } from '../../../services/servicio-base.service';
 import { FormControl } from '@angular/forms';
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
 
+export interface senalError {
+  mensaje: string;
+  bool: boolean;
+}
+
 @Component({
   selector: 'app-shrd-autocomplete',
   templateUrl: './shrd-autocomplete.component.html',
@@ -35,6 +40,11 @@ export class ShrdAutocompleteComponent
   filteredOptions: WritableSignal<any> = signal<any>('');
   functionDisplayName!: (item: { [key: string]: string }) => string;
   searchControl: FormControl<any> = new FormControl();
+
+  public error = input<senalError | null>({
+    bool: false,
+    mensaje: 'El campo es invalido',
+  });
 
   /**
    *  Recibe la llamada de un servicio. propiedad-inyectada.metodo.bind(this.propiedad-inyectada)

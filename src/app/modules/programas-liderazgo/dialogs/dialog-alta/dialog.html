@@ -5,25 +5,31 @@
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
 
     <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)"
-                           keyTitle="nombre">
+                           keyTitle="nombre" [error]="error()">
       <ng-template appBodyTemplate let-element>
         <button mat-stroked-button> {{ element.idperson }}</button>
         <span class="px-2">{{ element.nombre }}</span>
       </ng-template>
     </app-shrd-autocomplete>
 
-    <mat-form-field class="p-1">
-      <mat-label>Generacion</mat-label>
-      <input type="number" max="9" min="1" formControlName="idGeneracion" matInput>
-    </mat-form-field>
+
 
     <mat-form-field class="p-1">
+      <mat-label>Generación</mat-label>
+      <input type="number" max="9" min="1" formControlName="idGeneracion" matInput required>
+      <mat-error>Numero de generación no valido.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="p-1" [floatLabel]="'always'">
       <mat-label>Periodo</mat-label>
       <mat-select formControlName="idPeriodo">
         @for (periodo of data['periodos']; track $index) {
           <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
         }
       </mat-select>
+
+
+
     </mat-form-field>
 
     <mat-form-field class="p-1">
@@ -36,16 +42,16 @@
     </mat-form-field>
 
     <div>
-      <mat-form-field>
+      <mat-form-field [floatLabel]="'always'">
         <mat-label>Fecha Limite de Pago</mat-label>
-        <input matInput [matDatepicker]="picker">
+        <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <section class="">
-        <mat-checkbox style="background-color: white!important; color: #3f3f3f!important;">Beca</mat-checkbox>
+        <mat-checkbox formControlName="becaFleishman" (click)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
       </section>
     </div>
   </form>
