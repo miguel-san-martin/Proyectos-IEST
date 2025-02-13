@@ -5,7 +5,7 @@
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
 
     <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)"
-                           keyTitle="nombre" [error]="error()">
+                           keyTitle="nombre" [error]="errorAutocomplete()">
       <ng-template appBodyTemplate let-element>
         <button mat-stroked-button> {{ element.idperson }}</button>
         <span class="px-2">{{ element.nombre }}</span>
@@ -54,6 +54,11 @@
         <mat-checkbox formControlName="becaFleishman" (click)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
       </section>
     </div>
+    <div class="flex justify-center">
+    <mat-error style="color: red !important;font-family: 'Roboto', serif;">{{errorMensaje()}}</mat-error>
+
+    </div>
+
   </form>
 
 </mat-dialog-content>

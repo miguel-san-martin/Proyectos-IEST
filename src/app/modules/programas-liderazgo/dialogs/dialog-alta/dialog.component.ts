@@ -44,10 +44,11 @@ export class DialogComponent {
       7,
       [Validators.required, Validators.min(5), Validators.max(10)],
     ],
-    fechaVencimiento: [new Date()],
+    fechaVencimiento: [Date()],
     becaFleishman: [false],
   });
-  error = signal<senalError | null>(null);
+  errorAutocomplete = signal<senalError | null>(null);
+  errorMensaje = signal<string>('');
 
   get GeneracionesControl() {
     return this.myForm.get('idGeneraciones') as FormControl;
@@ -70,25 +71,40 @@ export class DialogComponent {
 
   darDeAlta() {
     this.validarFormulario();
-    const fecha = this.myForm.get('fechaVencimiento')?.value;
+    const fecha: Date = this.myForm.get('fechaVencimiento')?.value;
     const beca = this.myForm.get('becaFleshman')?.value;
-    const offset = fecha.getTimezoneOffset() * 60000; // Diferencia en milisegundos
-    const fechaLocalISO = new Date(fecha - offset).toISOString();
-    this.myForm.get('fechaVencimiento')?.setValue(fechaLocalISO);
+
     this.myForm.get('becaFleishman')?.setValue(beca ? 1 : 0);
 
-    console.log(this.myForm);
-    this.Service.altaAlumno(this.myForm.value).subscribe((data) => {
-      console.log(data);
-      this.dialogRef.close();
+    const payload = {
+      ...this.myForm.value,
+      fechaVencimiento: fecha.toISOString(),
+    };
+
+    if (this.myForm.invalid)
+      this.errorMensaje.set('¡ERROR!: Revisar informacion');
+    this.Service.altaAlumno(payload).subscribe((data) => {
+      // console.log(data[0].error);
+      if (data[0].error == 1) {
+        this.errorMensaje.set('¡ERROR!: ' + data[0].mensaje);
+      }
+      if (data[0].error == 0) {
+        this.dialogRef.close();
+      }
     });
   }
 
   validarFormulario(): void {
     if (this.myForm.get('idPersonAlumno')?.invalid) {
-      this.error.set({ bool: true, mensaje: 'Seleccion no valida' });
+      this.errorAutocomplete.set({
+        bool: true,
+        mensaje: 'Seleccion no valida',
+      });
     } else {
-      this.error.set({ bool: false, mensaje: 'Seleccion no valida' });
+      this.errorAutocomplete.set({
+        bool: false,
+        mensaje: 'Seleccion no valida',
+      });
     }
   }
 
