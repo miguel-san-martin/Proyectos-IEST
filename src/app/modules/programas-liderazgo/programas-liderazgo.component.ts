@@ -74,8 +74,8 @@ export class ProgramasLiderazgoComponent implements OnInit {
   public filter: string = '';
 
   protected miFormulario = new FormGroup({
-    idPeriodo: new FormControl(100),
-    idPrograma: new FormControl(2),
+    idPeriodo: new FormControl(null),
+    idPrograma: new FormControl(null),
   });
 
   ngOnInit(): void {
@@ -145,6 +145,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogBajaComponent, {
       data: { accion },
     });
+    //Dialogo de registro
     dialogRef.afterClosed().subscribe((v) => {
       if (v === undefined) return;
       switch (accion) {

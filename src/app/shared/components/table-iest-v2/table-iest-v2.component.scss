@@ -2,14 +2,14 @@
 
 ::ng-deep {
   .mat-mdc-header-cell {
-    background-color: #27272a !important;
+  background: #f1d8bf;
   }
 
   .mat-sort-header-container {
     place-content: center;
-    color: white !important;
-    font-family: 'Saira', sans-serif;
-    font-weight: normal !important;
+    color: #423e3e !important;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold !important;
   }
 
   .mat-mdc-raised-button > .mat-icon {
