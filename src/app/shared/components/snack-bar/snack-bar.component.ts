@@ -1,5 +1,11 @@
-import { Component, computed, OnInit, signal, WritableSignal } from "@angular/core";
-import { MatSnackBarRef } from "@angular/material/snack-bar";
+import {
+  Component,
+  computed,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 export interface dataSnackBar {
   duration: number;
@@ -7,23 +13,22 @@ export interface dataSnackBar {
 }
 
 @Component({
-  selector: "app-snack-bar",
+  selector: 'app-snack-bar',
   standalone: false,
-  templateUrl: "./snack-bar.component.html",
-  styleUrl: "../../scss/custom-template-miguel-v2.scss",
+  templateUrl: './snack-bar.component.html',
+  // styleUrl: "../../scss/custom-template-miguel-v2.scss",
 })
 export class SnackBarComponent implements OnInit {
-
-  public message: WritableSignal<string> = signal("");
+  public message: WritableSignal<string> = signal('');
   public error: WritableSignal<boolean> = signal(false);
-  public icon  = computed(() => {
-   return this.error() ? 'warning' : 'check'
-  } )
+  public icon = computed(() => {
+    return this.error() ? 'warning' : 'check';
+  });
 
   constructor(private _snackBarRef: MatSnackBarRef<SnackBarComponent>) {}
 
   getStyle() {
-    return this.error() ? { color: "#ffeaa1" } : { color: "#a4e37e" };
+    return this.error() ? { color: '#ffeaa1' } : { color: '#a4e37e' };
   }
 
   ngOnInit(): void {

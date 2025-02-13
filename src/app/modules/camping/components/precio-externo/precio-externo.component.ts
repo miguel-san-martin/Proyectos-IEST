@@ -1,17 +1,31 @@
-import { Component, OnInit, OnChanges, inject, Input, SimpleChanges } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { Subject } from "rxjs";
-import { ResponseEditabilityPeriode, _estatus } from "../../interfaces/responses/response-editability-periode";
-import { ResponseGetFee } from "../../interfaces/responses/response-get-fee";
-import { VeranoCampamentoComponent } from "../../pages/verano-campamento/verano-campamento.component";
-import { CampamentoIestService } from "../../services/campamento-iest.service";
-import { SnackbarComponent } from "../snackbar/snackbar.component";
-
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Subject } from 'rxjs';
+import {
+  _estatus,
+  ResponseEditabilityPeriode,
+} from '../../interfaces/responses/response-editability-periode';
+import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
+import { VeranoCampamentoComponent } from '../../pages/verano-campamento/verano-campamento.component';
+import { CampamentoIestService } from '../../services/campamento-iest.service';
+import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
   selector: 'form-precio-externo',
   templateUrl: './precio-externo.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
 })
 export class PrecioExternoComponent
   extends SnackbarComponent
@@ -29,7 +43,11 @@ export class PrecioExternoComponent
   formGroupExternalCost: FormGroup<{
     twoWeeks: FormGroup<{ maternal: FormGroup<any>; childish: FormGroup<any> }>;
     treeWeeks: FormGroup<{
-      maternal: FormGroup<{idCost: FormControl<string>; description: FormControl<string>;price: FormControl<number>}>;
+      maternal: FormGroup<{
+        idCost: FormControl<string>;
+        description: FormControl<string>;
+        price: FormControl<number>;
+      }>;
       childish: FormGroup<any>;
     }>;
   }>;
@@ -101,7 +119,7 @@ export class PrecioExternoComponent
         price: precioFixed,
       };
 
-      let insert = [];
+      const insert = [];
       let insertType = '';
       if (semana == '2') {
         insertType = 'twoWeeks';
@@ -120,72 +138,65 @@ export class PrecioExternoComponent
         ? this.formGroupExternalCost.get(insert)?.get('price')?.enable()
         : this.formGroupExternalCost.get(insert)?.get('price')?.disable();
     });
-    if(!this.formIsCorrect()){
-      console.log('Cerrando seccion inferior',this.formIsCorrect());
+    if (!this.formIsCorrect()) {
+      console.log('Cerrando seccion inferior', this.formIsCorrect());
       this.veranos.precioExternoIsCorrect = false;
-    }else{
-      console.log('Abriendo seccion inferior',this.formIsCorrect());
+    } else {
+      console.log('Abriendo seccion inferior', this.formIsCorrect());
       this.veranos.precioExternoIsCorrect = true;
-
     }
-
   }
 
   onInputChange(costo: any, idDescount: string) {
     const costoEnviado: string = costo.target.value;
     const datos = { idCosto: idDescount.toString(), costo: costoEnviado };
     //this.baseSubject.next(datos);
-    this.sumitData(costoEnviado, idDescount.toString())
-    if(!this.formIsCorrect()){
-      console.log('Cerrando seccion inferior',this.formIsCorrect());
+    this.sumitData(costoEnviado, idDescount.toString());
+    if (!this.formIsCorrect()) {
+      console.log('Cerrando seccion inferior', this.formIsCorrect());
       this.veranos.precioExternoIsCorrect = false;
-    }else{
-      console.log('Abriendo seccion inferior',this.formIsCorrect());
+    } else {
+      console.log('Abriendo seccion inferior', this.formIsCorrect());
       this.veranos.precioExternoIsCorrect = true;
     }
-
   }
 
-  sumitData(costo:string, idDescount: string){
-    this.Service.CheckIfIsEditable(this.Service.thePeriodIsClosed?.idPeriodo).subscribe(
-      (response: ResponseEditabilityPeriode[] ) => {
-        if(response[0].estatus !== _estatus.Cerrado) {
-          this.Service.updateCost(idDescount, costo).subscribe((resp: any) => {
-            console.log(resp);
-            this.openSnackBar()
-          });
-        }
-        else{
-          console.error('Periodo se encuentra cerrado');
-          this.cerrarPeriodo()
-          this.errorSnackBar()
-        }
+  sumitData(costo: string, idDescount: string) {
+    this.Service.CheckIfIsEditable(
+      this.Service.thePeriodIsClosed?.idPeriodo,
+    ).subscribe((response: ResponseEditabilityPeriode[]) => {
+      if (response[0].estatus !== _estatus.Cerrado) {
+        this.Service.updateCost(idDescount, costo).subscribe((resp: any) => {
+          console.log(resp);
+          this.openSnackBar();
+        });
+      } else {
+        console.error('Periodo se encuentra cerrado');
+        this.cerrarPeriodo();
+        this.errorSnackBar();
       }
-    )
-
+    });
   }
-
 
   cerrarPeriodo() {
     this.formGroupExternalCost.disable();
   }
 
-
   formIsCorrect() {
     let result = true;
-    const muestra =[
-    this.formGroupExternalCost.get(['twoWeeks','maternal','price'])?.value,
-    this.formGroupExternalCost.get(['twoWeeks','childish','price'])?.value,
-    this.formGroupExternalCost.get(['treeWeeks','maternal','price'])?.value,
-    this.formGroupExternalCost.get(['treeWeeks','childish','price'])?.value]
+    const muestra = [
+      this.formGroupExternalCost.get(['twoWeeks', 'maternal', 'price'])?.value,
+      this.formGroupExternalCost.get(['twoWeeks', 'childish', 'price'])?.value,
+      this.formGroupExternalCost.get(['treeWeeks', 'maternal', 'price'])?.value,
+      this.formGroupExternalCost.get(['treeWeeks', 'childish', 'price'])?.value,
+    ];
 
-    muestra.forEach((row)=>{
-      row = Number(row)
-      if(row === 0){
+    muestra.forEach((row) => {
+      row = Number(row);
+      if (row === 0) {
         result = false;
       }
-    })
+    });
     return result;
   }
-
 }

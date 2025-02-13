@@ -3,8 +3,11 @@ import { ServicioBase } from './servicio-base.service';
 import { Observable } from 'rxjs';
 
 interface alumnosRequest {
-  idPeriodo: number | null | undefined;
-  idPrograma: number | null | undefined;
+  idPeriodo?: number | null;
+  idPrograma?: number | null;
+  idGeneracion?: number | null;
+  idEstatus?: number | null;
+  pagado?: number | null;
 }
 
 interface altaAlumnosRequest {
@@ -15,6 +18,11 @@ interface altaAlumnosRequest {
   becaFleishman?: boolean;
 }
 
+interface bajaConMotivo {
+  idRegistro: number;
+  motivoBaja?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,19 +31,56 @@ export class LiderazgoService extends ServicioBase {
     super();
   }
 
-  public getIdProgramas(idRegistroAdmin: string = ''): Observable<any[]> {
+  // CATALOGOS
+
+  getIdProgramas(): Observable<any> {
     const parametros = {
       servicio: 'vertice',
       accion: 'listadoProgramas',
       tipoRespuesta: 'json',
     };
-    return this.consulta(
-      { ...parametros, idRegistroAdmin },
-      '/api/escolares/escolares.php',
-    );
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
   }
 
-  public getListadoAlumnos(data: alumnosRequest): Observable<any> {
+  getPeriodos(): Observable<any> {
+    const parametros = {
+      accion: 'consultaPeriodos',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
+  }
+
+  getPagos(): Observable<any> {
+    const parametros = {
+      accion: 'consultaPagos',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
+  }
+
+  getEstatus(): Observable<any> {
+    const parametros = {
+      accion: 'consultaEstatus',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
+  }
+
+  getGemeracion(): Observable<any> {
+    const parametros = {
+      accion: 'consultaGeneracion ',
+      servicio: 'vertice',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
+  }
+
+  //  OBTENER ALUMNOS
+
+  getListadoAlumnos(data: alumnosRequest): Observable<any> {
     const parametros = {
       servicio: 'vertice',
       accion: 'consultaAlumnos',
@@ -47,9 +92,9 @@ export class LiderazgoService extends ServicioBase {
     );
   }
 
-  public altaAlumno(
-    data: alumnosRequest & altaAlumnosRequest,
-  ): Observable<any> {
+  //   ALTAS
+
+  altaAlumno(data: alumnosRequest & altaAlumnosRequest): Observable<any> {
     const parametros = {
       servicio: 'vertice',
       accion: 'registroAlumnosAlta',
@@ -61,16 +106,7 @@ export class LiderazgoService extends ServicioBase {
     );
   }
 
-  public getPeriodos(): Observable<any> {
-    const parametros = {
-      accion: 'consultaPeriodos',
-      servicio: 'vertice',
-      tipoRespuesta: 'json',
-    };
-    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
-  }
-
-  public buscarAlumno(busqueda: string): Observable<any> {
+  buscarAlumno(busqueda: string): Observable<any> {
     const parametros = {
       accion: 'buscador',
       servicio: 'vertice',
@@ -82,71 +118,64 @@ export class LiderazgoService extends ServicioBase {
     );
   }
 
-  public bajaTemporal(idRegistro: number, motivoBaja: string): Observable<any> {
+  //  BAJAS
+
+  bajaTemporal(baja: bajaConMotivo): Observable<any> {
     const parametros = {
       accion: 'registroAlumnosBajasTemporal',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, idRegistro, motivoBaja },
+      { ...parametros, ...baja },
       '/api/escolares/escolares.php',
     );
   }
 
-  public bajaDefinitiva(
-    idRegistro: number,
-    motivoBaja: string,
-  ): Observable<any> {
+  bajaDefinitiva(baja: bajaConMotivo): Observable<any> {
     const parametros = {
       accion: 'registroAlumnosBajasDefinitiva',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, idRegistro, motivoBaja },
+      { ...parametros, ...baja },
       '/api/escolares/escolares.php',
     );
   }
 
-  public terminoDelPrograma(idRegistro: number): Observable<any> {
+  terminoDelPrograma(baja: bajaConMotivo): Observable<any> {
     const parametros = {
       accion: 'registroAlumnosTerminodelPrograma',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, idRegistro },
+      { ...parametros, baja },
       '/api/escolares/escolares.php',
     );
   }
 
-  public eliminarRegistro(
-    idRegistro: number,
-    motivoBaja: string,
-  ): Observable<any> {
+  eliminarRegistro(baja: bajaConMotivo): Observable<any> {
     const parametros = {
       accion: 'eliminarRegistro',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, idRegistro, motivoBaja },
+      { ...parametros, ...baja },
       '/api/escolares/escolares.php',
     );
   }
 
-  public deshacerTemporal(
-    idRegistro: number,
-    indicador: string,
-  ): Observable<any> {
+  deshacerTemporal(baja: bajaConMotivo): Observable<any> {
     const parametros = {
       accion: 'registroAlumnosRevivirBajaTemporal',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, idRegistro, indicador },
+      { ...parametros, ...baja },
       '/api/escolares/escolares.php',
     );
   }

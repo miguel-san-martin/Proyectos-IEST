@@ -2,7 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 
 @Component({
   templateUrl: './main-page.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
 })
 export class MainPageComponent {
   public state = signal<string>('Mujer');

@@ -1,29 +1,34 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
-import { ResponseEditabilityPeriode, _estatus } from '../../interfaces/responses/response-editability-periode';
+import {
+  _estatus,
+  ResponseEditabilityPeriode,
+} from '../../interfaces/responses/response-editability-periode';
 
 @Component({
   selector: 'form-precio-dependiente',
   templateUrl: './precio-dependiente.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
 })
-export class PrecioDependienteComponent extends SnackbarComponent  implements OnChanges, OnInit {
-
-  @ViewChild(SnackbarComponent)snackbar!: SnackbarComponent;
+export class PrecioDependienteComponent
+  extends SnackbarComponent
+  implements OnChanges, OnInit
+{
+  @ViewChild(SnackbarComponent) snackbar!: SnackbarComponent;
   keysMaternal: any;
 
   fb = inject(FormBuilder);
@@ -36,7 +41,8 @@ export class PrecioDependienteComponent extends SnackbarComponent  implements On
   @Input() priceIsEditable: boolean | null = null;
   public formGroupDescuento!: FormGroup;
 
-  private descuentoSubject: Subject<{ idDescuento: string; costo: string }> = new Subject<any>();
+  private descuentoSubject: Subject<{ idDescuento: string; costo: string }> =
+    new Subject<any>();
 
   @Output() executarFuncion = new EventEmitter<void>();
 
@@ -62,7 +68,6 @@ export class PrecioDependienteComponent extends SnackbarComponent  implements On
     // this.descuentoSubject
     //   .pipe(debounceTime(500))
     //   .subscribe(({ idDescuento, costo }) => {
-
     //     this.Service.CheckIfIsEditable(this.Service.thePeriodIsClosed?.idPeriodo).subscribe(
     //       (response: ResponseEditabilityPeriode[] ) => {
     //         if(response[0].estatus !== _estatus.Cerrado) {
@@ -119,7 +124,7 @@ export class PrecioDependienteComponent extends SnackbarComponent  implements On
       });
   }
   fillGaps(array: ResponseIdDescont[]): ResponseIdDescont[] {
-    let uniqueElements: ResponseIdDescont[] = [];
+    const uniqueElements: ResponseIdDescont[] = [];
     array.forEach((row: ResponseIdDescont) => {
       const array2 = array.filter(
         (element) => element.descripcion === row.descripcion,
@@ -172,36 +177,34 @@ export class PrecioDependienteComponent extends SnackbarComponent  implements On
 
   onInputChange(costo: any, idDescuento: string) {
     const costoEnviado: string = costo.target.value;
-    this.sumitData(costoEnviado, idDescuento)
+    this.sumitData(costoEnviado, idDescuento);
     // const datos = { idDescuento: idDescuento.toString(), costo: costoEnviado };
     //this.descuentoSubject.next(datos);
-
   }
 
-  sumitData(costo:string, idDescuento: string){
-    this.Service.CheckIfIsEditable(this.Service.thePeriodIsClosed?.idPeriodo).subscribe(
-      (response: ResponseEditabilityPeriode[] ) => {
-        if(response[0].estatus !== _estatus.Cerrado) {
-          this.Service.updateDescount(idDescuento, costo).subscribe((resp: any) => {
+  sumitData(costo: string, idDescuento: string) {
+    this.Service.CheckIfIsEditable(
+      this.Service.thePeriodIsClosed?.idPeriodo,
+    ).subscribe((response: ResponseEditabilityPeriode[]) => {
+      if (response[0].estatus !== _estatus.Cerrado) {
+        this.Service.updateDescount(idDescuento, costo).subscribe(
+          (resp: any) => {
             console.log(resp);
-            this.openSnackBar()
-          });
-        }
-        else{
-          console.error('Periodo se encuentra cerrado');
-          this.cerrarPeriodo()
-          this.errorSnackBar()
-        }
+            this.openSnackBar();
+          },
+        );
+      } else {
+        console.error('Periodo se encuentra cerrado');
+        this.cerrarPeriodo();
+        this.errorSnackBar();
       }
-    )
-
+    });
   }
 
-  cerrarPeriodo(){
-    this.formGroupDescuento.disable()
+  cerrarPeriodo() {
+    this.formGroupDescuento.disable();
   }
-  openPeriodo(){
-    this.formGroupDescuento.enable()
+  openPeriodo() {
+    this.formGroupDescuento.enable();
   }
-
 }

@@ -19,14 +19,13 @@ import { SnackBarComponent } from '@shared/components/snack-bar/snack-bar.compon
 import { SharedModule } from '@shared/shared.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-select-pagares',
   standalone: true,
-  imports: [MaterialModule, SharedModule, AsyncPipe],
+  imports: [MaterialModule, SharedModule],
   templateUrl: './select-pagares-generacion.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
 })
 export class SelectPagaresGeneracionComponent implements OnInit {
   Service = inject(PagareReinscripcionesService);

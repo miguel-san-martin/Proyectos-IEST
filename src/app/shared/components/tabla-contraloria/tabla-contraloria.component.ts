@@ -1,13 +1,9 @@
 import {
-  AfterViewInit,
   Component,
   effect,
   input,
   Input,
   InputSignal,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,7 +17,7 @@ import { MatSort } from '@angular/material/sort';
   selector: 'shrd-tabla',
   standalone: false,
   templateUrl: './tabla-contraloria.component.html',
-  styleUrl: './../../scss/custom-template-miguel-v2.scss',
+  // styleUrl: './../../scss/custom-template-miguel-v2.scss',
 })
 export class TablaContraloriaComponent<T> {
   @Input({ required: true }) tableHead!: HeaderTable[];

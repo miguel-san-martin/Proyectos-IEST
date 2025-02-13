@@ -22,7 +22,7 @@ import { CampamentoIestService } from '../../services/campamento-iest.service';
 
 @Component({
   templateUrl: './verano-campamento.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
 })
 export class VeranoCampamentoComponent implements OnInit {
   Service = inject(CampamentoIestService);

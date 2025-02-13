@@ -1,6 +1,5 @@
 import {
   Component,
-  effect,
   ElementRef,
   inject,
   model,
@@ -11,16 +10,22 @@ import {
 } from '@angular/core';
 import { LiderazgoService } from './services/programa-liderazgo.service';
 import { MaterialModule } from '../../shared-material-module/material.module';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '@shared/shared.module';
-import { map, take } from 'rxjs';
-import { Periodo, Programa } from './Periodo.interface';
+import { take } from 'rxjs';
+import {
+  Estatus,
+  Generaciones,
+  Pago,
+  Periodo,
+  Programa,
+} from './interfaces/Periodo.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialogs/dialog-alta/dialog.component';
 import { MenuTemplateDirectiveDirective } from '@shared/directives/menu-template-directive.directive';
 import { MatMenuItem } from '@angular/material/menu';
-import { HEADERS_TABLE } from './HEADERS_TABLE';
+import { HEADERS_TABLE } from './interfaces/HEADERS_TABLE';
 import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
 import { CommonModule } from '@angular/common';
 import { DialogBajaComponent } from './dialogs/dialog-baja/dialog.component';
@@ -50,58 +55,64 @@ export type tipo_baja =
 export class ProgramasLiderazgoComponent implements OnInit {
   readonly Service = inject(LiderazgoService);
   readonly dialog = inject(MatDialog);
+  readonly fb = inject(FormBuilder);
+
   @ViewChild('table') table!: TableIestV2Component<any>;
   @ViewChild('input') input!: ElementRef;
 
   periodos = signal<Periodo[] | null>(null);
   programas = signal<Programa[] | null>(null);
-  alumnos = signal<any>([]);
-  filtersignal = model('');
+  pagos = signal<Pago[] | null>(null);
+  estatus = signal<Estatus[] | null>(null);
+  generaciones = signal<Generaciones[] | null>(null);
 
+  alumnos = signal<any>([]);
+
+  filtersignal = model('');
   filterPago: ModelSignal<string | null> = model<null | string>(null);
   filterTipoBaja: ModelSignal<string | null> = model<null | string>(null);
 
-  filterBar = signal(false);
-
-  constructor() {
-    effect(() => {
-      console.log(this.filterTipoBaja());
-      console.log(this.filterPago());
-      this.consultarAlumnos();
-    });
-  }
-
   public filter: string = '';
 
-  protected miFormulario = new FormGroup({
-    idPeriodo: new FormControl(null),
-    idPrograma: new FormControl(null),
+  protected miFormulario = this.fb.group({
+    idPeriodo: [null],
+    idPrograma: [null],
+    idEstatus: [null],
+    idGeneracion: [null],
+    pagado: [null],
   });
 
+  protected readonly HEADERS_TABLE = HEADERS_TABLE;
+
   ngOnInit(): void {
-    this.toogleFilterBar();
-    this.getPeriodos();
-    this.getProgramas();
+    this.poblarSelects();
     this.consultarAlumnos();
-    this.miFormulario.valueChanges.subscribe((valores) => {
-      console.log('Formulario cambiado:', valores);
+    this.miFormulario.valueChanges.subscribe((value) => {
       this.consultarAlumnos();
     });
   }
 
+  private poblarSelects() {
+    this.getPeriodos();
+    this.getGeneraciones();
+    this.getEstatus();
+    this.getPeriodos();
+    this.getTiposPagos();
+    this.getProgramas();
+  }
+
+  // listadoProgramas
   private getProgramas() {
     this.Service.getIdProgramas().subscribe((data: Programa[]) => {
       // console.log(data);
       this.programas.set(data);
     });
   }
+
+  // consultaPeriodos
   private getPeriodos() {
     this.Service.getPeriodos()
-      .pipe(
-        map((periodos: any) =>
-          periodos.sort((a: any, b: any) => b.idPeriodo - a.idPeriodo),
-        ),
-      )
+      .pipe(take(1))
       .subscribe({
         next: (periodos: any) => {
           console.log(periodos);
@@ -115,17 +126,49 @@ export class ProgramasLiderazgoComponent implements OnInit {
       });
   }
 
-  private consultarAlumnos() {
-    // console.log(this.miFormulario.value);
-    const { idPeriodo, idPrograma } = this.miFormulario.value;
-
-    this.Service.getListadoAlumnos({ idPrograma, idPeriodo })
+  // consultaPagos
+  private getTiposPagos() {
+    this.Service.getPagos()
       .pipe(take(1))
       .subscribe({
-        next: (data) => {
-          this.postGetFilters(data);
-          // this.alumnos.set(data);
-        },
+        next: (data) => this.pagos.set(data),
+      });
+  }
+
+  // consultaEstatus
+  private getEstatus() {
+    this.Service.getEstatus()
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => this.estatus.set(data),
+      });
+  }
+
+  // consultaGeneracion
+  private getGeneraciones() {
+    this.Service.getGemeracion()
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => console.log,
+      });
+  }
+
+  protected consultarAlumnos() {
+    // console.log(this.miFormulario.value);
+    const { idEstatus, pagado, idPrograma, idGeneracion, idPeriodo } = {
+      ...this.miFormulario.value,
+    };
+
+    this.Service.getListadoAlumnos({
+      idEstatus,
+      pagado,
+      idPrograma,
+      idGeneracion,
+      idPeriodo,
+    })
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {},
         error: (error) => {
           console.log(error);
         },
@@ -139,6 +182,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(() => {});
   }
+
   protected bajaAlumno(accion: tipo_baja, idRegistro: number) {
     let Service;
 
@@ -146,23 +190,23 @@ export class ProgramasLiderazgoComponent implements OnInit {
       data: { accion },
     });
     //Dialogo de registro
-    dialogRef.afterClosed().subscribe((v) => {
-      if (v === undefined) return;
+    dialogRef.afterClosed().subscribe((motivoBaja) => {
+      if (motivoBaja === undefined) return;
       switch (accion) {
         case 'termino-programa':
-          Service = this.Service.terminoDelPrograma(idRegistro);
+          Service = this.Service.terminoDelPrograma({ idRegistro });
           break;
         case 'definitiva':
-          Service = this.Service.bajaDefinitiva(idRegistro, v);
+          Service = this.Service.bajaDefinitiva({ idRegistro, motivoBaja });
           break;
         case 'eliminar':
-          Service = this.Service.eliminarRegistro(idRegistro, v);
+          Service = this.Service.eliminarRegistro({ idRegistro, motivoBaja });
           break;
         case 'temporal':
-          Service = this.Service.bajaTemporal(idRegistro, v);
+          Service = this.Service.bajaTemporal({ idRegistro, motivoBaja });
           break;
         case 'deshacer-temporal':
-          Service = this.Service.deshacerTemporal(idRegistro, v);
+          Service = this.Service.deshacerTemporal({ idRegistro, motivoBaja });
           break;
         default:
           throw new Error('No se encontraron el programa');
@@ -182,36 +226,5 @@ export class ProgramasLiderazgoComponent implements OnInit {
     });
   }
 
-  protected readonly HEADERS_TABLE = HEADERS_TABLE;
-
-  postGetFilters(data: any[]) {
-    if (this.filterTipoBaja()) {
-      console.log(this.filterTipoBaja());
-      switch (this.filterTipoBaja()) {
-        case 'Baja Temporal':
-          data = data.filter((a) => a.fechaBajaTem);
-          console.log(data);
-          break;
-        case 'Baja Definitiva':
-          data = data.filter((a) => a.fechaBaja);
-          break;
-        case 'Terminacion de Programa':
-          data = data.filter((a) => a.fechaTermino);
-          break;
-      }
-    }
-    if (this.filterPago()) {
-      switch (this.filterPago()) {
-        case 'SI':
-          data = data.filter((a) => a.statusPago === 'SI');
-          break;
-        case 'NO':
-          data = data.filter((a) => a.statusPago === 'NO');
-          break;
-      }
-    }
-    this.alumnos.set(data);
-  }
-
-  private toogleFilterBar() {}
+  // consultaAlumnos
 }

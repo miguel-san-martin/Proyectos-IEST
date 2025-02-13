@@ -23,7 +23,7 @@ export interface dati {
 
 @Component({
   templateUrl: './configuracion-generacion.component.html',
-  styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
 })
 export class ConfiguracionGeneracionComponent implements OnInit {
   readonly FB = inject(FormBuilder);

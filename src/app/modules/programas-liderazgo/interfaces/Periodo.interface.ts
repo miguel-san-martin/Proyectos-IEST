@@ -23,6 +23,18 @@ export interface Programa {
   nombre: string;
 }
 
+export interface Estatus {
+  idEstatus: number;
+  Estatus: string;
+}
+
+export interface Pago {
+  idEstatus: number;
+  Estatus: string;
+}
+
+export interface Generaciones {}
+
 export interface AlumnoPrograma {
   idRegistro: number;
   idPerson: number;
