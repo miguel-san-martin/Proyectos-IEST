@@ -87,9 +87,9 @@ export class ProgramasLiderazgoComponent implements OnInit {
   ngOnInit(): void {
     this.poblarSelects();
     this.consultarAlumnos();
-    this.miFormulario.valueChanges.subscribe((value) => {
-      this.consultarAlumnos();
-    });
+    // this.miFormulario.valueChanges.subscribe((value) => {
+    //   this.consultarAlumnos();
+    // });
   }
 
   private poblarSelects() {
@@ -149,26 +149,24 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.Service.getGemeracion()
       .pipe(take(1))
       .subscribe({
-        next: (data) => console.log,
+        next: (data: Generaciones[]) => {
+          this.generaciones.set(data);
+        },
       });
   }
 
   protected consultarAlumnos() {
     // console.log(this.miFormulario.value);
-    const { idEstatus, pagado, idPrograma, idGeneracion, idPeriodo } = {
+    const payload = {
       ...this.miFormulario.value,
     };
 
-    this.Service.getListadoAlumnos({
-      idEstatus,
-      pagado,
-      idPrograma,
-      idGeneracion,
-      idPeriodo,
-    })
+    this.Service.getListadoAlumnos(payload)
       .pipe(take(1))
       .subscribe({
-        next: (data) => {},
+        next: (data) => {
+          this.alumnos.set(data);
+        },
         error: (error) => {
           console.log(error);
         },
@@ -227,4 +225,20 @@ export class ProgramasLiderazgoComponent implements OnInit {
   }
 
   // consultaAlumnos
+  mailTo() {
+    const checkedList = this.table.dataSource.data.filter(
+      (row) => row.selected == true,
+    );
+    const emails = checkedList.map((row) => row.correo);
+    const subject = 'Asunto del correo';
+    const body = 'Cuerpo del correo';
+    console.log(emails);
+    const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${emails.join(',')}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.open(
+      mailtoLink,
+      '_blank',
+      'width=800,height=600,scrollbars=yes,resizable=yes',
+    );
+  }
 }

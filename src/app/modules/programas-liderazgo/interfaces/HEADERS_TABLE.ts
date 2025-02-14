@@ -8,6 +8,7 @@ export const HEADERS_TABLE: HeaderTable[] = [
   {
     label: 'NOMBRE',
     namePropiedad: 'Nombre',
+    maxSpan: '0px',
   },
   {
     label: 'CARRERA',
@@ -20,9 +21,10 @@ export const HEADERS_TABLE: HeaderTable[] = [
   {
     label: 'CORREO',
     namePropiedad: 'correo',
+    maxSpan: '0px',
   },
   {
-    label: 'PAGO',
+    label: 'PAGADO',
     namePropiedad: 'statusPago',
   },
 ];

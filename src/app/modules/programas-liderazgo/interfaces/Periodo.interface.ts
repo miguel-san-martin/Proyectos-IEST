@@ -33,7 +33,10 @@ export interface Pago {
   Estatus: string;
 }
 
-export interface Generaciones {}
+export interface Generaciones {
+  generacionTexto: '3ra';
+  idGeneracion: 3;
+}
 
 export interface AlumnoPrograma {
   idRegistro: number;

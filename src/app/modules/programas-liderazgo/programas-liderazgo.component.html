@@ -1,4 +1,4 @@
-<div style="margin: -8px">
+<div style="margin: -8px;">
 
 <!--  TITULO-->
   <mat-toolbar color="primary" class="flex justify-between">
@@ -8,10 +8,10 @@
     </button>
   </mat-toolbar>
 
-  <div class="px-4" style="min-width: 910px">
+  <div class="px-16" style="min-width: 910px">
     <!--  FILTROS-->
-    <section class="selectores flex flex-col ">
-      <div class="flex w-full content-center">
+    <section class="selectores flex flex-col">
+      <div class="flex w-full content-center mt-8">
         <!--INGRESO-->
         <div>
           <mat-form-field>
@@ -57,46 +57,41 @@
             </mat-select>
           </mat-form-field>
 
-          <!--    FILTRO TIPO BAJA-->
-<!--          <mat-form-field>-->
-<!--            <mat-label> GENERACIÓN </mat-label>-->
-<!--            <mat-select [formControl]="miFormulario.controls.idGeneracion" disableRipple>-->
-<!--              <mat-option [value]="null">TODOS</mat-option>-->
-<!--              @for (estat of generaciones(); track estat) {-->
-<!--                <mat-option [value]="estat.">{{ estat.}}</mat-option>-->
-<!--              }-->
-<!--            </mat-select>-->
-<!--          </mat-form-field>-->
-
           <!--    FILTRO TIPO GENERACION-->
           <mat-form-field>
             <mat-label> GENERACIÓN </mat-label>
-            <mat-select  disableRipple>
+            <mat-select [formControl]="miFormulario.controls.idGeneracion"  disableRipple>
               <mat-option [value]="null">TODOS</mat-option>
-              <mat-option value="Baja Temporal">Baja Temporal</mat-option>
-              <mat-option value="Baja Definitiva">Baja Definitiva</mat-option>
-              <mat-option value="Terminacion de Programa">Terminacion de programa</mat-option>
+              @for (generacion of generaciones(); track $index) {
+                <mat-option [value]="generacion.idGeneracion">{{ generacion.generacionTexto}}</mat-option>
+              }
+
             </mat-select>
           </mat-form-field>
 
-          <!--    BUSQUEDA POR NOMBRE-->
-          <mat-form-field>
-            <mat-label>
-              <mat-icon>search</mat-icon>
-              Busqueda por nombre...
-            </mat-label>
-
-            <input matInput [(ngModel)]="filtersignal" placeholder="No. o Nombre" #input>
-          </mat-form-field>
 
 
-          <button mat-icon-button (click)="consultarAlumnos()">BUSCAR</button>
+          <button class="mx-4" mat-flat-button style="background-color: #f26818; color: white" (click)="consultarAlumnos()">BUSCAR</button>
+
+          <button class="mx-4" mat-flat-button style="background-color: #b87f5b; color: white" (click)="mailTo()">Enviar Mail</button>
+
+
 
         </div>
 
       </div>
 
+      <div class="flex w-full content-center mt-4 justify-end">
+        <!--    BUSQUEDA POR NOMBRE-->
+        <mat-form-field class="w-1/4">
+          <mat-label>
+            <mat-icon>search</mat-icon>
+            Busqueda por nombre
+          </mat-label>
 
+          <input matInput [(ngModel)]="filtersignal" placeholder="No. o Nombre" #input>
+        </mat-form-field>
+      </div>
 <!--      -->
     </section>
 
@@ -262,4 +257,5 @@
     </app-table-iest-v2>
 
   </div>
+
 </div>

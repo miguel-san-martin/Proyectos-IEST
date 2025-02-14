@@ -1,16 +1,17 @@
 export interface HeaderTable {
   label: string;
   namePropiedad: string;
+  maxSpan?: string;
   checklist?: string;
   currency?: string;
-  button?: Button[]
-  disable?: boolean
+  button?: Button[];
+  disable?: boolean;
 }
 
 export interface Button {
   label?: string;
   fun?: () => void;
-  menu?: Menu[]
+  menu?: Menu[];
 }
 
 export interface Menu {

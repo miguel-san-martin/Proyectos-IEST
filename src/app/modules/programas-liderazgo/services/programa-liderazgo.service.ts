@@ -71,7 +71,7 @@ export class LiderazgoService extends ServicioBase {
 
   getGemeracion(): Observable<any> {
     const parametros = {
-      accion: 'consultaGeneracion ',
+      accion: 'consultaGeneracion',
       servicio: 'vertice',
       tipoRespuesta: 'json',
     };

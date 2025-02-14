@@ -99,3 +99,9 @@ tr.example-element-row:not(.example-expanded-row):active {
     background-color: #d15050 !important;
   }
 }
+
+.cell-width{
+  max-width: 125px;
+  word-wrap: break-word;
+  display: inline-block;
+}

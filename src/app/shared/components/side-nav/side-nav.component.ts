@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
 

@@ -53,19 +53,22 @@ export class TableIestV2Component<T> {
   // @ts-ignore
   expandedElement: PeriodicElement | null;
 
-  readonly effectFilter = effect(() => {
-    if (this.dataSource)
-      this.dataSource.filter = this.filtering().trim().toLowerCase();
-    this.dataSource?.paginator?.firstPage();
-  });
+  // readonly effectFilter = effect(() => {
+  //   if (this.dataSource)
+  //     this.dataSource.filter = this.filtering().trim().toLowerCase();
+  //   console.log('el filter cambiaron');
+  //   this.dataSource?.paginator?.firstPage();
+  // });
 
-  protected dataSource!: MatTableDataSource<T>;
+  public dataSource!: MatTableDataSource<T>;
   readonly effectData = effect(() => {
-    console.log('P');
-    this.dataSource = new MatTableDataSource(this.data());
+    console.log('La data o el filter cambiaron');
+    // @ts-ignore
+    this.dataSource = new MatTableDataSource(this.enchanceData(this.data()));
     this.applyFilter(this.filtering());
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
     this.dataSource.sortingDataAccessor = (item: any, property: string) => {
       const map = new Map(
         this.tableHead().map((item: HeaderTable) => [
@@ -77,6 +80,7 @@ export class TableIestV2Component<T> {
       return item[head];
     };
   });
+  private selectedElements: any[] = [];
 
   public applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -88,6 +92,7 @@ export class TableIestV2Component<T> {
     this.tableHead().forEach((row: HeaderTable) => {
       headers.push(row.label);
     });
+    headers.push('selectionable');
     headers.push('expand');
     headers.push('menu');
     return headers;
@@ -103,5 +108,35 @@ export class TableIestV2Component<T> {
       return { 'border-left': '0.25rem solid #ccc' };
     }
     return { 'border-left': '0.25rem solid #7ff126' };
+  }
+
+  enchanceData(dataPreEnchanced: T[]) {
+    return dataPreEnchanced.map((row) => {
+      return {
+        ...row,
+        selected: false,
+      };
+    });
+  }
+
+  toggleSelection(obj: any) {
+    const index = this.dataSource.data.findIndex((row) => row === obj);
+
+    if (index !== -1) {
+      this.dataSource.data[index] = {
+        ...this.dataSource.data[index],
+        selected: !obj.selected,
+      };
+
+      this.dataSource._updateChangeSubscription();
+    }
+  }
+
+  toggleAll(evento: any) {
+    console.log(evento);
+    this.dataSource.data = this.dataSource.data.map((row: any) => {
+      return { ...row, selected: evento.checked };
+    });
+    this.dataSource._updateChangeSubscription();
   }
 }
