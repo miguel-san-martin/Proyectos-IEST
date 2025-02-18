@@ -62,7 +62,6 @@ export class TableIestV2Component<T> {
 
   public dataSource!: MatTableDataSource<T>;
   readonly effectData = effect(() => {
-    console.log('La data o el filter cambiaron');
     // @ts-ignore
     this.dataSource = new MatTableDataSource(this.enchanceData(this.data()));
     this.applyFilter(this.filtering());

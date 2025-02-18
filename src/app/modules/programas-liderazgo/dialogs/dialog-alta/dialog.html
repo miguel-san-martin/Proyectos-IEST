@@ -16,8 +16,11 @@
 
     <mat-form-field class="p-1">
       <mat-label>Generación</mat-label>
-      <input type="number" max="9" min="1" formControlName="idGeneracion" matInput required>
-      <mat-error>Numero de generación no valido.</mat-error>
+      <mat-select formControlName="idGeneracion">
+      @for (generacion of data['generaciones']; track $index) {
+        <mat-option [value]="generacion.idGeneracion">{{ generacion.generacionTexto }}</mat-option>
+      }
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field class="p-1" [floatLabel]="'always'">
@@ -50,8 +53,9 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
+
       <section class="">
-        <mat-checkbox formControlName="becaFleishman" (click)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
+        <mat-checkbox formControlName="becaFleishman" (change)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
       </section>
     </div>
     <div class="flex justify-center">

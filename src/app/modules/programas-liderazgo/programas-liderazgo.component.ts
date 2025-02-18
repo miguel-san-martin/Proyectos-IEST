@@ -3,7 +3,6 @@ import {
   ElementRef,
   inject,
   model,
-  ModelSignal,
   OnInit,
   signal,
   ViewChild,
@@ -38,6 +37,14 @@ export type tipo_baja =
   | 'eliminar'
   | 'deshacer-temporal';
 
+export interface datosApi {
+  periodos: Periodo[];
+  programas: Programa[];
+  pagos: Pago[];
+  estatus: Estatus[];
+  generaciones: Generaciones[];
+}
+
 @Component({
   selector: 'app-programas-liderazgo',
   standalone: true,
@@ -60,26 +67,25 @@ export class ProgramasLiderazgoComponent implements OnInit {
   @ViewChild('table') table!: TableIestV2Component<any>;
   @ViewChild('input') input!: ElementRef;
 
-  periodos = signal<Periodo[] | null>(null);
-  programas = signal<Programa[] | null>(null);
-  pagos = signal<Pago[] | null>(null);
-  estatus = signal<Estatus[] | null>(null);
-  generaciones = signal<Generaciones[] | null>(null);
+  datos = signal<datosApi>({
+    periodos: [],
+    programas: [],
+    pagos: [],
+    estatus: [],
+    generaciones: [],
+  });
 
   alumnos = signal<any>([]);
+  errorDeEmails = signal<string>('');
 
   filtersignal = model('');
-  filterPago: ModelSignal<string | null> = model<null | string>(null);
-  filterTipoBaja: ModelSignal<string | null> = model<null | string>(null);
-
-  public filter: string = '';
 
   protected miFormulario = this.fb.group({
-    idPeriodo: [null],
-    idPrograma: [null],
-    idEstatus: [null],
-    idGeneracion: [null],
-    pagado: [null],
+    idPeriodo: [-1],
+    idPrograma: [-1],
+    idEstatus: [-1],
+    idGeneracion: [-1],
+    pagado: [-1],
   });
 
   protected readonly HEADERS_TABLE = HEADERS_TABLE;
@@ -87,9 +93,6 @@ export class ProgramasLiderazgoComponent implements OnInit {
   ngOnInit(): void {
     this.poblarSelects();
     this.consultarAlumnos();
-    // this.miFormulario.valueChanges.subscribe((value) => {
-    //   this.consultarAlumnos();
-    // });
   }
 
   private poblarSelects() {
@@ -104,8 +107,10 @@ export class ProgramasLiderazgoComponent implements OnInit {
   // listadoProgramas
   private getProgramas() {
     this.Service.getIdProgramas().subscribe((data: Programa[]) => {
-      // console.log(data);
-      this.programas.set(data);
+      this.datos.update((old) => {
+        old.programas = [...data];
+        return old;
+      });
     });
   }
 
@@ -114,14 +119,11 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.Service.getPeriodos()
       .pipe(take(1))
       .subscribe({
-        next: (periodos: any) => {
-          console.log(periodos);
-
-          // periodos.forEach((periodo: any) => {
-          //   if (periodo.actual == 1)
-          //     this.miFormulario.get('idPeriodo')?.setValue(periodo.idPeriodo);
-          // });
-          this.periodos.set(periodos);
+        next: (data: Periodo[]) => {
+          this.datos.update((old) => {
+            old.periodos = [...data];
+            return old;
+          });
         },
       });
   }
@@ -131,7 +133,13 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.Service.getPagos()
       .pipe(take(1))
       .subscribe({
-        next: (data) => this.pagos.set(data),
+        next: (data) => {
+          // this.pagos.set(data);
+          this.datos.update((old) => {
+            old.pagos = [...data];
+            return old;
+          });
+        },
       });
   }
 
@@ -140,7 +148,13 @@ export class ProgramasLiderazgoComponent implements OnInit {
     this.Service.getEstatus()
       .pipe(take(1))
       .subscribe({
-        next: (data) => this.estatus.set(data),
+        next: (data) => {
+          // this.estatus.set(data);
+          this.datos.update((old) => {
+            old.estatus = [...data];
+            return old;
+          });
+        },
       });
   }
 
@@ -150,16 +164,29 @@ export class ProgramasLiderazgoComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (data: Generaciones[]) => {
-          this.generaciones.set(data);
+          // this.generaciones.set(data);
+          this.datos.update((old) => {
+            old.generaciones = [...data];
+            return old;
+          });
         },
       });
   }
 
   protected consultarAlumnos() {
+    console.log(this.datos());
     // console.log(this.miFormulario.value);
-    const payload = {
+    let { idPeriodo, idPrograma, idGeneracion, idEstatus, pagado } = {
       ...this.miFormulario.value,
     };
+
+    if (idPeriodo && idPeriodo < 0) idPeriodo = null;
+    if (idPrograma && idPrograma < 0) idPrograma = null;
+    if (idGeneracion && idGeneracion < 0) idGeneracion = null;
+    if (idEstatus && idEstatus < 0) idEstatus = null;
+    if (pagado && pagado < 0) pagado = null;
+
+    const payload = { idPeriodo, idPrograma, idGeneracion, idEstatus, pagado };
 
     this.Service.getListadoAlumnos(payload)
       .pipe(take(1))
@@ -175,7 +202,11 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   protected addNuevoIngreso() {
     const dialogRef = this.dialog.open(DialogComponent, {
-      data: { programas: this.programas(), periodos: this.periodos() },
+      data: {
+        programas: this.datos().programas,
+        periodos: this.datos().periodos,
+        generaciones: this.datos().generaciones,
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {});
@@ -211,7 +242,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
       }
 
       Service.pipe(take(1)).subscribe({
-        next: (info: any) => {
+        next: (info: unknown) => {
           console.log(info);
           const dialogRef = this.dialog.open(DialogInfoComponent, {
             data: { info: info },
@@ -234,6 +265,11 @@ export class ProgramasLiderazgoComponent implements OnInit {
     const body = 'Cuerpo del correo';
     console.log(emails);
     const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${emails.join(',')}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    if (emails.length > 299)
+      return this.errorDeEmails.set('El limite de correos es 300');
+
+    this.errorDeEmails.set('');
 
     window.open(
       mailtoLink,
