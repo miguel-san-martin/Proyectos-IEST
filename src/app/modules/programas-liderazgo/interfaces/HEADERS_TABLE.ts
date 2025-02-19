@@ -19,12 +19,16 @@ export const HEADERS_TABLE: HeaderTable[] = [
     namePropiedad: 'generacion',
   },
   {
-    label: 'CORREO',
-    namePropiedad: 'correo',
+    label: 'PERIODO',
+    namePropiedad: 'semestreInicio',
     maxSpan: '0px',
   },
   {
     label: 'PAGADO',
     namePropiedad: 'statusPago',
+  },
+  {
+    label: 'PROGRAMA',
+    namePropiedad: 'programa',
   },
 ];

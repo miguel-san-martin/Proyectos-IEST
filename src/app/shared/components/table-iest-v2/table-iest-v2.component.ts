@@ -88,10 +88,11 @@ export class TableIestV2Component<T> {
   get displayedColums(): string[] {
     if (!this.tableHead()) return [];
     const headers: string[] = [];
+    headers.push('selectionable');
     this.tableHead().forEach((row: HeaderTable) => {
       headers.push(row.label);
     });
-    headers.push('selectionable');
+
     headers.push('expand');
     headers.push('menu');
     return headers;

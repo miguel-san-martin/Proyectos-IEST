@@ -3,7 +3,6 @@ import {
   ElementRef,
   inject,
   model,
-  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -29,13 +28,15 @@ import { TableIestV2Component } from '@shared/components/table-iest-v2/table-ies
 import { CommonModule } from '@angular/common';
 import { DialogBajaComponent } from './dialogs/dialog-baja/dialog.component';
 import { DialogInfoComponent } from './dialogs/dialog-info/dialog.component';
+import { GenDialogComponent } from './dialogs/dialog-alta-gen/dialog.component';
 
 export type tipo_baja =
   | 'temporal'
   | 'definitiva'
   | 'termino-programa'
   | 'eliminar'
-  | 'deshacer-temporal';
+  | 'deshacer-temporal'
+  | 'completar-gen';
 
 export interface datosApi {
   periodos: Periodo[];
@@ -59,7 +60,7 @@ export interface datosApi {
   templateUrl: './programas-liderazgo.component.html',
   styleUrl: './programas-liderazgo.component.scss',
 })
-export class ProgramasLiderazgoComponent implements OnInit {
+export class ProgramasLiderazgoComponent {
   readonly Service = inject(LiderazgoService);
   readonly dialog = inject(MatDialog);
   readonly fb = inject(FormBuilder);
@@ -90,7 +91,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   protected readonly HEADERS_TABLE = HEADERS_TABLE;
 
-  ngOnInit(): void {
+  private ngOnInit(): void {
     this.poblarSelects();
     this.consultarAlumnos();
   }
@@ -201,10 +202,13 @@ export class ProgramasLiderazgoComponent implements OnInit {
   }
 
   protected addNuevoIngreso() {
+    const elementoActual: Periodo | undefined = this.datos().periodos.find(
+      (periodo: Periodo) => periodo.actual == 1,
+    );
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         programas: this.datos().programas,
-        periodos: this.datos().periodos,
+        periodos: [elementoActual],
         generaciones: this.datos().generaciones,
       },
     });
@@ -214,12 +218,20 @@ export class ProgramasLiderazgoComponent implements OnInit {
 
   protected bajaAlumno(accion: tipo_baja, idRegistro: number) {
     let Service;
+    let dialogRef;
 
-    const dialogRef = this.dialog.open(DialogBajaComponent, {
-      data: { accion },
-    });
+    if (accion != 'completar-gen') {
+      dialogRef = this.dialog.open(DialogBajaComponent, {
+        data: { accion, periodoActual: this.datos() },
+      });
+    } else {
+      dialogRef = this.dialog.open(GenDialogComponent, {
+        data: { accion, generaciones: this.datos().generaciones },
+      });
+    }
+
     //Dialogo de registro
-    dialogRef.afterClosed().subscribe((motivoBaja) => {
+    dialogRef.afterClosed().subscribe((motivoBaja: string) => {
       if (motivoBaja === undefined) return;
       switch (accion) {
         case 'termino-programa':
@@ -236,6 +248,12 @@ export class ProgramasLiderazgoComponent implements OnInit {
           break;
         case 'deshacer-temporal':
           Service = this.Service.deshacerTemporal({ idRegistro, motivoBaja });
+          break;
+        case 'completar-gen':
+          Service = this.Service.setGeneracion({
+            idRegistro,
+            idGeneracion: Number(motivoBaja),
+          });
           break;
         default:
           throw new Error('No se encontraron el programa');
@@ -266,8 +284,19 @@ export class ProgramasLiderazgoComponent implements OnInit {
     console.log(emails);
     const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${emails.join(',')}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    if (emails.length > 299)
-      return this.errorDeEmails.set('El limite de correos es 300');
+    if (emails.length > 299) {
+      this.dialog.open(DialogInfoComponent, {
+        data: {
+          info: [
+            {
+              mensaje:
+                'Solo se puede seleccionar un máximo de 300 alumnos, por favor use un filtro mayor para limitar la cantidad.',
+            },
+          ],
+        },
+      });
+      return;
+    }
 
     this.errorDeEmails.set('');
 

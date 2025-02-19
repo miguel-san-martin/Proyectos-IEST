@@ -1,11 +1,4 @@
-import {
-  Component,
-  inject,
-  model,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, model, signal, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../../../shared-material-module/material.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LiderazgoService } from '../../services/programa-liderazgo.service';
@@ -38,37 +31,23 @@ export interface DialogData {
   imports: [MaterialModule, ReactiveFormsModule, SharedModule],
   standalone: true,
 })
-export class DialogComponent implements OnInit {
+export class GenDialogComponent {
   @ViewChild('autocomplete') autocomplete:
     | ShrdAutocompleteComponent
     | undefined;
 
-  readonly dialogRef = inject(MatDialogRef<DialogComponent>);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<GenDialogComponent>);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
   readonly Service = inject(LiderazgoService);
   readonly fb = inject(FormBuilder);
 
   public myForm: FormGroup = this.fb.group({
-    idPersonAlumno: ['', [Validators.required]],
-    idAlumnoRegistro: ['', [Validators.required]],
-    idPeriodo: [
-      { value: this.data.periodos[0].idPeriodo, disabled: true },
-      [Validators.required],
-    ],
-    idPrograma: [1, [Validators.required]],
-    idGeneracion: [3, [Validators.required]],
-    fechaVencimiento: [
-      Date(),
-      [Validators.required, fechaMayorActualValidator()],
-    ],
-    becaFleishman: [false],
+    idGeneracion: [this.data.generacion.idGeneracion],
   });
 
   beca = model();
   errorAutocomplete = signal<senalError | null>(null);
   errorMensaje = signal<string>('');
-
-  ngOnInit(): void {}
 
   get becaFleishman() {
     return this.myForm.get('becaFleshman');

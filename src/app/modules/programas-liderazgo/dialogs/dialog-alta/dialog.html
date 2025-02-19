@@ -4,64 +4,67 @@
 <mat-dialog-content>
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
 
-    <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)"
-                           keyTitle="nombre" [error]="errorAutocomplete()">
-      <ng-template appBodyTemplate let-element>
-        <button mat-stroked-button> {{ element.idperson }}</button>
-        <span class="px-2">{{ element.nombre }}</span>
-      </ng-template>
-    </app-shrd-autocomplete>
+
+      <app-shrd-autocomplete [service]="Service.buscarAlumno.bind(this.Service)" (outputItem)="autoComplete($event)"
+                             keyTitle="nombre" [error]="errorAutocomplete()">
+        <ng-template appBodyTemplate let-element>
+          <button mat-stroked-button> {{ element.idperson }}</button>
+          <span class="px-2">{{ element.nombre }}</span>
+        </ng-template>
+      </app-shrd-autocomplete>
 
 
 
-    <mat-form-field class="p-1">
-      <mat-label>Generación</mat-label>
-      <mat-select formControlName="idGeneracion">
-      @for (generacion of data['generaciones']; track $index) {
-        <mat-option [value]="generacion.idGeneracion">{{ generacion.generacionTexto }}</mat-option>
-      }
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="p-1" [floatLabel]="'always'">
-      <mat-label>Periodo</mat-label>
-      <mat-select formControlName="idPeriodo">
-        @for (periodo of data['periodos']; track $index) {
-          <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
-        }
-      </mat-select>
-
-
-
-    </mat-form-field>
-
-    <mat-form-field class="p-1">
-      <mat-label>Programa</mat-label>
-      <mat-select formControlName="idPrograma">
-        @for (programa of data['programas']; track $index) {
-          <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-
-    <div>
-      <mat-form-field [floatLabel]="'always'">
-        <mat-label>Fecha Limite de Pago</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+      <mat-form-field class="p-1">
+        <mat-label>Generación</mat-label>
+        <mat-select formControlName="idGeneracion" >
+          @for (generacion of data['generaciones']; track $index) {
+            <mat-option [value]="generacion.idGeneracion">{{ generacion.generacionTexto }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
 
+      <mat-form-field class="p-1" [floatLabel]="'always'">
+        <mat-label>Periodo</mat-label>
+        <mat-select formControlName="idPeriodo">
+          @for (periodo of data['periodos']; track $index) {
+            <mat-option [value]="periodo.idPeriodo">{{ periodo.abrPeriodo }}</mat-option>
+          }
+        </mat-select>
 
-      <section class="">
-        <mat-checkbox formControlName="becaFleishman" (change)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
-      </section>
-    </div>
-    <div class="flex justify-center">
-    <mat-error style="color: red !important;font-family: 'Roboto', serif;">{{errorMensaje()}}</mat-error>
 
-    </div>
+
+      </mat-form-field>
+
+      <mat-form-field class="p-1">
+        <mat-label>Programa</mat-label>
+        <mat-select formControlName="idPrograma">
+          @for (programa of data['programas']; track $index) {
+            <mat-option [value]="programa.idPrograma">{{ programa.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        <mat-form-field [floatLabel]="'always'">
+          <mat-label>Fecha Limite de Pago</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="fechaVencimiento">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+
+        <section class="">
+          <mat-checkbox formControlName="becaFleishman" (change)="toggleLimit()" style="background-color: white!important; color: #3f3f3f!important;">Beca Fleshman</mat-checkbox>
+        </section>
+      </div>
+      <div class="flex justify-center">
+        <mat-error style="color: red !important;font-family: 'Roboto', serif;">{{errorMensaje()}}</mat-error>
+
+      </div>
+
+
 
   </form>
 

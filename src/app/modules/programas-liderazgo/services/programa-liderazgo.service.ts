@@ -23,6 +23,11 @@ interface bajaConMotivo {
   motivoBaja?: string;
 }
 
+interface actualizarGeneracion {
+  idRegistro: number;
+  idGeneracion: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -98,6 +103,18 @@ export class LiderazgoService extends ServicioBase {
     const parametros = {
       servicio: 'vertice',
       accion: 'registroAlumnosAlta',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta(
+      { ...parametros, ...data },
+      '/api/escolares/escolares.php',
+    );
+  }
+
+  setGeneracion(data: actualizarGeneracion): Observable<any> {
+    const parametros = {
+      servicio: 'vertice',
+      accion: 'VER_RegistroAlumnosAceptados_ActualizaGeneracion',
       tipoRespuesta: 'json',
     };
     return this.consulta(
