@@ -92,21 +92,30 @@ export class DialogComponent implements OnInit {
 
   darDeAlta() {
     this.validarFormulario();
-
     if (this.myForm.invalid) return;
 
+    const tieneBeca = this.myForm.value.becaFleishman;
     const payload = {
       ...this.myForm.value,
-      fechaVencimiento: this.fechaLimite?.value?.toISOString(),
+      idPeriodo: this.data.periodos[0].idPeriodo,
+      fechaVencimiento: tieneBeca
+        ? null
+        : this.fechaLimite?.value?.toISOString(),
     };
-    this.Service.altaAlumno(payload).subscribe((data) => {
-      // console.log(data[0].error);
-      if (data[0].error == 1) {
-        this.errorMensaje.set('¡ERROR!: ' + data[0].mensaje);
-      }
-      if (data[0].error == 0) {
-        this.dialogRef.close();
-      }
+
+    console.log(payload);
+    this.Service.altaAlumno(payload).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        if (data[0].error == 0) {
+          this.dialogRef.close(0);
+        } else {
+          this.errorMensaje.set('¡ERROR!: ' + data[0].mensaje);
+        }
+      },
+      error: (error: any) => {
+        this.errorMensaje.set('¡ERROR!: ' + JSON.stringify(error));
+      },
     });
   }
 
@@ -123,10 +132,13 @@ export class DialogComponent implements OnInit {
       });
     }
 
-    if (!this.myForm.value.becaFleishman) {
+    const tieneBeca = this.myForm.value.becaFleishman;
+    if (!tieneBeca) {
       this.myForm.get('fechaVencimiento')?.hasError('fechaMayorActual')
         ? this.errorMensaje.set('Error fecha de vencimiento invalida')
         : this.errorMensaje.set('');
+    } else {
+      this.myForm.removeControl('fechaVencimiento');
     }
   }
 
@@ -141,12 +153,4 @@ export class DialogComponent implements OnInit {
       this.myForm.get('fechaVencimiento')?.setValidators(null);
     }
   }
-}
-
-export interface AlumnoBusqueda {
-  idalumno: string;
-  idperson: string;
-  carrera: string;
-  login: string;
-  nombre: string;
 }

@@ -11,7 +11,7 @@ import { MaterialModule } from '../../shared-material-module/material.module';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '@shared/shared.module';
-import { take } from 'rxjs';
+import { forkJoin, take } from 'rxjs';
 import {
   Estatus,
   Generaciones,
@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
 import { DialogBajaComponent } from './dialogs/dialog-baja/dialog.component';
 import { DialogInfoComponent } from './dialogs/dialog-info/dialog.component';
 import { GenDialogComponent } from './dialogs/dialog-alta-gen/dialog.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 export type tipo_baja =
   | 'temporal'
@@ -64,6 +65,7 @@ export class ProgramasLiderazgoComponent {
   readonly Service = inject(LiderazgoService);
   readonly dialog = inject(MatDialog);
   readonly fb = inject(FormBuilder);
+  readonly snackBar = inject(MatSnackBar);
 
   @ViewChild('table') table!: TableIestV2Component<any>;
   @ViewChild('input') input!: ElementRef;
@@ -97,12 +99,26 @@ export class ProgramasLiderazgoComponent {
   }
 
   private poblarSelects() {
-    this.getPeriodos();
-    this.getGeneraciones();
-    this.getEstatus();
-    this.getPeriodos();
-    this.getTiposPagos();
-    this.getProgramas();
+    const peticiones = [
+      this.Service.getGeneracion(),
+      this.Service.getPeriodos(),
+      this.Service.getEstatus(),
+      this.Service.getPagos(),
+      this.Service.getIdProgramas(),
+    ];
+
+    forkJoin(peticiones).subscribe(
+      ([generaciones, periodos, estatus, pagos, programas]) => {
+        console.log(generaciones, periodos, estatus, pagos, programas);
+        this.datos.set({
+          periodos,
+          generaciones,
+          estatus,
+          pagos,
+          programas,
+        });
+      },
+    );
   }
 
   // listadoProgramas
@@ -161,7 +177,7 @@ export class ProgramasLiderazgoComponent {
 
   // consultaGeneracion
   private getGeneraciones() {
-    this.Service.getGemeracion()
+    this.Service.getGeneracion()
       .pipe(take(1))
       .subscribe({
         next: (data: Generaciones[]) => {
@@ -213,7 +229,13 @@ export class ProgramasLiderazgoComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(() => {});
+    dialogRef.afterClosed().subscribe((exit) => {
+      if (exit == 0) {
+        this.openSnackBar('Alumno dado de alta', 'Ok');
+      } else {
+        this.openSnackBar('Error', 'Cerrar');
+      }
+    });
   }
 
   protected bajaAlumno(accion: tipo_baja, idRegistro: number) {
@@ -272,9 +294,8 @@ export class ProgramasLiderazgoComponent {
       });
     });
   }
-
   // consultaAlumnos
-  mailTo() {
+  protected mailTo() {
     const checkedList = this.table.dataSource.data.filter(
       (row) => row.selected == true,
     );
@@ -305,5 +326,12 @@ export class ProgramasLiderazgoComponent {
       '_blank',
       'width=800,height=600,scrollbars=yes,resizable=yes',
     );
+  }
+
+  protected openSnackBar(message: string, action: string) {
+    const config: MatSnackBarConfig = {
+      duration: 3000,
+    };
+    this.snackBar.open(message, action, config);
   }
 }

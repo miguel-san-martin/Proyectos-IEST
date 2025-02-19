@@ -74,7 +74,7 @@ export class LiderazgoService extends ServicioBase {
     return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
   }
 
-  getGemeracion(): Observable<any> {
+  getGeneracion(): Observable<any> {
     const parametros = {
       accion: 'consultaGeneracion',
       servicio: 'vertice',

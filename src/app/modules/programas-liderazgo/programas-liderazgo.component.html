@@ -86,8 +86,16 @@
     <mat-card-content>
       <div class="flex w-full content-center mt-4 justify-end">
         <div class="flex flex-row flex-1 gap-1">
+
+<!--          <mat-chip-set aria-label="Fish selection">-->
+<!--            @for (estatu of datos().estatus; track estatu){-->
+<!--              <mat-chip style="background-color: #f26818; color: #3f3f3f!important;" >{{estatu.Estatus}}</mat-chip>-->
+<!--            }-->
+<!--          </mat-chip-set>-->
+
           @for (estatu of datos().estatus; track estatu){
             <span class="flex items-center f-bold px-2"><mat-icon style="color: #7eef26">trip_origin</mat-icon> {{estatu.Estatus}} </span>
+
           }
 
         </div>
