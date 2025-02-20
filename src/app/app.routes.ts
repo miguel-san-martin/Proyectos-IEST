@@ -99,6 +99,11 @@ export const routes: Routes = [
       ).then((c) => c.LayoutComponent),
   },
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'programas-liderazgo',
+  },
+  {
     path: 'programas-liderazgo',
     loadComponent: () =>
       import(

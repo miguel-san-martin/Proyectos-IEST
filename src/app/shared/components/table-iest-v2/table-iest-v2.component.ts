@@ -100,7 +100,6 @@ export class TableIestV2Component<T> {
   }
 
   getColor(element: any) {
-    console.log(element.estatus);
     let color;
     if (this.colorMap().get(element.estatus)) {
       color = this.colorMap().get(element.estatus);
@@ -128,7 +127,6 @@ export class TableIestV2Component<T> {
         ...this.dataSource.data[index],
         selected: !obj.selected,
       };
-
       this.dataSource._updateChangeSubscription();
     }
   }
