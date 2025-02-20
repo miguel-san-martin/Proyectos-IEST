@@ -6,6 +6,7 @@ export interface Programa {
 export interface Estatus {
   idEstatus: number;
   Estatus: string;
+  color: number;
 }
 
 export interface Pago {

@@ -3,6 +3,7 @@ import {
   ElementRef,
   inject,
   model,
+  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -30,6 +31,7 @@ import { DialogBajaComponent } from './dialogs/dialog-baja/dialog.component';
 import { DialogInfoComponent } from './dialogs/dialog-info/dialog.component';
 import { GenDialogComponent } from './dialogs/dialog-alta-gen/dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { PROGRAMASLIDERASGO_Alumno } from './interfaces/Alumno';
 
 export type tipo_baja =
   | 'temporal'
@@ -61,7 +63,7 @@ export interface datosApi {
   templateUrl: './programas-liderazgo.component.html',
   styleUrl: './programas-liderazgo.component.scss',
 })
-export class ProgramasLiderazgoComponent {
+export class ProgramasLiderazgoComponent implements OnInit {
   readonly Service = inject(LiderazgoService);
   readonly dialog = inject(MatDialog);
   readonly fb = inject(FormBuilder);
@@ -78,9 +80,8 @@ export class ProgramasLiderazgoComponent {
     generaciones: [],
   });
 
-  alumnos = signal<any>([]);
-  errorDeEmails = signal<string>('');
-
+  colorMapping = new Map<string, number>();
+  alumnos = signal<PROGRAMASLIDERASGO_Alumno[]>([]);
   filtersignal = model('');
 
   protected miFormulario = this.fb.group({
@@ -93,23 +94,22 @@ export class ProgramasLiderazgoComponent {
 
   protected readonly HEADERS_TABLE = HEADERS_TABLE;
 
-  private ngOnInit(): void {
-    this.poblarSelects();
+  ngOnInit(): void {
+    this.getApiData();
     this.consultarAlumnos();
   }
 
-  private poblarSelects() {
-    const peticiones = [
+  private getApiData() {
+    const requests = [
       this.Service.getGeneracion(),
       this.Service.getPeriodos(),
       this.Service.getEstatus(),
       this.Service.getPagos(),
       this.Service.getIdProgramas(),
     ];
-
-    forkJoin(peticiones).subscribe(
+    forkJoin(requests).subscribe(
       ([generaciones, periodos, estatus, pagos, programas]) => {
-        console.log(generaciones, periodos, estatus, pagos, programas);
+        console.debug(generaciones, periodos, estatus, pagos, programas);
         this.datos.set({
           periodos,
           generaciones,
@@ -117,93 +117,30 @@ export class ProgramasLiderazgoComponent {
           pagos,
           programas,
         });
+        estatus.forEach((e: Estatus) => {
+          this.colorMapping.set(e.Estatus, e.color);
+        });
       },
     );
   }
 
-  // listadoProgramas
-  private getProgramas() {
-    this.Service.getIdProgramas().subscribe((data: Programa[]) => {
-      this.datos.update((old) => {
-        old.programas = [...data];
-        return old;
-      });
-    });
-  }
-
-  // consultaPeriodos
-  private getPeriodos() {
-    this.Service.getPeriodos()
-      .pipe(take(1))
-      .subscribe({
-        next: (data: Periodo[]) => {
-          this.datos.update((old) => {
-            old.periodos = [...data];
-            return old;
-          });
-        },
-      });
-  }
-
-  // consultaPagos
-  private getTiposPagos() {
-    this.Service.getPagos()
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          // this.pagos.set(data);
-          this.datos.update((old) => {
-            old.pagos = [...data];
-            return old;
-          });
-        },
-      });
-  }
-
-  // consultaEstatus
-  private getEstatus() {
-    this.Service.getEstatus()
-      .pipe(take(1))
-      .subscribe({
-        next: (data) => {
-          // this.estatus.set(data);
-          this.datos.update((old) => {
-            old.estatus = [...data];
-            return old;
-          });
-        },
-      });
-  }
-
-  // consultaGeneracion
-  private getGeneraciones() {
-    this.Service.getGeneracion()
-      .pipe(take(1))
-      .subscribe({
-        next: (data: Generaciones[]) => {
-          // this.generaciones.set(data);
-          this.datos.update((old) => {
-            old.generaciones = [...data];
-            return old;
-          });
-        },
-      });
-  }
-
   protected consultarAlumnos() {
-    console.log(this.datos());
-    // console.log(this.miFormulario.value);
-    let { idPeriodo, idPrograma, idGeneracion, idEstatus, pagado } = {
+    console.debug(this.datos());
+
+    const { idPeriodo, idPrograma, idGeneracion, idEstatus, pagado } = {
       ...this.miFormulario.value,
     };
+    // Función auxiliar para convertir valores negativos a null
+    const convertNegativeToNull = (value: number | null | undefined) =>
+      value && value < 0 ? null : value;
 
-    if (idPeriodo && idPeriodo < 0) idPeriodo = null;
-    if (idPrograma && idPrograma < 0) idPrograma = null;
-    if (idGeneracion && idGeneracion < 0) idGeneracion = null;
-    if (idEstatus && idEstatus < 0) idEstatus = null;
-    if (pagado && pagado < 0) pagado = null;
-
-    const payload = { idPeriodo, idPrograma, idGeneracion, idEstatus, pagado };
+    const payload = {
+      idPeriodo: convertNegativeToNull(idPeriodo),
+      idPrograma: convertNegativeToNull(idPrograma),
+      idGeneracion: convertNegativeToNull(idGeneracion),
+      idEstatus: convertNegativeToNull(idEstatus),
+      pagado: convertNegativeToNull(pagado),
+    };
 
     this.Service.getListadoAlumnos(payload)
       .pipe(take(1))
@@ -217,7 +154,7 @@ export class ProgramasLiderazgoComponent {
       });
   }
 
-  protected addNuevoIngreso() {
+  protected altaAlumno() {
     const elementoActual: Periodo | undefined = this.datos().periodos.find(
       (periodo: Periodo) => periodo.actual == 1,
     );
@@ -232,30 +169,27 @@ export class ProgramasLiderazgoComponent {
     dialogRef.afterClosed().subscribe((exit) => {
       if (exit == 0) {
         this.openSnackBar('Alumno dado de alta', 'Ok');
-      } else {
-        this.openSnackBar('Error', 'Cerrar');
       }
     });
   }
 
-  protected bajaAlumno(accion: tipo_baja, idRegistro: number) {
+  protected bajaAlumno(tipoDeBaja: tipo_baja, idRegistro: number) {
     let Service;
     let dialogRef;
 
-    if (accion != 'completar-gen') {
+    if (tipoDeBaja != 'completar-gen') {
       dialogRef = this.dialog.open(DialogBajaComponent, {
-        data: { accion, periodoActual: this.datos() },
+        data: { accion: tipoDeBaja, periodoActual: this.datos() },
       });
     } else {
       dialogRef = this.dialog.open(GenDialogComponent, {
-        data: { accion, generaciones: this.datos().generaciones },
+        data: { accion: tipoDeBaja, generaciones: this.datos().generaciones },
       });
     }
-
     //Dialogo de registro
     dialogRef.afterClosed().subscribe((motivoBaja: string) => {
       if (motivoBaja === undefined) return;
-      switch (accion) {
+      switch (tipoDeBaja) {
         case 'termino-programa':
           Service = this.Service.terminoDelPrograma({ idRegistro });
           break;
@@ -295,7 +229,7 @@ export class ProgramasLiderazgoComponent {
     });
   }
   // consultaAlumnos
-  protected mailTo() {
+  protected mandarCorreo() {
     const checkedList = this.table.dataSource.data.filter(
       (row) => row.selected == true,
     );
@@ -311,16 +245,14 @@ export class ProgramasLiderazgoComponent {
           info: [
             {
               mensaje:
-                'Solo se puede seleccionar un máximo de 300 alumnos, por favor use un filtro mayor para limitar la cantidad.',
+                'Solo se puede seleccionar un máximo de 300 alumnos, por favor use un ' +
+                'filtro mayor para limitar la cantidad.',
             },
           ],
         },
       });
       return;
     }
-
-    this.errorDeEmails.set('');
-
     window.open(
       mailtoLink,
       '_blank',

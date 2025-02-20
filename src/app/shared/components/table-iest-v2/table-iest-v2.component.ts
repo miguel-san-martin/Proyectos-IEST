@@ -41,6 +41,7 @@ export class TableIestV2Component<T> {
     input.required<HeaderTable[]>();
   readonly data: InputSignal<T[]> = input.required<T[]>();
   readonly filtering: InputSignal<string> = input<string>('');
+  readonly colorMap = input(new Map<string, any>());
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -99,15 +100,15 @@ export class TableIestV2Component<T> {
   }
 
   getColor(element: any) {
-    const { fechaTermino, fechaBaja, fechaBajaTem } = element;
-    if (fechaBaja) {
-      return { 'border-left': '0.25rem solid #f5174f' };
-    } else if (fechaBajaTem) {
-      return { 'border-left': '0.25rem solid #84f0fd' };
-    } else if (fechaTermino) {
-      return { 'border-left': '0.25rem solid #ccc' };
+    console.log(element.estatus);
+    let color;
+    if (this.colorMap().get(element.estatus)) {
+      color = this.colorMap().get(element.estatus);
+      return { 'border-left': '0.25rem solid #' + color };
+    } else {
+      console.error('No hay relaccion' + element.estatus);
+      return {};
     }
-    return { 'border-left': '0.25rem solid #7ff126' };
   }
 
   enchanceData(dataPreEnchanced: T[]) {

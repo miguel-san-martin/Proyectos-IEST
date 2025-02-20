@@ -3,8 +3,6 @@
 
 <mat-dialog-content>
   <form [formGroup]="myForm" (ngSubmit)="onSave()" autocomplete="off">
-
-
       <mat-form-field class="p-1">
         <mat-label>Generación</mat-label>
         <mat-select formControlName="idGeneracion">
@@ -13,12 +11,10 @@
           }
         </mat-select>
       </mat-form-field>
-
-
   </form>
 
 </mat-dialog-content>
 <mat-dialog-actions [align]="'center'">
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button style="background-color: rgba(255,255,255,0.91)" (click)="darDeAlta()" cdkFocusInitial>Añadir</button>
+  <button mat-button style="background-color: rgba(255,255,255,0.91)" (click)="onNoClick(myForm.value?.idGeneracion)" cdkFocusInitial>Actualizar</button>
 </mat-dialog-actions>
