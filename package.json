@@ -26,6 +26,7 @@
     "iest-theme-material": "github:CSI-SIE/iest-theme-material",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "twelvedata": "^3.0.1",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {

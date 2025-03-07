@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { accesoEscolarConfGuard } from './guard/acceso-escolar-conf.guard';
+import { programaLiderasgoGuard } from './modules/programas-liderazgo/guard/liderasgo.guard';
 
 export const routes: Routes = [
   {
@@ -39,7 +39,7 @@ export const routes: Routes = [
       import(
         './modules/admin-config-configuracion/page-config/page-config.component'
       ).then((c) => c.PageConfigComponent),
-    canActivate: [accesoEscolarConfGuard],
+    //canActivate: [accesoEscolarConfGuard],
   },
   {
     path: 'esp-bachiller',
@@ -105,6 +105,7 @@ export const routes: Routes = [
   },
   {
     path: 'programas-liderazgo',
+    canActivate: [programaLiderasgoGuard],
     loadComponent: () =>
       import(
         './modules/programas-liderazgo/programas-liderazgo.component'

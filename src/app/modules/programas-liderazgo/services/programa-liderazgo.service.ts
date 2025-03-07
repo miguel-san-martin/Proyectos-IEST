@@ -28,12 +28,26 @@ interface actualizarGeneracion {
   idGeneracion: number;
 }
 
+export interface Permiso {
+  error: string;
+  mensaje: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class LiderazgoService extends ServicioBase {
   constructor() {
     super();
+  }
+
+  controlAcceso(): Observable<Permiso[]> {
+    const parametros = {
+      servicio: 'vertice',
+      accion: 'USR_PermisoConsultaAngular',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros }, '/api/escolares/escolares.php');
   }
 
   // CATALOGOS
