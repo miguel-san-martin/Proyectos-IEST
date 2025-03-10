@@ -41,6 +41,7 @@ export class LiderazgoService extends ServicioBase {
     super();
   }
 
+  // API Para seguridad del módulo.
   controlAcceso(): Observable<Permiso[]> {
     const parametros = {
       servicio: 'vertice',
@@ -125,6 +126,9 @@ export class LiderazgoService extends ServicioBase {
     );
   }
 
+  /**
+   * Establece una generation usado para los que no tienen una generacion.
+   */
   setGeneracion(data: actualizarGeneracion): Observable<any> {
     const parametros = {
       servicio: 'vertice',
