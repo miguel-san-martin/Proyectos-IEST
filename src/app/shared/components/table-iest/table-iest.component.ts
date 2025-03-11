@@ -25,14 +25,14 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     .mat-mdc-header-cell {
-      background-color: #27272a !important;
+      //background-color: #27272a !important;
     }
 
     .mat-sort-header-container {
       place-content: center;
-      color: white !important;
+      //color: white !important;
       font-family: 'Saira', sans-serif;
-      font-weight: normal !important;
+      font-weight: bold !important;
     }
 
     .mat-mdc-raised-button > .mat-icon {
@@ -60,6 +60,8 @@ export class TableIESTComponent<T> {
     input.required<HeaderTable[]>();
   readonly data: InputSignal<T[]> = input.required<T[]>();
   public filtering: InputSignal<string> = input<string>('');
+
+  public pages: InputSignal<any> = input([10, 20, 100]);
 
   //! SECCION PARA FUNCIONALIDAD DE SELECT ROW
   readonly selectionableOutpu = output();

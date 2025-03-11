@@ -101,7 +101,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'programas-liderazgo',
+    redirectTo: 'REP_BuscaIdPerson',
   },
   {
     path: 'programas-liderazgo',
@@ -110,5 +110,13 @@ export const routes: Routes = [
       import(
         './modules/programas-liderazgo/programas-liderazgo.component'
       ).then((c) => c.ProgramasLiderazgoComponent),
+  },
+  {
+    path: 'REP_BuscaIdPerson',
+    // canActivate: [programaLiderasgoGuard],
+    loadComponent: () =>
+      import(
+        './modules/rep-busca-id-person/rep-busca-id-person.component'
+      ).then((c) => c.REPBuscaIdPersonComponent),
   },
 ];
