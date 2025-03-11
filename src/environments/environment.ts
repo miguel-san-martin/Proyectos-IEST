@@ -14,7 +14,7 @@ export const environment = {
   /**
    * URL absoluta del proyecto incluyendo subdirectorios.
    */
-  url: 'https//sie.iest.edu.mx/app/P_Vertice_V2/registrovertice_V2/',
+  url: 'https//sie.iest.edu.mx/app/escolar/ControlAcademico/DatosPersonales/',
   /**
    * Nombre del proyecto.
    */
