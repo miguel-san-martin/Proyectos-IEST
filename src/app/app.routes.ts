@@ -100,11 +100,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    // redirectTo: 'busqueda',
-    loadComponent: () =>
-      import(
-        './modules/rep-busca-id-person/rep-busca-id-person.component'
-      ).then((c) => c.REPBuscaIdPersonComponent),
+    redirectTo: '',
   },
   // {
   //   path: 'programas-liderazgo',
