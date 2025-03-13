@@ -130,130 +130,137 @@
         <app-table-iest-v2 #table [data]="alumnos()" [tableHead]="HEADERS_TABLE" [filtering]="filtersignal()"
                            [colorMap]="colorMapping">
 
+
           <!--    Desplegable-->
-          <ng-template appBodyTemplate let-element class="flex" style="width: 100%">
+          <ng-template appBodyTemplate let-element class="" style="width: 100%">
 
-            <div class="alert alert-info" role="alert">
-              A simple info alert—check it out!
-            </div>
-            <!--      PAGOS-->
-            <div style="flex: 1" class="p-2">
-              <mat-card style="height: 100%">
-                <mat-card-title class="rounded card-title flex items-center justify-center">
-                  <mat-icon>payments</mat-icon>
-                  Pagos
-                </mat-card-title>
-                <mat-divider />
-                <mat-card-content>
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Status Pago:</span>
-                    <div>{{ element.statusPago }}</div>
-                  </div>
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Programa:</span>
-                    <div style="color: #f26818">{{ element.programa }}</div>
-                  </div>
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Fecha de Pago:</span>
-                    <div>{{ element.fechaPago }}</div>
-                  </div>
+            <div class="flex flex-col w-full p-5">
+              @if (element.comentario){
 
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <!--    ALTA-->
-            <div style="flex: 1" class="p-2">
-              <mat-card style="height: 100%">
-                <mat-card-title class="rounded card-title flex items-center justify-center">
-                  <mat-icon>login</mat-icon>
-                  Alta
-                </mat-card-title>
-                <mat-divider />
-                <mat-card-content class="flex flex-col">
-
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Semestre de matriculación:</span>
-                    <div>{{ element.semestreEntrada }}</div>
-                  </div>
-
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Fecha de Alta:</span>
-                    <div>{{ element.fechaAlta }}</div>
-                  </div>
-
-                  <div class="flex justify-between p-2">
-                    <span class="tupla">Dado de alta por:</span>
-                    <div>{{ element.altaPor ?? 'NA' }}</div>
-                  </div>
-
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <!--    BAJAS-->
-
-            @if (element.fechaBaja || element.fechaTermino || element.fechaBajaTem) {
-              <div style="flex: 1" class="p-2">
-                <mat-card style="height: 100%; max-width: 500px">
-                  <mat-card-title class="rounded card-title flex items-center justify-center">
-                    <mat-icon>logout</mat-icon>
-                    Baja
-                  </mat-card-title>
-
-                  <mat-divider />
-                  <mat-card-content>
-
-                    @if (element.fechaBaja) {
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Estatus</span>
-                        <div>BAJA DEFINITIVA</div>
-                      </div>
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Fecha de Baja:</span>
-                        <div>{{ element.fechaBaja }}</div>
-                      </div>
-
-
-                    } @else if (element.fechaBajaTem) {
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Estatus</span>
-                        <div>BAJA TEMPORAL</div>
-                      </div>
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Fecha de Baja:</span>
-                        <div>{{ element.fechaBajaTem }}</div>
-                      </div>
-                    } @else if (element.fechaTermino) {
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Estatus</span>
-                        <div>TERMINACION DE PROGRAMA</div>
-                      </div>
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Fecha de Baja:</span>
-                        <div>{{ element.fechaTermino }}</div>
-                      </div>
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Dado de Baja:</span>
-                        <div>{{ element.bajaPor ?? 'NA' }}</div>
-                      </div>
-
-                      <div class="flex justify-between p-2">
-                        <span class="tupla">Terminado por:</span>
-                        <div>{{ element.terminadoPor ?? 'NA' }}</div>
-                      </div>
-
-                    } @else {
-                      <div class="flex justify-between p-2">
-                        <span class="tupla"></span>
-                        <div> 'NA'</div>
-                      </div>
-                    }
-
-
-                  </mat-card-content>
-                </mat-card>
+              <div class="alert alert-info w-full" role="alert" >
+                <b>Comentario:</b> {{element.comentario}}
               </div>
-            }
+              }
+              <div class="flex" style="width: 100%;">
+                <!--      PAGOS-->
+                <div style="flex: 1" class="p-2">
+                  <mat-card style="height: 100%">
+                    <mat-card-title class="rounded card-title flex items-center justify-center">
+                      <mat-icon>payments</mat-icon>
+                      Pagos
+                    </mat-card-title>
+                    <mat-divider />
+                    <mat-card-content>
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Status Pago:</span>
+                        <div>{{ element.statusPago }}</div>
+                      </div>
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Programa:</span>
+                        <div style="color: #f26818">{{ element.programa }}</div>
+                      </div>
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Fecha de Pago:</span>
+                        <div>{{ element.fechaPago }}</div>
+                      </div>
 
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+                <!--    ALTA-->
+                <div style="flex: 1" class="p-2">
+                  <mat-card style="height: 100%">
+                    <mat-card-title class="rounded card-title flex items-center justify-center">
+                      <mat-icon>login</mat-icon>
+                      Alta
+                    </mat-card-title>
+                    <mat-divider />
+                    <mat-card-content class="flex flex-col">
+
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Semestre de matriculación:</span>
+                        <div>{{ element.semestreEntrada }}</div>
+                      </div>
+
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Fecha de Alta:</span>
+                        <div>{{ element.fechaAlta }}</div>
+                      </div>
+
+                      <div class="flex justify-between p-2">
+                        <span class="tupla">Dado de alta por:</span>
+                        <div>{{ element.altaPor ?? 'NA' }}</div>
+                      </div>
+
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+                <!--    BAJAS-->
+
+                @if (element.fechaBaja || element.fechaTermino || element.fechaBajaTem) {
+                  <div style="flex: 1" class="p-2">
+                    <mat-card style="height: 100%; max-width: 500px">
+                      <mat-card-title class="rounded card-title flex items-center justify-center">
+                        <mat-icon>logout</mat-icon>
+                        Baja
+                      </mat-card-title>
+
+                      <mat-divider />
+                      <mat-card-content>
+
+                        @if (element.fechaBaja) {
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Estatus</span>
+                            <div>BAJA DEFINITIVA</div>
+                          </div>
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Fecha de Baja:</span>
+                            <div>{{ element.fechaBaja }}</div>
+                          </div>
+
+
+                        } @else if (element.fechaBajaTem) {
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Estatus</span>
+                            <div>BAJA TEMPORAL</div>
+                          </div>
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Fecha de Baja:</span>
+                            <div>{{ element.fechaBajaTem }}</div>
+                          </div>
+                        } @else if (element.fechaTermino) {
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Estatus</span>
+                            <div>TERMINACION DE PROGRAMA</div>
+                          </div>
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Fecha de Baja:</span>
+                            <div>{{ element.fechaTermino }}</div>
+                          </div>
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Dado de Baja:</span>
+                            <div>{{ element.bajaPor ?? 'NA' }}</div>
+                          </div>
+
+                          <div class="flex justify-between p-2">
+                            <span class="tupla">Terminado por:</span>
+                            <div>{{ element.terminadoPor ?? 'NA' }}</div>
+                          </div>
+
+                        } @else {
+                          <div class="flex justify-between p-2">
+                            <span class="tupla"></span>
+                            <div> 'NA'</div>
+                          </div>
+                        }
+
+
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                }
+              </div>
+            </div>
 
           </ng-template>
 

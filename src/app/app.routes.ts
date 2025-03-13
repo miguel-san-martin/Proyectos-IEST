@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { programaLiderasgoGuard } from './modules/programas-liderazgo/guard/liderasgo.guard';
 
 export const routes: Routes = [
   // {
@@ -100,16 +101,16 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '',
+    redirectTo: 'programas-liderazgo',
   },
-  // {
-  //   path: 'programas-liderazgo',
-  //   canActivate: [programaLiderasgoGuard],
-  //   loadComponent: () =>
-  //     import(
-  //       './modules/programas-liderazgo/programas-liderazgo.component'
-  //     ).then((c) => c.ProgramasLiderazgoComponent),
-  // },
+  {
+    path: 'programas-liderazgo',
+    canActivate: [programaLiderasgoGuard],
+    loadComponent: () =>
+      import(
+        './modules/programas-liderazgo/programas-liderazgo.component'
+      ).then((c) => c.ProgramasLiderazgoComponent),
+  },
   // {
   //   path: 'busqueda',
   //   // canActivate: [programaLiderasgoGuard],
