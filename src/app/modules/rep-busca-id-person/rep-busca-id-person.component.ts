@@ -41,6 +41,8 @@ export class REPBuscaIdPersonComponent implements OnInit {
   fb: any = inject(FormBuilder);
   datePipe = inject(DatePipe);
 
+  public filter: string = '';
+
   protected miFormulario = this.fb.group({
     vApellidoM: '',
     vApellidoP: '',
@@ -111,6 +113,15 @@ export class REPBuscaIdPersonComponent implements OnInit {
           this.banderaNoSeEncontro.set(true);
         }
       });
+  }
+
+  querySend($event: any) {
+    console.log('!!!!');
+    this.filter = ($event.target as HTMLInputElement).value;
+  }
+
+  stringReturn($event: any) {
+    return ($event.target as HTMLInputElement).value;
   }
 }
 

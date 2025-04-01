@@ -16,14 +16,14 @@
         Apellido Paterno
       </mat-label>
 
-      <input matInput formControlName="vApellidoM" placeholder="Apellido Paterno" #input>
+      <input matInput formControlName="vApellidoP" placeholder="Apellido Paterno" #input>
     </mat-form-field>
       <mat-form-field class="w-1/4 pr-4">
         <mat-label>
           Apellido Materno
         </mat-label>
 
-        <input matInput formControlName="vApellidoP" placeholder="Apellido Materno" #input>
+        <input matInput formControlName="vApellidoM" placeholder="Apellido Materno" #input>
       </mat-form-field>
       <mat-form-field class="w-1/4 pr-4">
         <mat-label>
@@ -41,7 +41,11 @@
 
   <mat-card-content>
     @if (data().length){
-     <shared-table-iest [data]="data()" [tableHead]="HEAD"  [pages]="[100,200,300]"></shared-table-iest>
+      <mat-form-field style="padding-top: 10px">
+        <mat-label>Filtrar</mat-label>
+        <input matInput (keyup.enter)="tabla.applyFilter(stringReturn($event))" placeholder="Ex. Mia" #input>
+      </mat-form-field>
+     <shared-table-iest [data]="data()" [tableHead]="HEAD"  [pages]="[100,200,300]" [filtering]="filter" #tabla ></shared-table-iest>
     }
     @if (banderaNoSeEncontro()) {
       <div class="text-center">
