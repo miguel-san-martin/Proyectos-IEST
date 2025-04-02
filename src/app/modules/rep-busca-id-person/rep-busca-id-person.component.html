@@ -1,13 +1,13 @@
 <div style="margin: -8px;">
   <!--  BARRA -->
   <mat-toolbar color="primary" class="flex justify-between">
-    <span>BÚSQUEDA DE ID-IEST</span>
+    <span>Búsqueda de id-iest</span>
 
   </mat-toolbar>
 </div>
 
 <mat-card class="mt-5" appearance="raised">
-  <mat-card-title class="mt-2">CRITERIO DE BUSQUEDA</mat-card-title>
+  <mat-card-title class="mt-2 pl-2">Criterio de Búsqueda</mat-card-title>
 
     <form [formGroup]="miFormulario" (ngSubmit)="submit()" (keydown.enter)="submit()">
   <div class="flex flex-row items-center justify-center p-5">
@@ -36,23 +36,29 @@
       <button (click)="submit()" class="mx-4 mb-5" mat-flat-button style="background-color: #f26818; color: white; height: 56px">BUSCAR</button>
       </div>
     </form>
-
-
-
-  <mat-card-content>
-    @if (data().length){
-      <mat-form-field style="padding-top: 10px">
-        <mat-label>Filtrar</mat-label>
-        <input matInput (keyup.enter)="tabla.applyFilter(stringReturn($event))" placeholder="Ex. Mia" #input>
-      </mat-form-field>
-     <shared-table-iest [data]="data()" [tableHead]="HEAD"  [pages]="[100,200,300]" [filtering]="filter" #tabla ></shared-table-iest>
-    }
-    @if (banderaNoSeEncontro()) {
-      <div class="text-center">
-
-      No se encontró coincidencia con la búsqueda.
-      </div>
-    }
-
-  </mat-card-content>
 </mat-card>
+
+@if (data().length){
+  <mat-card class="mt-8" style="background-color: rgb(254, 241, 237)">
+    <mat-card-content class="flex flex-col" style="width: 98%">
+      @if (data().length){
+        <div class="flex justify-end" style="align-items: end; width: 100%">
+          <mat-form-field >
+            <mat-label>Filtrar los resultados</mat-label>
+            <input (keydown)="updateValue($event)" matInput placeholder="Filtrar tabla." >
+          </mat-form-field >
+        </div>
+        <div class="flex flex-col w-full">
+          <shared-table-iest [data]="data()" [tableHead]="HEAD"  [pages]="[100,200,300]" [filtering]="filter" #tabla ></shared-table-iest>
+        </div>
+      }
+      @if (banderaNoSeEncontro()) {
+        <div class="text-center">
+
+          No se encontró coincidencia con la búsqueda.
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+}
+

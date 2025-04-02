@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -14,6 +20,7 @@ import {
 } from './service/buscador-persona.service';
 import { map } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { TableIESTComponent } from '@shared/components/table-iest/table-iest.component';
 
 @Component({
   selector: 'app-rep-busca-id-person',
@@ -34,7 +41,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './rep-busca-id-person.component.html',
   styleUrl: './rep-busca-id-person.component.scss',
 })
-export class REPBuscaIdPersonComponent implements OnInit {
+export class REPBuscaIdPersonComponent implements AfterViewInit {
   protected readonly data = signal<Consulta[]>([]);
   protected readonly HEAD = HEAD;
   Service = inject(BuscadorPersonaService);
@@ -42,6 +49,9 @@ export class REPBuscaIdPersonComponent implements OnInit {
   datePipe = inject(DatePipe);
 
   public filter: string = '';
+  protected filteredSignal = signal('');
+
+  @ViewChild('tabla') tabla!: TableIESTComponent<any>;
 
   protected miFormulario = this.fb.group({
     vApellidoM: '',
@@ -50,30 +60,29 @@ export class REPBuscaIdPersonComponent implements OnInit {
   });
   banderaNoSeEncontro = signal<boolean>(false);
 
-  ngOnInit(): void {
-    // this.Service.consultar({
-    //   vNombre: '',
-    //   vApellidoP: '',
-    //   vApellidoM: '',
-    // })
-    //   .pipe(
-    //     map((array) => {
-    //       return array.map((row: Consulta) => {
-    //         return {
-    //           ...row,
-    //           Nombres: `${row.apellidop} ${row.apellidom} ${row.Nombres}`,
-    //         };
-    //       });
-    //     }),
-    //   )
-    //   .subscribe((data: Consulta[]) => {
-    //     console.log(data);
-    //     this.data.set(data);
-    //   });
+  ngAfterViewInit(): void {
+    // Verificamos si la tabla está inicializada
+    if (this.tabla) {
+      // console.log('Tabla cargada:', this.tabla);
+    } else {
+      console.warn('Tabla no se renderizara hasta que se haga una búsqueda.');
+    }
+  }
+
+  updateValue(event: KeyboardEvent): void {
+    const target = event.target as HTMLInputElement;
+    this.filter = target.value;
+
+    // Asegúrate de que la tabla esté inicializada antes de acceder a sus métodos
+    if (this.tabla) {
+      this.tabla.applyFilter(this.filter);
+    } else {
+      console.warn('La tabla no está lista para filtrar');
+    }
   }
 
   submit() {
-    console.log(this.miFormulario);
+    // console.log(this.miFormulario);
     let { vApellidoM, vApellidoP, vNombre }: buscadorIDIEST = {
       ...this.miFormulario.value,
     };
@@ -100,7 +109,7 @@ export class REPBuscaIdPersonComponent implements OnInit {
         }),
       )
       .subscribe((data: Consulta[]) => {
-        console.log(data);
+        // console.log(data);
         this.data.set(data);
         this.miFormulario.reset({
           vApellidoM: '',
@@ -116,7 +125,7 @@ export class REPBuscaIdPersonComponent implements OnInit {
   }
 
   querySend($event: any) {
-    console.log('!!!!');
+    // console.log('!!!!');
     this.filter = ($event.target as HTMLInputElement).value;
   }
 
@@ -137,10 +146,10 @@ export const DATA = [
 ];
 
 export const HEAD: HeaderTable[] = [
-  { label: 'GRADO', namePropiedad: 'grado' },
-  { label: 'Id-IEST', namePropiedad: 'IdPerson' },
-  { label: 'NOMBRE DEL ALUMNO', namePropiedad: 'Nombres' },
-  { label: 'CARRERA', namePropiedad: 'carrera' },
-  { label: 'CORREO', namePropiedad: 'correo' },
-  { label: 'NACIMIENTO', namePropiedad: 'fechanac' },
+  { label: 'Grado', namePropiedad: 'grado' },
+  { label: 'Id-iest', namePropiedad: 'IdPerson' },
+  { label: 'Nombre del Alumno', namePropiedad: 'Nombres' },
+  { label: 'Carrera', namePropiedad: 'carrera' },
+  { label: 'Correo', namePropiedad: 'correo' },
+  { label: 'Nacimiento', namePropiedad: 'fechanac' },
 ];

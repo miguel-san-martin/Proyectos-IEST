@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { BusquedaIDGuard } from './modules/rep-busca-id-person/guards/busqueda-guard';
 
 export const routes: Routes = [
   // {
@@ -61,13 +62,13 @@ export const routes: Routes = [
   //       (c) => c.ModuloCerradoComponent,
   //     ),
   // },
-  // {
-  //   path: 'no-permits',
-  //   loadComponent: () =>
-  //     import('./pages/no-permisos/no-permisos.component').then(
-  //       (c) => c.NoPermisosComponent,
-  //     ),
-  // },
+  {
+    path: 'no-permits',
+    loadComponent: () =>
+      import('./pages/no-permisos/no-permisos.component').then(
+        (c) => c.NoPermisosComponent,
+      ),
+  },
   // {
   //   path: 'login-screen',
   //   loadComponent: () =>
@@ -100,6 +101,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    canActivate: [BusquedaIDGuard],
     loadComponent: () =>
       import(
         './modules/rep-busca-id-person/rep-busca-id-person.component'
