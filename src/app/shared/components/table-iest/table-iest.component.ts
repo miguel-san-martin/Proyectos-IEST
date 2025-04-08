@@ -23,15 +23,20 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
     '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+  host: {
+    class: 'mat-elevation-z8',
+  },
   styles: `
-    .mat-mdc-header-cell {
-      //background-color: #27272a !important;
+    .mat-mdc-row:hover {
+      background-color: #ffdcc3 !important;
+      color: #000 !important;
+      --mat-icon-color: #000000 !important;
     }
 
     .mat-sort-header-container {
       place-content: center;
       //color: white !important;
-      font-family: 'Saira', sans-serif;
       font-weight: bold !important;
     }
 
