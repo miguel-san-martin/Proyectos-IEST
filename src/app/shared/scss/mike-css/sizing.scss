@@ -50,8 +50,8 @@ $spacers: map-merge(
 }
 
 //Max y Min with height
-@each $prop, $abbrev in (min-width: min-w, min-height: min-h, max-width: max-w, max-height: max-h,) {
-  @each $size, $length in $map {
+@each $prop, $abbrev in (min-width: min-w, min-height: min-h, max-width: max-w, max-height: max-h) {
+  @each $size, $length in $spacers {
     .#{$abbrev}-#{$size} {
       #{$prop}: $length !important;
     }
