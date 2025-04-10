@@ -17,10 +17,11 @@ export interface SubNode {
 }
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'shrd-side-nav',
-  templateUrl: './side-nav.component.html',
-  styleUrl: './side-nav.component.scss',
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'shrd-side-nav',
+    templateUrl: './side-nav.component.html',
+    styleUrl: './side-nav.component.scss',
+    standalone: false
 })
 export class SideNavComponent implements OnInit {
   http = inject(HttpClient);

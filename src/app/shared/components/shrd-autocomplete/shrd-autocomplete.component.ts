@@ -27,9 +27,10 @@ export interface senalError {
 }
 
 @Component({
-  selector: 'app-shrd-autocomplete',
-  templateUrl: './shrd-autocomplete.component.html',
-  styleUrl: './shrd-autocomplete.component.scss',
+    selector: 'app-shrd-autocomplete',
+    templateUrl: './shrd-autocomplete.component.html',
+    styleUrl: './shrd-autocomplete.component.scss',
+    standalone: false
 })
 export class ShrdAutocompleteComponent
   extends ServicioBase

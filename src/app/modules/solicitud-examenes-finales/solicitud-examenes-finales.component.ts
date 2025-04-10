@@ -10,18 +10,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { SolicitudComponent } from './dialogs/solicitud';
 
 @Component({
-  selector: 'app-solicitud-examenes-finales',
-  standalone: true,
-  imports: [
-    MatToolbar,
-    MatCard,
-    MatCardContent,
-    MatIcon,
-    MatCardHeader,
-    SharedModule,
-  ],
-  templateUrl: './solicitud-examenes-finales.component.html',
-  styleUrl: './solicitud-examenes-finales.component.scss',
+    selector: 'app-solicitud-examenes-finales',
+    imports: [
+        MatToolbar,
+        MatCard,
+        MatCardContent,
+        MatIcon,
+        MatCardHeader,
+        SharedModule,
+    ],
+    templateUrl: './solicitud-examenes-finales.component.html',
+    styleUrl: './solicitud-examenes-finales.component.scss'
 })
 export class SolicitudExamenesFinalesComponent implements OnInit {
   Service = inject(ExamenesFinalesService);

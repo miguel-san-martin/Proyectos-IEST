@@ -17,18 +17,17 @@ interface DialogData {
 }
 
 @Component({
-  templateUrl: 'solicitud.html',
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    JsonPipe,
-  ],
-  standalone: true,
+    templateUrl: 'solicitud.html',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatButtonModule,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        JsonPipe,
+    ]
 })
 export class SolicitudComponent {
   readonly dialogRef = inject(MatDialogRef<any>);
