@@ -2,8 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  ElementRef,
+  inject,
   input,
   InputSignal,
+  OnInit,
   output,
   signal,
   ViewChild,
@@ -57,7 +60,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
     }
   `,
 })
-export class TableIESTComponent<T> {
+export class TableIESTComponent<T> implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -65,8 +68,11 @@ export class TableIESTComponent<T> {
     input.required<HeaderTable[]>();
   readonly data: InputSignal<T[]> = input.required<T[]>();
   public filtering: InputSignal<string> = input<string>('');
+  public el = inject(ElementRef);
 
   public pages: InputSignal<any> = input([10, 20, 100]);
+
+  mostrarPaginador = true;
 
   //! SECCION PARA FUNCIONALIDAD DE SELECT ROW
   readonly selectionableOutpu = output();
@@ -74,6 +80,14 @@ export class TableIESTComponent<T> {
   selectingRow = signal(null);
 
   protected dataSource!: MatTableDataSource<T>;
+
+  ngOnInit(): void {
+    const atributos = this.el.nativeElement.attributes;
+    if (atributos.getNamedItem('nopaginador')) {
+      this.mostrarPaginador = false;
+    }
+  }
+
   readonly effectFilter = effect(() => {
     if (this.dataSource)
       this.dataSource.filter = this.filtering().trim().toLowerCase();

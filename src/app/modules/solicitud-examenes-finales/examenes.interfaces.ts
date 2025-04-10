@@ -12,3 +12,15 @@ export interface ExamenesFinales_Info {
   idTronco: number;
   nombre: null;
 }
+
+export interface ExamenesFinales_Materias {
+  idCodigo: number;
+  materia: string;
+  permite: string;
+  solicitada: string;
+  pago: string;
+  fecha: Date;
+  error: string;
+  mensaje: null;
+  notas: string;
+}

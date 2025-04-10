@@ -1,86 +1,101 @@
 @if (data().length > 0) {
-  <table mat-table [dataSource]="dataSource" matSort>
-    @for (head of tableHead(); track head.label) {
+  <div style="overflow-x: auto; min-width: 100px ">
+    <table mat-table [dataSource]="dataSource" matSort >
+      @for (head of tableHead(); track head.label) {
 
-      <ng-container [matColumnDef]="head.label">
-        <!-- ENCABEZADO -->
-        @if (head.label === "Nombre") {
-          <th class="th" mat-header-cell
-              *matHeaderCellDef
-              [ngStyle]="{'min-width': (head.label === 'Nombre') ? '300px': 'auto'}"
-              mat-sort-header>{{ head.label }}
-          </th>
-        } @else if (head.label === 'Añadir Miembros') {
-          <th class="th" style="max-width: 90px !important;" mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header>{{ head.label }}
-          </th>
-          <!--              [ngStyle]="{'min-width': (head.label == 'Nombre') ? '300px': 'auto'}"-->
-        } @else {
+        <ng-container [matColumnDef]="head.label">
+          <!-- ENCABEZADO -->
+          @if (head.label === "Nombre") {
+            <th class="th" mat-header-cell
+                *matHeaderCellDef
+                [ngStyle]="{'min-width': (head.label === 'Nombre') ? '300px': 'auto'}"
+                mat-sort-header>{{ head.label }}
+            </th>
+          } @else if (head.label === 'Añadir Miembros') {
+            <th class="th" style="max-width: 90px !important;" mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header>{{ head.label }}
+            </th>
+            <!--              [ngStyle]="{'min-width': (head.label == 'Nombre') ? '300px': 'auto'}"-->
+          } @else {
 
-          <th class="th" mat-header-cell
-              *matHeaderCellDef
-              mat-sort-header>{{ head.label }}
-        }
+            <th class="th" mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header>{{ head.label }}
+              }
 
-        <!-- DATA CELLS -->
-        @if (head.button) {
-          <!--      COLUMNA PARA BOTÓN AÑADIR STAFF, EDITAR EVENTO, BORRAR EVENTO -->
-          <td style="place-content: center;" mat-cell *matCellDef="let element">
-            <!-- SI ES UN MENU CON BOTON-->
-            @if (element[head.namePropiedad].menu) {
-              <button mat-menu-item [matMenuTriggerFor]="menu" class="justify-center w-fit"
-                      style="justify-content: center">
-                <mat-icon class="m-0 hov-blue"
-                          [fontIcon]="element[head.namePropiedad].label ">
-                </mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                @for (menuA of castToArray(element[head.namePropiedad].menu); track menuA) {
-                  <button mat-menu-item (click)="menuA.fun()">{{ menuA.label }}</button>
+          <!-- DATA CELLS -->
+          @if (head.button) {
+            <!--      COLUMNA PARA BOTÓN AÑADIR STAFF, EDITAR EVENTO, BORRAR EVENTO -->
+            <td style="place-content: center;" mat-cell *matCellDef="let element">
+              <!-- SI ES UN MENU CON BOTON-->
+              @if (element[head.namePropiedad]?.menu) {
+                <button mat-menu-item [matMenuTriggerFor]="menu" class="justify-center w-fit"
+                        style="justify-content: center">
+                  <mat-icon class="m-0 hov-blue"
+                            [fontIcon]="element[head.namePropiedad].label ">
+                  </mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  @for (menuA of castToArray(element[head.namePropiedad].menu); track menuA) {
+                    <button mat-menu-item (click)="menuA.fun()">{{ menuA.label }}</button>
+                  }
+                </mat-menu>
+                <!--              {{ element[head.namePropiedad].menu | json }}-->
+              }
+              @else {
+                @if(element[head.namePropiedad].type === 1){
+                  <button mat-button  class="boton-especial" style="background-color: #efd7be"
+                          (click)="element[head.namePropiedad].fun()">
+                    {{element[head.namePropiedad].label}}
+                  </button>
+                } @else {
+                  <button mat-icon-button class="hov-blue"
+                          (click)="element[head.namePropiedad].fun()">
+                    <mat-icon
+                      [fontIcon]="element[head.namePropiedad].label ">
+                    </mat-icon>
+                  </button>
                 }
-              </mat-menu>
-              <!--              {{ element[head.namePropiedad].menu | json }}-->
-            } @else {
-              <button mat-icon-button class="hov-blue"
-                      (click)="element[head.namePropiedad].fun()">
-                <mat-icon
-                  [fontIcon]="element[head.namePropiedad].label ">
-                </mat-icon>
-              </button>
-            }
-          </td>
-        } @else if (head.disable) {
-          <!--      COLUMNA PARA ACTIVAR DESACTIVAR    -->
-          <td mat-cell *matCellDef="let element" style="text-align: center">
-            <mat-slide-toggle
-              (change)="slideToggle($event,element[head.namePropiedad])"
-              [checked]="(element.estatus === 'Publicado')">
-            </mat-slide-toggle>
-          </td>
-        } @else {
-          <!--          COLUMNA GENERICA-->
-          <td mat-cell *matCellDef="let element" style="text-align: center">
-            {{ element[head.namePropiedad] }}
-          </td>
-        }
-      </ng-container>
 
-    }
+              }
+            </td>
+          } @else if (head.disable) {
+            <!--      COLUMNA PARA ACTIVAR DESACTIVAR    -->
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              <mat-slide-toggle
+                (change)="slideToggle($event,element[head.namePropiedad])"
+                [checked]="(element.estatus === 'Publicado')">
+              </mat-slide-toggle>
+            </td>
+          } @else {
+            <!--          COLUMNA GENERICA-->
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              {{ element[head.namePropiedad] }}
+            </td>
+          }
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColums"></tr>
+      }
 
-    <tr mat-row *matRowDef="let row; columns: displayedColums"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColums"></tr>
 
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No hay datos que cumplan esta consulta.</td>
-    </tr>
-  </table>
+      <tr mat-row *matRowDef="let row; columns: displayedColums"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No hay datos que cumplan esta consulta.</td>
+      </tr>
+    </table>
+  </div>
+
+
+
 
   <mat-paginator
     [pageSizeOptions]="pages()"
   />
-}
+  }
+
 @if (!data()[0]) {
   <div>
     <app-shrd-spinner/>
