@@ -1,0 +1,26 @@
+.color-blue {
+  background-color: #d4eaff;
+  color: #5a6c94;
+  border-color: #83aaff;
+  box-shadow: 0 4px 6px #0000001a;
+  border-radius: 12px;
+}
+
+.color-brown {
+  background-color: #fdf6f4;
+  color: #5a6c94;
+  border-color: #d7c1ba;
+  box-shadow: 0 4px 6px #0000001a;
+  border-radius: 12px;
+}
+
+.subtitle {
+  color: var(--mat-card-subtitle-text-color, var(--mat-sys-on-surface));
+  font-family: var(--mat-card-subtitle-text-font, var(--mat-sys-title-medium-font));
+  line-height: var(--mat-card-subtitle-text-line-height, var(--mat-sys-title-medium-line-height));
+  font-size: var(--mat-card-subtitle-text-size, var(--mat-sys-title-medium-size));
+  letter-spacing: var(--mat-card-subtitle-text-tracking, var(--mat-sys-title-medium-tracking));
+  font-weight: var(--mat-card-subtitle-text-weight, var(--mat-sys-title-medium-weight));
+}
+
+
