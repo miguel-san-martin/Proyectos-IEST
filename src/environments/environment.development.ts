@@ -22,7 +22,7 @@ export const environment = {
   /**
    * Nombre del proyecto.
    */
-  project: 'registro-logistica',
+  project: 'iest-proyect',
 };
 
 /*

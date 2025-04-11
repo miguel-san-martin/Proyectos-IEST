@@ -17,11 +17,10 @@ export interface SubNode {
 }
 
 @Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: 'shrd-side-nav',
-    templateUrl: './side-nav.component.html',
-    styleUrl: './side-nav.component.scss',
-    standalone: false
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'shrd-side-nav',
+  templateUrl: './side-nav.component.html',
+  styleUrl: './side-nav.component.scss',
 })
 export class SideNavComponent implements OnInit {
   http = inject(HttpClient);
@@ -29,14 +28,14 @@ export class SideNavComponent implements OnInit {
   modulos!: Node[];
 
   ngOnInit(): void {
-    if (environment.production) {
+    if (!environment.production) {
       this.http
-        .get<Node[]>(`${environment.url}assets/index.json`)
+        .get<Node[]>(`${environment.url}/public/index.json`)
         .subscribe((res: Node[]) => {
           this.modulos = res;
         });
     } else {
-      this.http.get<Node[]>('/assets/index.json').subscribe((res: Node[]) => {
+      this.http.get<Node[]>('/public/index.json').subscribe((res: Node[]) => {
         this.modulos = res;
       });
     }
