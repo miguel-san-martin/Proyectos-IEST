@@ -10,11 +10,10 @@ import { Router } from '@angular/router';
  * motivos.
  */
 @Component({
-  selector: 'app-modulo-cerrado',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './modulo-cerrado.component.html',
-  styleUrls: ['./modulo-cerrado.component.scss'],
+    selector: 'app-modulo-cerrado',
+    imports: [CommonModule],
+    templateUrl: './modulo-cerrado.component.html',
+    styleUrls: ['./modulo-cerrado.component.scss']
 })
 export class ModuloCerradoComponent{
   Service = inject(CampamentoIestService);

@@ -5,11 +5,9 @@ import { SharedModule } from './shared/shared.module';
 import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [MaterialModule, SharedModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  // styleUrl: './shared/scss/custom-template-miguel-v2.scss',
+    selector: 'app-root',
+    imports: [MaterialModule, SharedModule, RouterOutlet],
+    templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawer!: MatDrawer;

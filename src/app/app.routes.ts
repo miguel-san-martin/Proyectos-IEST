@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { BusquedaIDGuard } from './modules/rep-busca-id-person/guards/busqueda-guard';
 
 export const routes: Routes = [
   // {
@@ -101,11 +100,11 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    canActivate: [BusquedaIDGuard],
+    // canActivate: [BusquedaIDGuard],
     loadComponent: () =>
       import(
-        './modules/rep-busca-id-person/rep-busca-id-person.component'
-      ).then((c) => c.REPBuscaIdPersonComponent),
+        './modules/solicitud-examenes-finales/solicitud-examenes-finales.component'
+      ).then((c) => c.SolicitudExamenesFinalesComponent),
     // redirectTo: 'busqueda',
   },
   // {

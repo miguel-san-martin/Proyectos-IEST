@@ -1,0 +1,16 @@
+<!--<h2 mat-dialog-title></h2>-->
+<mat-dialog-content>
+  <p>No se pudo completar la solicitud</p>
+  Motivo:
+  <ul>
+    @for (motivos of data.motivo; track motivos){
+      <li>
+      {{motivos.motivo}}
+      </li>
+    }
+  </ul>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

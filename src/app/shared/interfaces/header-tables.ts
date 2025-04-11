@@ -10,6 +10,7 @@ export interface HeaderTable {
 
 export interface Button {
   label?: string;
+  type?: number;
   fun?: () => void;
   menu?: Menu[];
 }

@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "padding";
+
 /*** Spacing ***/
 // Tomado de los estilos de Bootstrap (de la versión 3, creo... se tiene que hacer una revisión). Era justo y necesario.
 
@@ -6,9 +9,9 @@ $spacers: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 
 // Hace clases del 0 al 90 con .25rem por clase: 4px
-$map: ();
+padding.$map: ();
 @for $i from 0 through 90 {
-  $map: map-merge($map, ($i: $i * .25rem))
+  $map: map.merge(padding.$map, ($i: $i * .25rem))
 }
 
 $fracciones: (
@@ -35,14 +38,14 @@ $fracciones: (
   fit:fit-content
 );
 
-$spacers: map-merge(
-    $map,
+padding.$spacers: map.merge(
+    padding.$map,
     $fracciones,
 );
 
 // Width y height
 @each $prop, $abbrev in (width: w, height: h) {
-  @each $size, $length in $spacers {
+  @each $size, $length in padding.$spacers {
     .#{$abbrev}-#{$size} {
       #{$prop}: $length !important;
     }
@@ -50,8 +53,8 @@ $spacers: map-merge(
 }
 
 //Max y Min with height
-@each $prop, $abbrev in (min-width: min-w, min-height: min-h, max-width: max-w, max-height: max-h,) {
-  @each $size, $length in $map {
+@each $prop, $abbrev in (min-width: min-w, min-height: min-h, max-width: max-w, max-height: max-h) {
+  @each $size, $length in padding.$spacers {
     .#{$abbrev}-#{$size} {
       #{$prop}: $length !important;
     }

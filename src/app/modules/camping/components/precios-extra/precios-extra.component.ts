@@ -14,9 +14,9 @@ import { ResponseExtraFee } from '../../interfaces/responses/response-extra-fee'
 import { FormBase } from '../form-base';
 
 @Component({
-  selector: 'form-extra-fee',
-  templateUrl: './precios-extra.component.html',
-  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
+    selector: 'form-extra-fee',
+    templateUrl: './precios-extra.component.html',
+    standalone: false
 })
 export class PreciosExtraComponent
   extends FormBase

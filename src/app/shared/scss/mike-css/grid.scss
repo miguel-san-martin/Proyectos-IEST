@@ -1,0 +1,112 @@
+// Variables para columnas
+$grid-cols: (
+  '1': 1fr,
+  '2': repeat(2, 1fr),
+  '3': repeat(3, 1fr),
+  '4': repeat(4, 1fr),
+  '5': repeat(5, 1fr),
+  '6': repeat(6, 1fr),
+  '7': repeat(7, 1fr),
+  '8': repeat(8, 1fr),
+  '9': repeat(9, 1fr),
+  '10': repeat(10, 1fr),
+  '11': repeat(11, 1fr),
+  '12': repeat(12, 1fr),
+  'none': none
+);
+
+// Variables para gap
+$gap-sizes: (
+  '0': 0,
+  '1': 0.25rem,
+  '2': 0.5rem,
+  '3': 0.75rem,
+  '4': 1rem,
+  '5': 1.25rem,
+  '6': 1.5rem,
+  '8': 2rem,
+  '10': 2.5rem,
+  '12': 3rem,
+  '16': 4rem,
+  '20': 5rem,
+  '24': 6rem,
+  '32': 8rem,
+  '40': 10rem,
+  '48': 12rem,
+  '56': 14rem,
+  '64': 16rem
+);
+
+// Grid container
+.grid {
+  display: grid !important;
+
+  &-flow-row {
+    grid-auto-flow: row;
+  }
+
+  &-flow-col {
+    grid-auto-flow: column;
+  }
+
+  @each $key, $value in $grid-cols {
+    &-cols-#{$key} {
+      grid-template-columns: #{$value} !important;
+    }
+  }
+
+  // Gap classes
+  @each $key, $value in $gap-sizes {
+    .gap-#{$key} {
+      gap: #{$value};
+    }
+    .gap-x-#{$key} {
+      column-gap: #{$value};
+    }
+    .gap-y-#{$key} {
+      row-gap: #{$value};
+    }
+  }
+}
+
+// Column span classes (span-1 to span-12)
+@for $i from 1 through 12 {
+  .col-span-#{$i} {
+    grid-column: span #{$i} / span #{$i};
+  }
+}
+
+// Column start classes (start-1 to start-13)
+@for $i from 1 through 13 {
+  .col-start-#{$i} {
+    grid-column-start: #{$i};
+  }
+}
+
+// Column end classes (end-1 to end-13)
+@for $i from 1 through 13 {
+  .col-end-#{$i} {
+    grid-column-end: #{$i};
+  }
+}
+
+// Row span classes (span-1 to span-12)
+@for $i from 1 through 12 {
+  .row-span-#{$i} {
+    grid-row: span #{$i} / span #{$i};
+  }
+}
+
+// Row start classes (start-1 to start-13)
+@for $i from 1 through 13 {
+  .row-start-#{$i} {
+    grid-row-start: #{$i};
+  }
+}
+
+// Row end classes (end-1 to end-13)
+@for $i from 1 through 13 {
+  .row-end-#{$i} {
+    grid-row-end: #{$i};
+  }
+}

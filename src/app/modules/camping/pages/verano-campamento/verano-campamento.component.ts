@@ -21,8 +21,8 @@ import { SelectedCatalog } from '../../interfaces/selected-catalog';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 
 @Component({
-  templateUrl: './verano-campamento.component.html',
-  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+    templateUrl: './verano-campamento.component.html',
+    standalone: false
 })
 export class VeranoCampamentoComponent implements OnInit {
   Service = inject(CampamentoIestService);
@@ -183,7 +183,8 @@ export class VeranoCampamentoComponent implements OnInit {
 
 //? Pone
 @Component({
-  templateUrl: 'dialog.html',
+    templateUrl: 'dialog.html',
+    standalone: false
 })
 export class DialogAnimationsExampleDialog {
   Service = inject(CampamentoIestService);

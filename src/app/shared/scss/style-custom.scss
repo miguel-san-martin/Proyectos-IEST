@@ -1,12 +1,14 @@
-@import "./mike-css/display";
-@import "./mike-css/flex";
-@import "./mike-css/padding";
-@import "./mike-css/sizing";
-@import "./mike-css/color";
-@import "./mike-css/fuentes";
-@import "./mike-css/borders";
-@import "./mike-css/flex-box";
-@import "./mike-css/iest-style";
+@use "mike-css/display";
+@use "mike-css/flex";
+@use "mike-css/grid";
+@use "mike-css/padding";
+@use "mike-css/sizing";
+@use "mike-css/color";
+@use "mike-css/fuentes";
+@use "mike-css/borders";
+@use "mike-css/flex-box";
+@use "mike-css/iest-style";
+
 
 
 .material-icons {

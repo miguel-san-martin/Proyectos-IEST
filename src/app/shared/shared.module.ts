@@ -19,6 +19,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ContainerIconComponent } from '@shared/components/container-icon/container-icon.component';
 import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
+import { PaginadorDirective } from "@shared/components/table-iest/paginador.directive";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { BodyTemplateDirective } from '@shared/directives/body-template.directiv
     MatMenu,
     MatMenuTrigger,
     BodyTemplateDirective,
+    PaginadorDirective,
   ],
   exports: [
     NumberToMxnPipe,
