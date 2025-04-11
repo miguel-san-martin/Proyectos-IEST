@@ -10,24 +10,22 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { JsonPipe } from '@angular/common';
 
 interface DialogData {
   motivo: any[];
 }
 
 @Component({
-    templateUrl: 'solicitud.html',
-    imports: [
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-        MatButtonModule,
-        MatDialogContent,
-        MatDialogActions,
-        MatDialogClose,
-        JsonPipe,
-    ]
+  templateUrl: 'solicitud.html',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+  ],
 })
 export class SolicitudComponent {
   readonly dialogRef = inject(MatDialogRef<any>);
