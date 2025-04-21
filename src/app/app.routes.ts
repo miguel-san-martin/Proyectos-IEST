@@ -103,8 +103,8 @@ export const routes: Routes = [
     // canActivate: [BusquedaIDGuard],
     loadComponent: () =>
       import(
-        './modules/solicitud-examenes-finales/solicitud-examenes-finales.component'
-      ).then((c) => c.SolicitudExamenesFinalesComponent),
+        './modules/sanciones-biblioteca/sanciones-biblioteca.component'
+      ).then((c) => c.SancionesBibliotecaComponent),
     // redirectTo: 'busqueda',
   },
   // {
