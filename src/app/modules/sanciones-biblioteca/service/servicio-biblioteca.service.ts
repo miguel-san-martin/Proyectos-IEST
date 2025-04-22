@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServicioBase } from '../../solicitud-examenes-finales/service/servicio-base.service';
-import { ExamenesFinales_Info } from '../../solicitud-examenes-finales/examenes.interfaces';
 import { BIBLIOTECA_consultaDatosAlumno } from '../interfaces/biblioteca.interface';
 
 @Injectable({
@@ -25,7 +24,7 @@ export class ServicioBibliotecaService extends ServicioBase {
     );
   }
 
-  public consultar(): Observable<ExamenesFinales_Info> {
+  public getAllIncidencias(): Observable<any> {
     const parametros = {
       servicio: 'consultas',
       accion: 'BIB_ConsultaIncidencia',
@@ -34,22 +33,22 @@ export class ServicioBibliotecaService extends ServicioBase {
     return this.consulta({ ...parametros }, this.url);
   }
 
-  public consultarIncidencia(
-    idPersonaConsulta: number,
+  public consultaCarrera(
+    idPersonAlumno: number,
   ): Observable<BIBLIOTECA_consultaDatosAlumno> {
     const parametros = {
       servicio: 'consultas',
-      accion: 'BIB_Incidencia_ConsultaDatosAlumno',
+      accion: 'BIB_Incidencia_ConsultaDatosAlumno_Academicos',
       tipoRespuesta: 'json',
     };
-    return this.consulta({ ...parametros, idPersonaConsulta }, this.url);
+    return this.consulta({ ...parametros, idPersonAlumno }, this.url);
   }
-  public consultarEstatusAlumno(idPersonaAlumno: number) {
+  public consultarBasica(idPersonAlumno: number) {
     const parametros = {
       servicio: 'consultas',
       accion: 'BIB_Incidencia_ConsultaDatosAlumno',
       tipoRespuesta: 'json',
     };
-    return this.consulta({ ...parametros, idPersonaAlumno }, this.url);
+    return this.consulta({ ...parametros, idPersonAlumno }, this.url);
   }
 }

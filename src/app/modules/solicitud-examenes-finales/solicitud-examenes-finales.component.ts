@@ -32,7 +32,7 @@ export class SolicitudExamenesFinalesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
-    this.Service.consultar().subscribe((result: any) => {
+    this.Service.getAllIncidencias().subscribe((result: any) => {
       this.response.set(result[0]);
       this.Service.consultarHistorico().subscribe((result: any) => {
         console.log(result[0]);

@@ -9,7 +9,7 @@ $spacers: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 
 // Hace clases del 0 al 90 con .25rem por clase: 4px
-padding.$map: ();
+$map: ();
 @for $i from 0 through 90 {
   $map: map.merge(padding.$map, ($i: $i * .25rem))
 }
@@ -38,7 +38,7 @@ $fracciones: (
   fit:fit-content
 );
 
-padding.$spacers: map.merge(
+$spacers: map.merge(
     padding.$map,
     $fracciones,
 );
