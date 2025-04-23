@@ -44,7 +44,10 @@
                 <!--              {{ element[head.namePropiedad].menu | json }}-->
               }
               @else {
-                @if(element[head.namePropiedad].type === 1){
+<!--                {{element[head.namePropiedad].type | json}}-->
+
+                @if (element[head.namePropiedad]) {
+                @if(element[head.namePropiedad].type){
                   <button mat-button  class="boton-especial" style="background-color: #efd7be"
                           (click)="element[head.namePropiedad].fun()">
                     {{element[head.namePropiedad].label}}
@@ -57,6 +60,8 @@
                     </mat-icon>
                   </button>
                 }
+                }
+
 
               }
             </td>

@@ -13,15 +13,31 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { HeaderTable, Menu } from '@shared/interfaces/header-tables';
-import { MatTableDataSource } from '@angular/material/table';
+import {
+  MatCell,
+  MatHeaderCell,
+  MatHeaderRow,
+  MatRow,
+  MatTable,
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggle,
+  MatSlideToggleChange,
+} from '@angular/material/slide-toggle';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { NgStyle } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { SharedModule } from '@shared/shared.module';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'shared-table-iest',
-  standalone: false,
+  standalone: true,
   templateUrl:
     '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -59,6 +75,23 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
       }
     }
   `,
+  imports: [
+    MatMenu,
+    MatTableModule,
+    MatIcon,
+    NgStyle,
+    MatTable,
+    MatHeaderCell,
+    MatCell,
+    MatHeaderRow,
+    MatRow,
+    MatMenuItem,
+    SharedModule,
+    MatPaginator,
+    MatMenuTrigger,
+    MatSlideToggle,
+    MatButton,
+  ],
 })
 export class TableIESTComponent<T> implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

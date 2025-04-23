@@ -12,7 +12,7 @@ export class ServicioBibliotecaService extends ServicioBase {
     super();
   }
 
-  buscarAlumno(busqueda: string): Observable<any> {
+  public buscarAlumno(busqueda: string): Observable<any> {
     const parametros = {
       accion: 'buscador',
       servicio: 'vertice',
@@ -32,7 +32,6 @@ export class ServicioBibliotecaService extends ServicioBase {
     };
     return this.consulta({ ...parametros }, this.url);
   }
-
   public consultaCarrera(
     idPersonAlumno: number,
   ): Observable<BIBLIOTECA_consultaDatosAlumno> {
@@ -50,5 +49,22 @@ export class ServicioBibliotecaService extends ServicioBase {
       tipoRespuesta: 'json',
     };
     return this.consulta({ ...parametros, idPersonAlumno }, this.url);
+  }
+
+  public registrarIncidencia(idPersonAlumno: number, motivo: string) {
+    const parametros = {
+      servicio: 'procesos',
+      accion: 'BIB_RegistraIncidencia_Alta',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros, idPersonAlumno, motivo }, this.url);
+  }
+  public darBajaIncidencia(idIncicencia: number) {
+    const parametros = {
+      servicio: 'procesos',
+      accion: 'BIB_RegistraIncidencia_Baja',
+      tipoRespuesta: 'json',
+    };
+    return this.consulta({ ...parametros, idIncicencia }, this.url);
   }
 }

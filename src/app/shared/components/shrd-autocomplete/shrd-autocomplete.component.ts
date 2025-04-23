@@ -71,6 +71,9 @@ export class ShrdAutocompleteComponent
   filteredOptions: WritableSignal<any> = signal<any>('');
   functionDisplayName!: (item: { [key: string]: string }) => string;
   searchControl: FormControl<any> = new FormControl();
+  placeholder = input(
+    'Encuentra a la persona por su nombre, su cuenta o por su ID-IEST*',
+  );
 
   public error = input<senalError | null>({
     bool: false,
