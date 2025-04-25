@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { bibliotecaGuard } from './modules/sanciones-biblioteca/guards/busqueda-guard';
 
 export const routes: Routes = [
   // {
@@ -68,13 +69,13 @@ export const routes: Routes = [
         (c) => c.NoPermisosComponent,
       ),
   },
-  // {
-  //   path: 'login-screen',
-  //   loadComponent: () =>
-  //     import('./pages/login-screen/login-screen.component').then(
-  //       (c) => c.LoginScreenComponent,
-  //     ),
-  // },
+  {
+    path: 'login-screen',
+    loadComponent: () =>
+      import('./pages/login-screen/login-screen.component').then(
+        (c) => c.LoginScreenComponent,
+      ),
+  },
   // {
   //   path: 'prospectos',
   //   loadComponent: () =>
@@ -100,7 +101,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    // canActivate: [BusquedaIDGuard],
+    canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
         './modules/sanciones-biblioteca/sanciones-biblioteca.component'

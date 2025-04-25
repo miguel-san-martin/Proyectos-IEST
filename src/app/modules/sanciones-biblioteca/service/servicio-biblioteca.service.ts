@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServicioBase } from '../../solicitud-examenes-finales/service/servicio-base.service';
 import { BIBLIOTECA_consultaDatosAlumno } from '../interfaces/biblioteca.interface';
+import { PER_BuscadoresPersonas } from '@shared/models/parametros-api/PER_BuscadoresPersonas.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +13,20 @@ export class ServicioBibliotecaService extends ServicioBase {
     super();
   }
 
-  public buscarAlumno(busqueda: string): Observable<any> {
+  public buscador(args: string): Observable<any> {
+    const extras: PER_BuscadoresPersonas = {
+      idPerson: 24812,
+      indicador: args,
+      idTipo: 4,
+    };
     const parametros = {
-      accion: 'buscador',
-      servicio: 'vertice',
+      servicio: 'buscador',
+      accion: 'PER_BuscadoresPersonas',
       tipoRespuesta: 'json',
     };
     return this.consulta(
-      { ...parametros, indicador: busqueda },
-      '/api/escolares/escolares.php',
+      { ...parametros, ...extras },
+      '/api/Buscador/buscador.php',
     );
   }
 
@@ -59,12 +65,12 @@ export class ServicioBibliotecaService extends ServicioBase {
     };
     return this.consulta({ ...parametros, idPersonAlumno, motivo }, this.url);
   }
-  public darBajaIncidencia(idIncicencia: number) {
+  public darBajaIncidencia(idIncidencia: number) {
     const parametros = {
       servicio: 'procesos',
       accion: 'BIB_RegistraIncidencia_Baja',
       tipoRespuesta: 'json',
     };
-    return this.consulta({ ...parametros, idIncicencia }, this.url);
+    return this.consulta({ ...parametros, idIncidencia }, this.url);
   }
 }

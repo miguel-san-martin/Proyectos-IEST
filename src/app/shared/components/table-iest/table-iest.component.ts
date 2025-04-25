@@ -12,37 +12,27 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { HeaderTable, Menu } from '@shared/interfaces/header-tables';
 import {
-  MatCell,
-  MatHeaderCell,
-  MatHeaderRow,
-  MatRow,
-  MatTable,
-  MatTableDataSource,
-  MatTableModule,
-} from '@angular/material/table';
+  Appareance,
+  HeaderTable,
+  Menu,
+} from '@shared/interfaces/header-tables';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  MatSlideToggle,
-  MatSlideToggleChange,
-} from '@angular/material/slide-toggle';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MaterialModule } from '../../../shared-material-module/material.module';
 import { NgStyle } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { SharedModule } from '@shared/shared.module';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'shared-table-iest',
-  standalone: true,
+
   templateUrl:
     '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+  // eslint-disable-next-line @angular-eslint/no-host-metdata-property
   host: {
     class: 'mat-elevation-z8',
   },
@@ -75,23 +65,7 @@ import { MatButton } from '@angular/material/button';
       }
     }
   `,
-  imports: [
-    MatMenu,
-    MatTableModule,
-    MatIcon,
-    NgStyle,
-    MatTable,
-    MatHeaderCell,
-    MatCell,
-    MatHeaderRow,
-    MatRow,
-    MatMenuItem,
-    SharedModule,
-    MatPaginator,
-    MatMenuTrigger,
-    MatSlideToggle,
-    MatButton,
-  ],
+  imports: [MaterialModule, NgStyle],
 })
 export class TableIESTComponent<T> implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -174,5 +148,12 @@ export class TableIESTComponent<T> implements OnInit {
 
   slideToggle(event: MatSlideToggleChange, obj: any) {
     obj.fun(event);
+  }
+
+  obtenerEstilos(colores: Appareance): any {
+    return {
+      'background-color': colores.bc ?? '#FB5900FF',
+      color: colores.color ?? 'white',
+    };
   }
 }
