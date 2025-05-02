@@ -23,9 +23,8 @@ import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
 
 @Component({
-    selector: 'form-precio-externo',
-    templateUrl: './precio-externo.component.html',
-    standalone: false
+  selector: 'form-precio-externo',
+  templateUrl: './precio-externo.component.html',
 })
 export class PrecioExternoComponent
   extends SnackbarComponent

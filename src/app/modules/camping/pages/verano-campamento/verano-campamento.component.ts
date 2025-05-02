@@ -19,10 +19,24 @@ import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
 import { SelectedCatalog } from '../../interfaces/selected-catalog';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
+import { MatIcon } from '@angular/material/icon';
+import { SharedModule } from '@shared/shared.module';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel, MatSelect } from '@angular/material/select';
 
 @Component({
-    templateUrl: './verano-campamento.component.html',
-    standalone: false
+  templateUrl: './verano-campamento.component.html',
+  imports: [
+    MatIcon,
+    SharedModule,
+    PreciosExtraComponent,
+    PrecioDependienteComponent,
+    PrecioExternoComponent,
+    MatOption,
+    MatSelect,
+    MatLabel,
+    MatFormField,
+  ],
 })
 export class VeranoCampamentoComponent implements OnInit {
   Service = inject(CampamentoIestService);
@@ -183,8 +197,7 @@ export class VeranoCampamentoComponent implements OnInit {
 
 //? Pone
 @Component({
-    templateUrl: 'dialog.html',
-    standalone: false
+  templateUrl: 'dialog.html',
 })
 export class DialogAnimationsExampleDialog {
   Service = inject(CampamentoIestService);

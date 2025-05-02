@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { bibliotecaGuard } from './modules/sanciones-biblioteca/guards/busqueda-guard';
 
 export const routes: Routes = [
   // {
@@ -101,11 +100,11 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    canActivate: [bibliotecaGuard],
+    // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
-        './modules/sanciones-biblioteca/sanciones-biblioteca.component'
-      ).then((c) => c.SancionesBibliotecaComponent),
+        './modules/camping/pages/verano-campamento/verano-campamento.component'
+      ).then((c) => c.VeranoCampamentoComponent),
     // redirectTo: 'busqueda',
   },
   // {

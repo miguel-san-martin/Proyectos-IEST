@@ -20,9 +20,8 @@ import {
 } from '../../interfaces/responses/response-editability-periode';
 
 @Component({
-    selector: 'form-precio-dependiente',
-    templateUrl: './precio-dependiente.component.html',
-    standalone: false
+  selector: 'form-precio-dependiente',
+  templateUrl: './precio-dependiente.component.html',
 })
 export class PrecioDependienteComponent
   extends SnackbarComponent
