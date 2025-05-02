@@ -10,6 +10,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -21,10 +22,13 @@ import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
 import { VeranoCampamentoComponent } from '../../pages/verano-campamento/verano-campamento.component';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
+import { MatError, MatInput, MatPrefix } from '@angular/material/input';
+import { MatFormField } from '@angular/material/select';
 
 @Component({
   selector: 'form-precio-externo',
   templateUrl: './precio-externo.component.html',
+  imports: [MatFormField, MatPrefix, MatInput, ReactiveFormsModule, MatError],
 })
 export class PrecioExternoComponent
   extends SnackbarComponent

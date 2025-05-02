@@ -6,7 +6,12 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { environment } from 'environments/environment';
 import { forkJoin, map, tap } from 'rxjs';
 import { PrecioDependienteComponent } from '../../components/precio-dependiente/precio-dependiente.component';
@@ -23,6 +28,7 @@ import { MatIcon } from '@angular/material/icon';
 import { SharedModule } from '@shared/shared.module';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel, MatSelect } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   templateUrl: './verano-campamento.component.html',
@@ -36,6 +42,7 @@ import { MatFormField, MatLabel, MatSelect } from '@angular/material/select';
     MatSelect,
     MatLabel,
     MatFormField,
+    MatButton,
   ],
 })
 export class VeranoCampamentoComponent implements OnInit {
@@ -198,6 +205,7 @@ export class VeranoCampamentoComponent implements OnInit {
 //? Pone
 @Component({
   templateUrl: 'dialog.html',
+  imports: [MatDialogActions, MatDialogContent, MatIcon],
 })
 export class DialogAnimationsExampleDialog {
   Service = inject(CampamentoIestService);

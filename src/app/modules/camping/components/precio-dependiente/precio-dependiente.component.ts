@@ -9,7 +9,13 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
@@ -18,10 +24,12 @@ import {
   _estatus,
   ResponseEditabilityPeriode,
 } from '../../interfaces/responses/response-editability-periode';
+import { MatError, MatFormField, MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'form-precio-dependiente',
   templateUrl: './precio-dependiente.component.html',
+  imports: [MatError, MatFormField, ReactiveFormsModule, MatInput],
 })
 export class PrecioDependienteComponent
   extends SnackbarComponent

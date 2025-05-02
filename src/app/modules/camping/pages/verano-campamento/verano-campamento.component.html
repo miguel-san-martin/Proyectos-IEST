@@ -1,11 +1,11 @@
 
 
 
-<div class="grid animate__animated animate__fadeIn" style="justify-content: center;">
-  <h1 class="col-12">Costos campamento</h1>
+<div class="" style="justify-content: center;">
+  <h1 class="">Costos campamento</h1>
 
   <!-- Select catalog section -->
-  <mat-form-field class="col-12" style="padding: 0%;">
+  <mat-form-field class="" style="padding: 0%;">
     <mat-label>Edición</mat-label>
     <mat-select (selectionChange)="$emitSelectedCatalog($event.value)" [(value)]="selectedCatalog" name="catalogo">
       @for (catalogue of catalogesList; track catalogue) {
@@ -15,29 +15,29 @@
   </mat-form-field>
 
   @if (formIsVisible) {
-  <div class="col-12">
-    <form class="grid">
+  <div class="">
+    <form class="">
 
       <!-- Precio Externo -->
-      <div class="col-12">
+      <div class="">
         <form-precio-externo [data]="externalPriceData" [priceIsEditable]="priceIsEditable"></form-precio-externo>
       </div>
 @if (precioExternoIsCorrect) {
 
         <!-- Precio Infantil -->
-        <div class="col-6">
+        <div class="">
           <form-precio-dependiente [data]="childishPriceData"
             [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
         </div>
 
         <!-- Precio Maternal -->
-        <div class="col-6">
+        <div class="">
           <form-precio-dependiente [data]="maternalPriceData"
             [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
         </div>
 
         <!-- Precio Extra -->
-        <div class="col-12">
+        <div class="">
           <form-extra-fee [data]="extraPriceData" [priceIsEditable]="priceIsEditable">
 
           </form-extra-fee>
@@ -51,7 +51,7 @@
 
   <!-- New Period alert message -->
   @if(formIsNotGenerated?.existe == '0'){
-  <div class="col-6">
+  <div class="">
     <shrd-alert-dialog [msj]="formIsNotGenerated?.msj" (actionYes)="$generateNewPeriod()"
       (actionNo)="$reloadPage()"></shrd-alert-dialog>
   </div>

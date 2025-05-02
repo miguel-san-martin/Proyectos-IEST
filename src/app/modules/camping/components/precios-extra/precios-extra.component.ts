@@ -5,17 +5,20 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, Validators } from '@angular/forms';
+import { FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   _estatus,
   ResponseEditabilityPeriode,
 } from '../../interfaces/responses/response-editability-periode';
 import { ResponseExtraFee } from '../../interfaces/responses/response-extra-fee';
 import { FormBase } from '../form-base';
+import { MatFormField } from '@angular/material/select';
+import { MatError, MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'form-extra-fee',
   templateUrl: './precios-extra.component.html',
+  imports: [MatFormField, MatInput, ReactiveFormsModule, MatError],
 })
 export class PreciosExtraComponent
   extends FormBase
