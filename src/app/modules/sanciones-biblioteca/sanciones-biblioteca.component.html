@@ -1,0 +1,23 @@
+<div class="mx-10 pt-4">
+<!--<div class="grid grid-cols-4">-->
+
+  <mat-tab-group (selectedTabChange)="vistaTodo.buscarTodos();PersonalInfo.consultarTodo()">
+    <mat-tab label="Vista Totalizada">
+      <app-admin #vistaTodo></app-admin>
+    </mat-tab>
+
+    <mat-tab label="Vista Por Alumno">
+      <div class="">
+        <app-shrd-autocomplete [service]="Servicio.buscador.bind(this.Servicio)" (outputItem)="autoComplete($event)"
+                               keyTitle="idperson">
+          <ng-template appBodyTemplate let-element>
+            <small><strong>ID IEST</strong>: {{element.idperson}} </small><br>
+            <span>{{element.nombre}} </span>
+          </ng-template>
+        </app-shrd-autocomplete>
+      </div>
+      <app-personal-page #PersonalInfo ></app-personal-page>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>
