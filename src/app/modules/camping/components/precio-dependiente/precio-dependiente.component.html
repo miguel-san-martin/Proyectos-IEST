@@ -1,22 +1,21 @@
-<div class="form-container animate__animated animate__fadeIn">
-  <div class="grid" style="padding: 0;">
-    <div class="formSection col-12">
-      <h1>{{title}}</h1>
+<mat-card class="w-full" style="background-color: white; overflow: clip">
+  <div class="flex flex-col" style="padding: 0;">
+    <div class="flex p-1" style="background-color: #fd5722; color: white;">
+      <mat-card-title class="mx-auto my-0">{{title}}</mat-card-title>
     </div>
+    <div class="grid grid-cols-3 p-4">
     @if(data.length){
-    <div class="col-4">
-    </div>
-      <h3 class="col-4 text-center" style="margin: 0;">Dos Semanas</h3>
-      <h3 class="col-4 text-center" style="margin: 0;">Tres Semanas</h3>
+      <h3 class="m-2 text-center col-start-2" style="margin: 0;">Dos Semanas</h3>
+      <h3 class="m-2 text-center" style="margin: 0;">Tres Semanas</h3>
     }
     @for (key of keys; let i = $index; track i) {
-    <h3 class="col-offset-1 col-3" style="align-content: center; margin-bottom: 0;">{{key}}</h3>
+    <h3 class="text-center my-auto" style="align-content: center; margin-bottom: 0;">{{key}}</h3>
       @if (formGroupDescuento.get(['twoWeeks',i,'idDescount'])?.value === '0') {
-      <div class="col-4 text-center" style="align-content: center;">
+      <div class=" text-center" style="align-content: center;">
         No existe para este periodo
       </div>
       }@else{
-      <mat-form-field class="col-4" [formGroup]="$any(formGroupDescuento)?.get(['twoWeeks',i])">
+      <mat-form-field class="p-2" [formGroup]="$any(formGroupDescuento)?.get(['twoWeeks',i])">
         <span matTextPrefix>$ &nbsp;</span>
         <input matInput type="number" formControlName="cost"  (blur)="onInputChange($event,$any(formGroupDescuento).get(['twoWeeks',i,'idDescount']).value)" />
         @if (formGroupDescuento.invalid) {
@@ -25,7 +24,7 @@
       </mat-form-field>
       }
 
-      <mat-form-field class="col-4" [formGroup]="$any(formGroupDescuento)?.get(['treeWeeks',i])">
+      <mat-form-field class="p-2" [formGroup]="$any(formGroupDescuento)?.get(['treeWeeks',i])">
         <span matTextPrefix>$ &nbsp;</span>
         <input matInput type="number" formControlName="cost"  (blur)="onInputChange($event,$any(formGroupDescuento).get(['treeWeeks',i,'idDescount']).value)" />
         @if (formGroupDescuento.invalid) {
@@ -34,5 +33,6 @@
       </mat-form-field>
 
     }
+    </div>
   </div>
-</div>
+</mat-card>

@@ -26,7 +26,6 @@ import { PaginadorDirective } from '@shared/components/table-iest/paginador.dire
     FormatoamdhhFormatodmaPipe,
     PagoVerdeDirective,
     TablaContraloriaComponent,
-    AlertDialogComponent,
     SnackBarComponent,
     ToastIestComponent,
     ContainerIconComponent,
@@ -49,6 +48,7 @@ import { PaginadorDirective } from '@shared/components/table-iest/paginador.dire
     TableIESTComponent,
     TableIESTComponent,
     ShrdSpinnerComponent,
+    AlertDialogComponent,
   ],
   exports: [
     NumberToMxnPipe,

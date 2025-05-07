@@ -9,8 +9,10 @@ import {
 import {
   MatDialog,
   MatDialogActions,
+  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
 import { environment } from 'environments/environment';
 import { forkJoin, map, tap } from 'rxjs';
@@ -139,6 +141,7 @@ export class VeranoCampamentoComponent implements OnInit {
       next: (response: any) => {
         this.formIsVisible = true;
         this.$emitSelectedCatalog(this.selectedCatalog);
+        window.location.reload();
       },
       error: (error) => {
         console.error(error);
@@ -205,7 +208,14 @@ export class VeranoCampamentoComponent implements OnInit {
 //? Pone
 @Component({
   templateUrl: 'dialog.html',
-  imports: [MatDialogActions, MatDialogContent, MatIcon],
+  imports: [
+    MatDialogActions,
+    MatDialogContent,
+    MatIcon,
+    MatButton,
+    MatDialogClose,
+    MatDialogTitle,
+  ],
 })
 export class DialogAnimationsExampleDialog {
   Service = inject(CampamentoIestService);
@@ -216,6 +226,7 @@ export class DialogAnimationsExampleDialog {
     const idRegistro = this.Service.thePeriodIsClosed?.idRegistro;
     this.Service.closePeriod(idRegistro).subscribe((respose) => {
       console.warn('El periodo se ha cerrado');
+      window.location.reload();
     });
 
     this.dialogRef.close('yes');
