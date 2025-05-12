@@ -1,21 +1,38 @@
-<div class="" class="form-container animate__animated animate__fadeIn">
-  <div class="grid" style="padding: 0;">
-    <div class="formSection col-12">
-      <h1>Costos Extra</h1>
-    </div>
-    @for (formgroup of getFormControl.controls;let i = $index; track i) {
-    <h3 class="col-offset-1 col-2" style="align-content: center; margin-bottom: 0;">
-      {{formgroup.value.description}} </h3>
-    <div class="col-3">
-      <mat-form-field>
-        <span matTextPrefix>$ &nbsp;</span>
-        <input matInput type="number" [formControl]="$any(formgroup).get('price')" (blur)="onInputChange($event.target, $any(formgroup.get('idCost')?.value))"
-        />
-        @if (getFormControl.invalid) {
-        <mat-error>{{'Campo requerido'}}</mat-error>
-        }
-      </mat-form-field>
-    </div>
-    }
+<mat-card class="w-full mt-8" style="background-color: white; overflow:clip;">
+  <div class="flex flex-col p-0"></div>
+  <div class="flex p-1" style="background-color: #fd5722; color: white;">
+  <mat-card-title class="mx-auto my-0">Costos Extra</mat-card-title>
+
   </div>
-</div>
+  <mat-card-content>
+    <div class="grid grid-cols-4 p-5">
+
+    @for (formgroup of costos.controls;let i = $index; track i) {
+
+      <h3 class="p-4" style="align-content: center; margin-bottom: 0;">
+        {{formgroup.value.description}} </h3>
+      <div class="">
+        <mat-form-field>
+          <span matTextPrefix>$ &nbsp;</span>
+          <input matInput type="number" [formControl]="$any(formgroup).get('price')" (blur)="onInputChange($event.target, $any(formgroup.get('idCost')?.value))"
+          />
+          @if (costos.invalid) {
+            <mat-error>{{'Campo requerido'}}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    } @empty {
+      "NA"
+    }
+    </div>
+  </mat-card-content>
+
+</mat-card>
+
+
+<!--    {{data | json}}-->
+
+
+
+
+

@@ -12,21 +12,27 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { HeaderTable, Menu } from '@shared/interfaces/header-tables';
+import {
+  Appareance,
+  HeaderTable,
+  Menu,
+} from '@shared/interfaces/header-tables';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MaterialModule } from '../../../shared-material-module/material.module';
+import { NgStyle } from '@angular/common';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'shared-table-iest',
-  standalone: false,
+
   templateUrl:
     '../../../../../../pagares-reinscripciones/src/app/shared/components/table-iest/table-iest.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+  // eslint-disable-next-line @angular-eslint/no-host-metdata-property
   host: {
     class: 'mat-elevation-z8',
   },
@@ -59,6 +65,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
       }
     }
   `,
+  imports: [MaterialModule, NgStyle],
 })
 export class TableIESTComponent<T> implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -141,5 +148,12 @@ export class TableIESTComponent<T> implements OnInit {
 
   slideToggle(event: MatSlideToggleChange, obj: any) {
     obj.fun(event);
+  }
+
+  obtenerEstilos(colores: Appareance): any {
+    return {
+      'background-color': colores.bc ?? '#FB5900FF',
+      color: colores.color ?? 'white',
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
-import { ExamenesFinalesService } from './service/examenes-finales.service';
+import { ServicioBibliotecaService } from '../sanciones-biblioteca/service/servicio-biblioteca.service';
 import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { SharedModule } from '@shared/shared.module';
@@ -10,20 +10,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { SolicitudComponent } from './dialogs/solicitud';
 
 @Component({
-    selector: 'app-solicitud-examenes-finales',
-    imports: [
-        MatToolbar,
-        MatCard,
-        MatCardContent,
-        MatIcon,
-        MatCardHeader,
-        SharedModule,
-    ],
-    templateUrl: './solicitud-examenes-finales.component.html',
-    styleUrl: './solicitud-examenes-finales.component.scss'
+  selector: 'app-solicitud-examenes-finales',
+  imports: [
+    MatToolbar,
+    MatCard,
+    MatCardContent,
+    MatIcon,
+    MatCardHeader,
+    SharedModule,
+  ],
+  templateUrl: './solicitud-examenes-finales.component.html',
+  styleUrl: './solicitud-examenes-finales.component.scss',
 })
 export class SolicitudExamenesFinalesComponent implements OnInit {
-  Service = inject(ExamenesFinalesService);
+  Service = inject(ServicioBibliotecaService);
 
   protected Head = HEAD;
   response = signal<any>([]);
@@ -32,7 +32,7 @@ export class SolicitudExamenesFinalesComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   ngOnInit(): void {
-    this.Service.consultar().subscribe((result: any) => {
+    this.Service.getAllIncidencias().subscribe((result: any) => {
       this.response.set(result[0]);
       this.Service.consultarHistorico().subscribe((result: any) => {
         console.log(result[0]);

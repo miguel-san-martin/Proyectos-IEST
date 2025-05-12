@@ -1,48 +1,53 @@
-<div class="form-container animate__animated animate__fadeIn">
-  <div class="grid" style="padding: 0;">
-    <div class="formSection col-12">
-      <h1>Precio Externo</h1>
+<div class="flex" style="width: 100%;">
+  <mat-card class="flex flex-col my-2" style="padding: 0; width: 100%; background-color: white; overflow: clip">
+
+    <div class="flex p-1" style="background-color: #fd5722; color: white;">
+      <mat-card-title class="mx-auto my-0">Precio Externo</mat-card-title>
     </div>
-    @if(!!this.formGroupExternalCost.get(['twoWeeks', 'maternal','idCost'])?.value){
 
-    <div class="col-4"></div>
-    <h3 class="col-4 text-center" style="margin: 0;">Dos Semanas</h3>
-    <h3 class="col-4 text-center" style="margin: 0;">Tres Semanas</h3>
+    @if (!!this.formGroupExternalCost.get(['treeWeeks', 'maternal', 'idCost'])?.value) {
 
-    <h3 class="col-offset-1 col-3" style="align-content: center; margin-bottom: 0;">Maternal </h3>
+      <div class="grid grid-cols-3">
 
-    <mat-form-field class="col-4" [formGroup]="$any(formGroupExternalCost).get(['twoWeeks','maternal'])">
-      <span matTextPrefix>$ &nbsp;</span>
-      <input matInput type="number" formControlName="price"
-      (blur)="onInputChange($event,$any(formGroupExternalCost).get(['twoWeeks','maternal','idCost']).value)"
-      />
-      @if (formGroupExternalCost.invalid) {
-      <mat-error>{{'Campo requerido'}}</mat-error>
-      }
-    </mat-form-field>
+        <h3 class="m-2 text-center col-start-2" style="margin: 0;">Dos Semanas</h3>
+        <h3 class="m-2 text-center" style="margin: 0;">Tres Semanas</h3>
 
-    <mat-form-field class="col-4" [formGroup]="$any(formGroupExternalCost).get(['treeWeeks','maternal'])">
-      <span matTextPrefix>$ &nbsp;</span>
-      <input matInput type="number" formControlName="price"
-      (blur)="onInputChange($event,$any(formGroupExternalCost).get(['treeWeeks','maternal','idCost']).value)"
-      />
-    </mat-form-field>
+        <h3 class="text-center my-auto" style="">Maternal </h3>
 
-    <h3 class="col-offset-1 col-3" style="align-content: center; margin-bottom: 0;">Infantil</h3>
+        <mat-form-field class="p-2" style="" [formGroup]="$any(formGroupExternalCost).get(['twoWeeks','maternal'])">
+          <span matTextPrefix>$ &nbsp;</span>
+          <input matInput type="number" formControlName="price"
+                 (blur)="onInputChange($event,$any(formGroupExternalCost).get(['twoWeeks','maternal','idCost']).value)"
+          />
+          @if (formGroupExternalCost.invalid) {
+            <mat-error>{{ 'Campo requerido' }}</mat-error>
+          }
+        </mat-form-field>
 
-    <mat-form-field class="col-4" [formGroup]="$any(formGroupExternalCost).get(['twoWeeks','childish'])">
-      <span matTextPrefix>$ &nbsp;</span>
-      <input matInput type="number" formControlName="price"
-      (blur)="onInputChange($event,$any(formGroupExternalCost).get(['twoWeeks','childish','idCost']).value)"
-      />
-    </mat-form-field>
+        <mat-form-field class="p-2" [formGroup]="$any(formGroupExternalCost).get(['treeWeeks','maternal'])">
+          <span matTextPrefix>$ &nbsp;</span>
+          <input matInput type="number" formControlName="price"
+                 (blur)="onInputChange($event,$any(formGroupExternalCost).get(['treeWeeks','maternal','idCost']).value)"
+          />
+        </mat-form-field>
 
-    <mat-form-field class="col-4" [formGroup]="$any(formGroupExternalCost).get(['treeWeeks','childish'])">
-      <span matTextPrefix>$ &nbsp;</span>
-      <input matInput type="number" formControlName="price"
-      (blur)="onInputChange($event,$any(formGroupExternalCost).get(['treeWeeks','childish','idCost']).value)"
-      />
-    </mat-form-field>
+        <h3 class="text-center my-auto" style="">Infantil</h3>
+
+        <mat-form-field class="p-2" style=""  [formGroup]="$any(formGroupExternalCost).get(['twoWeeks','childish'])">
+          <span matTextPrefix>$ &nbsp;</span>
+          <input matInput type="number" formControlName="price"
+                 (blur)="onInputChange($event,$any(formGroupExternalCost).get(['twoWeeks','childish','idCost']).value)"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="p-2" [formGroup]="$any(formGroupExternalCost).get(['treeWeeks','childish'])">
+          <span matTextPrefix>$ &nbsp;</span>
+          <input matInput type="number" formControlName="price"
+                 (blur)="onInputChange($event,$any(formGroupExternalCost).get(['treeWeeks','childish','idCost']).value)"
+          />
+        </mat-form-field>
+
+      </div>
     }
-  </div>
+  </mat-card>
 </div>

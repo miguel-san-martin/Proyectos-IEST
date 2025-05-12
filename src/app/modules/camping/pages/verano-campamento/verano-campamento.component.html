@@ -1,84 +1,98 @@
-
-
-
-<div class="grid animate__animated animate__fadeIn" style="justify-content: center;">
-  <h1 class="col-12">Costos campamento</h1>
+<div class="flex flex-col px-4" style="">
 
   <!-- Select catalog section -->
-  <mat-form-field class="col-12" style="padding: 0%;">
+  <mat-form-field class="pt-4" style="padding: 0;">
     <mat-label>Edición</mat-label>
     <mat-select (selectionChange)="$emitSelectedCatalog($event.value)" [(value)]="selectedCatalog" name="catalogo">
       @for (catalogue of catalogesList; track catalogue) {
-      <mat-option [value]="catalogue.id">{{ catalogue.descripcion }}</mat-option>
+        <mat-option [value]="catalogue.id">{{ catalogue.descripcion }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
   @if (formIsVisible) {
-  <div class="col-12">
-    <form class="grid">
-
-      <!-- Precio Externo -->
-      <div class="col-12">
-        <form-precio-externo [data]="externalPriceData" [priceIsEditable]="priceIsEditable"></form-precio-externo>
-      </div>
-@if (precioExternoIsCorrect) {
-
-        <!-- Precio Infantil -->
-        <div class="col-6">
-          <form-precio-dependiente [data]="childishPriceData"
-            [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
+    <div class="flex">
+      <form class="w-full">
+        <!-- Precio Externo -->
+        <div class="w-full">
+          <form-precio-externo [data]="externalPriceData" [priceIsEditable]="priceIsEditable"></form-precio-externo>
         </div>
+        @if (true) {
+          <div class="flex" style="gap: 1.5rem">
+            <!-- Precio Infantil -->
+            <div class="w-1/2">
+              <form-precio-dependiente [data]="childishPriceData"
+                                       [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
+            </div>
 
-        <!-- Precio Maternal -->
-        <div class="col-6">
-          <form-precio-dependiente [data]="maternalPriceData"
-            [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
-        </div>
+            <!-- Precio Maternal -->
+            <div class="w-1/2">
+              <form-precio-dependiente [data]="maternalPriceData"
+                                       [priceIsEditable]="priceIsEditable"></form-precio-dependiente>
+            </div>
+          </div>
 
-        <!-- Precio Extra -->
-        <div class="col-12">
-          <form-extra-fee [data]="extraPriceData" [priceIsEditable]="priceIsEditable">
 
-          </form-extra-fee>
-        </div>
+          <!-- Precio Extra -->
+          <div class="w-full">
+            <form-extra-fee [data]="extraPriceData" [priceIsEditable]="priceIsEditable">
 
-}
+            </form-extra-fee>
+          </div>
 
-    </form>
-  </div>
+        }
+
+      </form>
+    </div>
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-- New Period alert message -->
-  @if(formIsNotGenerated?.existe == '0'){
-  <div class="col-6">
-    <shrd-alert-dialog [msj]="formIsNotGenerated?.msj" (actionYes)="$generateNewPeriod()"
-      (actionNo)="$reloadPage()"></shrd-alert-dialog>
-  </div>
+  @if (formIsNotGenerated?.existe == '0') {
+    <div class="">
+      <shrd-alert-dialog [msj]="formIsNotGenerated?.msj" (actionYes)="$generateNewPeriod()"
+                         (actionNo)="$reloadPage()"></shrd-alert-dialog>
+    </div>
 
   }
 </div>
 
 @if (formIsVisible) {
 
-<div class="col-12 text-center">
+  <div class="col-12 text-center">
 
-  <!-- LOCK BUTTON -->
-  @if (priceIsEditable && precioExternoIsCorrect) {
-  <button style="margin-top: 1rem;" mat-raised-button (click)="$openDialog('0ms', '0ms')" mat-flat-button color="warn">
-    <mat-icon>lock</mat-icon>
-    Terminar captura de periodo
-  </button>
-  }
+    <!-- LOCK BUTTON -->
+    @if (priceIsEditable) {
+<!--    @if (priceIsEditable && precioExternoIsCorrect) {-->
+      <button class="mt-1" style="background-color: white" mat-raised-button (click)="$openDialog('0ms', '0ms')" mat-flat-button>
+        <mat-icon>lock</mat-icon>
+        Terminar captura de periodo
+      </button>
+    }
 
-  <br />
+    <br />
 
-  <!--Only for Debbugin -->
-  @if (showDebugButton) {
-    <button style="margin-top: 2rem;" (click)="borrarGeneradoDev()" mat-flat-button color="accent">
-      <mat-icon>
-      </mat-icon>
-      PELIGRO BORRAR GENERACION SOLO DEV </button>
-  }
-</div>
+    <!--Only for Debbugin -->
+    @if (showDebugButton) {
+      <button style="margin-top: 2rem;" (click)="borrarGeneradoDev()" mat-flat-button color="accent">
+        <mat-icon>
+        </mat-icon>
+        PELIGRO BORRAR GENERACION SOLO DEV
+      </button>
+    }
+  </div>
 }

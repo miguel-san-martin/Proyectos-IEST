@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServicioBase } from './servicio-base.service';
+import { ServicioBase } from '../../sanciones-biblioteca/service/servicio-base.service';
 import {
   ExamenesFinales_Info,
   ExamenesFinales_Materias,

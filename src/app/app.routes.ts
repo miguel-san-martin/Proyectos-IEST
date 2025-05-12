@@ -68,13 +68,13 @@ export const routes: Routes = [
         (c) => c.NoPermisosComponent,
       ),
   },
-  // {
-  //   path: 'login-screen',
-  //   loadComponent: () =>
-  //     import('./pages/login-screen/login-screen.component').then(
-  //       (c) => c.LoginScreenComponent,
-  //     ),
-  // },
+  {
+    path: 'login-screen',
+    loadComponent: () =>
+      import('./pages/login-screen/login-screen.component').then(
+        (c) => c.LoginScreenComponent,
+      ),
+  },
   // {
   //   path: 'prospectos',
   //   loadComponent: () =>
@@ -100,11 +100,11 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    // canActivate: [BusquedaIDGuard],
+    // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
-        './modules/solicitud-examenes-finales/solicitud-examenes-finales.component'
-      ).then((c) => c.SolicitudExamenesFinalesComponent),
+        './modules/camping/pages/verano-campamento/verano-campamento.component'
+      ).then((c) => c.VeranoCampamentoComponent),
     // redirectTo: 'busqueda',
   },
   // {

@@ -1,6 +1,6 @@
 <form>
-  <mat-form-field class="my-3" style="width: 100%">
-    <mat-label>ID o Nombre</mat-label>
+  <mat-form-field appearance="fill" class="my-3" style="width: 100%">
+    <mat-label>{{placeholder()}}</mat-label>
     <input  #input
            type="text"
            matInput
@@ -8,7 +8,7 @@
             (input)="searching($event)"
     >
 
-    <mat-autocomplete requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="functionDisplayName" #auto="matAutocomplete">
+    <mat-autocomplete  requireSelection (optionSelected)="outputItem.emit(this.searchControl.value)" [displayWith]="functionDisplayName" #auto="matAutocomplete">
 
       @for (item of filteredOptions(); track item) {
         <mat-option [value]="item">
@@ -26,10 +26,11 @@
 
 
     @if (input.value) {
-      <button matSuffix mat-icon-button (click)="input.value=''">
-        <mat-icon>close</mat-icon>
+      <button mat-icon-button matSuffix (click)="input.value=''">
+        <mat-icon fontIcon="close"></mat-icon>
       </button>
     }
+
   </mat-form-field>
 
 </form>

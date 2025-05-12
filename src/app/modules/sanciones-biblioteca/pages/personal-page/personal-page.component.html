@@ -1,0 +1,103 @@
+<div class="">
+  @if (alumnoConsultado()) {
+    @if (alumnoConsultado().idPerson) {
+      <mat-card style="background-color: white">
+        <div class="flex w-full flex-col">
+          <!--        DATOS-->
+
+          <div class="flex flex-row w-full">
+            <mat-card class="color-brown m-4 w-full" appearance="outlined" style="background-color: #fef1ed; overflow: clip">
+              <mat-card-subtitle class="m-auto py-5">Datos generales</mat-card-subtitle>
+              <mat-card-content class="flex flex-col content-center">
+                <!--        <mat-icon style="min-width: 40px" class="my-auto">info</mat-icon>-->
+                <div class="flex justify-center">
+                  <img [src]="url()" class="rounded-2xl" width="180" height="200" alt="imagen de alumno">
+
+                </div>
+                <div class="w-full">
+                  @for (key of Object.keys(alumnoConsultado()); track key) {
+
+                    <div *ngIf="key !== 'foto'" class="flex">
+
+                        <div class="flex justify-start p-3 word-break" style="width: calc(30% - 40px); color: black;font-weight: 500">
+                          {{ back(key) }}
+                        </div>
+                        <div class="flex-1 justify-start p-3" style="color: #797675;font-weight: 500">
+                          {{ alumnoConsultado()[key] }}
+                        </div>
+
+                    </div>
+                  }
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="color-brown m-4  w-full" appearance="outlined" style="background-color: #fef1ed; overflow: clip">
+              <mat-card-subtitle class="mx-auto py-5">Carreras</mat-card-subtitle>
+              <mat-card-content class="flex flex-col content-center">
+                <div class="flex justify-center">
+                  <div class="w-full">
+                    @for (carrera of carreraAlumnoConsultado(); track carrera; let index = $index) {
+
+                      @for (key of Object.keys(carrera); track key; ) {
+
+                        <div class="flex">
+                          @if (key !== 'idGrado' && (carrera['idGrado'] !== 2 || key !== 'semestre') ){
+                          <div class="flex justify-end p-3" style="min-width: 40%; color: black;font-weight: 500">
+                            {{ back(key) }}
+                          </div>
+                          <div class="flex-1 justify-start p-3" style="color: #797675;font-weight: 500">
+                            {{ carrera[key] }}
+                          </div>
+                          }
+                        </div>
+                      }
+                      <!--                      <mat-divider></mat-divider>-->
+                      @if (carreraAlumnoConsultado().length != index + 1) {
+                        <mat-divider ></mat-divider>
+                      }
+                    }
+                  </div>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="flex flex-row w-full">
+            <mat-card class="flex-1 color-brown m-4" appearance="outlined"
+                      style="background-color: #fef1ed; overflow: clip">
+              <div class="flex flex-row px-5 justify-between">
+                <div class="flex p-3 w-12">
+
+                </div>
+
+                <mat-card-subtitle class="py-5">Información Académica</mat-card-subtitle>
+                <div class="flex p-3">
+                  <button mat-button style="background-color: #a73900 ; color: white" (click)="openDialog()">
+<!--                    <mat-icon style="color: white">add</mat-icon>-->
+                    Agregar Incidencia
+                  </button>
+                </div>
+              </div>
+              <mat-card-content class="flex flex-col content-center">
+                <div class="flex justify-center">
+                  <div class="w-full">
+                    @if (incidecias().length > 0) {
+                      <shared-table-iest [data]="incidecias()" [tableHead]="HEAD" [pages]="[60, 20, 100]" />
+                    } @else {
+                      No hay incidencias con el alumno.
+                    }
+                  </div>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+        </div>
+      </mat-card>
+
+    }
+  }
+
+
+</div>

@@ -3,13 +3,13 @@ import {
   inject,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
 } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -21,15 +21,26 @@ import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
 import { VeranoCampamentoComponent } from '../../pages/verano-campamento/verano-campamento.component';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { SnackbarComponent } from '../snackbar/snackbar.component';
+import { MatError, MatInput, MatPrefix } from '@angular/material/input';
+import { MatFormField } from '@angular/material/select';
+import { MatCard, MatCardTitle } from '@angular/material/card';
 
 @Component({
-    selector: 'form-precio-externo',
-    templateUrl: './precio-externo.component.html',
-    standalone: false
+  selector: 'form-precio-externo',
+  templateUrl: './precio-externo.component.html',
+  imports: [
+    MatFormField,
+    MatPrefix,
+    MatInput,
+    ReactiveFormsModule,
+    MatError,
+    MatCard,
+    MatCardTitle,
+  ],
 })
 export class PrecioExternoComponent
   extends SnackbarComponent
-  implements OnInit, OnChanges
+  implements OnChanges
 {
   fb = inject(FormBuilder);
   Service = inject(CampamentoIestService);
@@ -76,28 +87,6 @@ export class PrecioExternoComponent
         Validators.required,
       ],
     });
-  }
-
-  // Abre servicio para el debounce time del input
-  ngOnInit(): void {
-    // this.baseSubject.pipe(debounceTime(500)).subscribe(({ idCosto, costo }) => {
-    //   //? Check si el servicio esta abierto
-    //   this.Service.CheckIfIsEditable(
-    //     this.Service.thePeriodIsClosed?.idPeriodo,
-    //   ).subscribe((response: ResponseEditabilityPeriode[]) => {
-    //     //? si esta abierto actualizalo
-    //     if (response[0].estatus !== _estatus.Cerrado) {
-    //       this.Service.updateCost(idCosto, costo).subscribe((resp: any) => {
-    //         console.log(resp);
-    //         this.openSnackBar();
-    //       });
-    //     } else {
-    //       console.error('Periodo se encuentra cerrado');
-    //       this.errorSnackBar();
-    //       this.cerrarPeriodo();
-    //     }
-    //   });
-    // });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,6 +1,6 @@
 @if (data().length > 0) {
   <div style="overflow-x: auto; min-width: 100px ">
-    <table mat-table [dataSource]="dataSource" matSort >
+    <table mat-table [dataSource]="dataSource" matSort>
       @for (head of tableHead(); track head.label) {
 
         <ng-container [matColumnDef]="head.label">
@@ -8,8 +8,7 @@
           @if (head.label === "Nombre") {
             <th class="th" mat-header-cell
                 *matHeaderCellDef
-                [ngStyle]="{'min-width': (head.label === 'Nombre') ? '300px': 'auto'}"
-                mat-sort-header>{{ head.label }}
+                [ngStyle]="{'max-width': (head.label === 'Nombre') ? '300px': 'auto'}" mat-sort-header>{{ head.label }}
             </th>
           } @else if (head.label === 'Añadir Miembros') {
             <th class="th" style="max-width: 90px !important;" mat-header-cell
@@ -42,21 +41,25 @@
                   }
                 </mat-menu>
                 <!--              {{ element[head.namePropiedad].menu | json }}-->
-              }
-              @else {
-                @if(element[head.namePropiedad].type === 1){
-                  <button mat-button  class="boton-especial" style="background-color: #efd7be"
-                          (click)="element[head.namePropiedad].fun()">
-                    {{element[head.namePropiedad].label}}
-                  </button>
-                } @else {
-                  <button mat-icon-button class="hov-blue"
-                          (click)="element[head.namePropiedad].fun()">
-                    <mat-icon
-                      [fontIcon]="element[head.namePropiedad].label ">
-                    </mat-icon>
-                  </button>
+              } @else {
+                <!--                {{element[head.namePropiedad].type | json}}-->
+
+                @if (element[head.namePropiedad]) {
+                  @if (element[head.namePropiedad].type) {
+                    <button mat-button class="boton-especial" style="background-color: #fb5900; color: white"
+                            (click)="element[head.namePropiedad].fun()">
+                      {{ element[head.namePropiedad].label }}
+                    </button>
+                  } @else {
+<!--                    [ngStyle]="{'max-width': (head.label === 'Nombre') ? '300px': 'auto'}"-->
+                    <button mat-icon-button class="hov-blue" (click)="element[head.namePropiedad].fun()" [ngStyle]="obtenerEstilos(element[head.namePropiedad].appareance)" >
+                      <mat-icon
+                        [fontIcon]="element[head.namePropiedad].label ">
+                      </mat-icon>
+                    </button>
+                  }
                 }
+
 
               }
             </td>
@@ -89,16 +92,14 @@
   </div>
 
 
-
-
   <mat-paginator
     [pageSizeOptions]="pages()"
   />
-  }
+}
 
 @if (!data()[0]) {
   <div>
-    <app-shrd-spinner/>
+    <app-shrd-spinner />
   </div>
 }
 

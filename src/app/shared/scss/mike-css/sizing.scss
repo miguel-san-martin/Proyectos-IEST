@@ -1,62 +1,55 @@
 @use "sass:map";
-@use "padding";
-
-/*** Spacing ***/
-// Tomado de los estilos de Bootstrap (de la versión 3, creo... se tiene que hacer una revisión). Era justo y necesario.
 
 $spacer: 1rem !default;
-$spacers: () !default;
-// stylelint-disable-next-line scss/dollar-variable-default
 
-// Hace clases del 0 al 90 con .25rem por clase: 4px
-padding.$map: ();
+// Crear mapa de tamaños de 0 a 90
+$map: ();
 @for $i from 0 through 90 {
-  $map: map.merge(padding.$map, ($i: $i * .25rem))
+  $map: map.merge($map, ($i: $i * .25rem));
 }
 
+// Fracciones predefinidas
 $fracciones: (
-  auto:auto,
-  1\/6:16.666667%,
-  1\/5:20%,
-  1\/4:25%,
-  2\/6:33.333333%,
-  1\/3:33.333333%,
-  2\/5:40%,
-  1\/2:50%,
-  2\/4:50%,
-  3\/6:50%,
-  3\/5:60%,
-  2\/3:66.666667%,
-  4\/6:66.666667%,
-  3\/4:75%,
-  4\/5:80%,
-  5\/6:83.333333%,
-  full:100%,
-  screen:100vw,
-  min:min-content,
-  max:max-content,
-  fit:fit-content
+  auto: auto,
+  1\/6: 16.666667%,
+  1\/5: 20%,
+  1\/4: 25%,
+  2\/6: 33.333333%,
+  1\/3: 33.333333%,
+  2\/5: 40%,
+  1\/2: 50%,
+  2\/4: 50%,
+  3\/6: 50%,
+  3\/5: 60%,
+  2\/3: 66.666667%,
+  4\/6: 66.666667%,
+  3\/4: 75%,
+  4\/5: 80%,
+  5\/6: 83.333333%,
+  full: 100%,
+  screen: 100vw,
+  min: min-content,
+  max: max-content,
+  fit: fit-content
 );
 
-padding.$spacers: map.merge(
-    padding.$map,
-    $fracciones,
-);
+$spacers: map.merge($map, $fracciones);
 
-// Width y height
+// Utilidades de width y height
 @each $prop, $abbrev in (width: w, height: h) {
-  @each $size, $length in padding.$spacers {
+  @each $size, $length in $spacers {
     .#{$abbrev}-#{$size} {
       #{$prop}: $length !important;
     }
   }
 }
 
-//Max y Min with height
+// Utilidades de min/max
 @each $prop, $abbrev in (min-width: min-w, min-height: min-h, max-width: max-w, max-height: max-h) {
-  @each $size, $length in padding.$spacers {
+  @each $size, $length in $spacers {
     .#{$abbrev}-#{$size} {
       #{$prop}: $length !important;
     }
   }
 }
+
