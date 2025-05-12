@@ -26,16 +26,15 @@ import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
 import { SelectedCatalog } from '../../interfaces/selected-catalog';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
-import { MatIcon } from '@angular/material/icon';
 import { SharedModule } from '@shared/shared.module';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatLabel, MatSelect } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   templateUrl: './verano-campamento.component.html',
   imports: [
-    MatIcon,
     SharedModule,
     PreciosExtraComponent,
     PrecioDependienteComponent,
@@ -45,6 +44,7 @@ import { MatButton } from '@angular/material/button';
     MatLabel,
     MatFormField,
     MatButton,
+    MatIconModule,
   ],
 })
 export class VeranoCampamentoComponent implements OnInit {
@@ -211,10 +211,10 @@ export class VeranoCampamentoComponent implements OnInit {
   imports: [
     MatDialogActions,
     MatDialogContent,
-    MatIcon,
     MatButton,
     MatDialogClose,
     MatDialogTitle,
+    MatIconModule,
   ],
 })
 export class DialogAnimationsExampleDialog {
