@@ -97,14 +97,24 @@ export const routes: Routes = [
   //       './modules/busqueda-pagares/components/layout/layout.component'
   //     ).then((c) => c.LayoutComponent),
   // },
+  // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   // canActivate: [bibliotecaGuard],
+  //   loadComponent: () =>
+  //     import(
+  //       './modules/camping/pages/verano-campamento/verano-campamento.component'
+  //     ).then((c) => c.VeranoCampamentoComponent),
+  //   // redirectTo: 'busqueda',
+  // },
   {
     path: '',
     pathMatch: 'full',
     // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
-        './modules/camping/pages/verano-campamento/verano-campamento.component'
-      ).then((c) => c.VeranoCampamentoComponent),
+        './modules/comprobantes-consecutivo-forma-pago/comprobantes-consecutivo-forma-pago.component'
+      ).then((c) => c.ComprobantesConsecutivoFormaPagoComponent),
     // redirectTo: 'busqueda',
   },
   // {
