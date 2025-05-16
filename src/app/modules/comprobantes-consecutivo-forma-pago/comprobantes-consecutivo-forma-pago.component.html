@@ -1,0 +1,72 @@
+<mat-card class="mx-4 mt-4 p-6" style="background-color: white">
+
+
+    <form class="grid grid-cols-2" style="gap:1rem" [formGroup]="form">
+
+
+      <mat-form-field class="col-span-2">
+        <mat-label>Rango de Fechas</mat-label>
+        <mat-date-range-input
+          [formGroup]="form"
+          [rangePicker]="rangePicker">
+          <input matStartDate placeholder="Start date" formControlName="fechaInicial">
+          <input matEndDate placeholder="End date" formControlName="fechaFinal">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #rangePicker></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-form-field class="">
+        <mat-label>Hora Inicio</mat-label>
+        <input matInput [matTimepicker]="picker" formControlName="horaInicial">
+        <mat-timepicker-toggle matIconSuffix [for]="picker" />
+        <mat-timepicker #picker />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Hora final</mat-label>
+        <input matInput [matTimepicker]="picker2" formControlName="horaFinal">
+        <mat-timepicker-toggle matIconSuffix [for]="picker2" />
+        <mat-timepicker #picker2 />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Comprobante</mat-label>
+        <mat-select formControlName="idComprobante">
+          @for (comprobante of comprobantes(); track comprobante) {
+            <mat-option [value]="comprobante.idComprobante">{{ comprobante.comprobante }}</mat-option>
+          } @empty {
+            ERROR
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Caja</mat-label>
+        <mat-select formControlName="idCaja">
+          @for (caja of cajas(); track caja) {
+            <mat-option [value]="caja.idCaja">{{ caja.descripcion }}</mat-option>
+          } @empty {
+            ERROR
+          }
+
+        </mat-select>
+      </mat-form-field>
+
+      <section class="col-span-2 mx-auto">
+        <mat-checkbox formControlName="resumen" class="">Solo Resumen (No se muestra detalle de facturas o recibos). Se recomienda cuando se
+          imprimen Ambos: Facturas y Recibos Juntos.
+        </mat-checkbox>
+      </section>
+    </form>
+
+
+  <div class="w-full flex">
+    <button mat-button class="w-1/4 mx-auto mt-4" style="background-color: #5a4b4b; color: white" (click)="submit()">
+      Enviar
+    </button>
+  </div>
+
+</mat-card>
+
+
