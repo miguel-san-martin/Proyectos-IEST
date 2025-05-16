@@ -108,6 +108,15 @@ export const routes: Routes = [
   //   // redirectTo: 'busqueda',
   // },
   {
+    path: 'mas',
+    // canActivate: [bibliotecaGuard],
+    loadComponent: () =>
+      import(
+        './modules/comprobantes-consecutivo-forma-pago/pages/detalles-emitidos-notas/detalles-emitidos-notas.component'
+      ).then((c) => c.DetallesEmitidosNotasComponent),
+    // redirectTo: 'busqueda',
+  },
+  {
     path: '',
     pathMatch: 'full',
     // canActivate: [bibliotecaGuard],
@@ -117,6 +126,7 @@ export const routes: Routes = [
       ).then((c) => c.ComprobantesConsecutivoFormaPagoComponent),
     // redirectTo: 'busqueda',
   },
+
   // {
   //   path: 'programas-liderazgo',
   //   canActivate: [programaLiderasgoGuard],

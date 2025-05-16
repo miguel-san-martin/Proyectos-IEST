@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   effect,
@@ -67,7 +68,7 @@ import { NgStyle } from '@angular/common';
   `,
   imports: [MaterialModule, NgStyle],
 })
-export class TableIESTComponent<T> implements OnInit {
+export class TableIESTComponent<T> implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -79,7 +80,7 @@ export class TableIESTComponent<T> implements OnInit {
 
   public pages: InputSignal<any> = input([10, 20, 100]);
 
-  mostrarPaginador = true;
+  public mostrarPaginador = true;
 
   //! SECCION PARA FUNCIONALIDAD DE SELECT ROW
   readonly selectionableOutpu = output();
@@ -93,6 +94,22 @@ export class TableIESTComponent<T> implements OnInit {
     if (atributos.getNamedItem('nopaginador')) {
       this.mostrarPaginador = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource = new MatTableDataSource(this.data());
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (item: any, property: string) => {
+      const map = new Map(
+        this.tableHead().map((item: HeaderTable) => [
+          item.label,
+          item.namePropiedad,
+        ]),
+      );
+      const head: string = map.get(property) || 'error';
+      return item[head];
+    };
   }
 
   readonly effectFilter = effect(() => {

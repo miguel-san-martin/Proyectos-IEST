@@ -8,9 +8,9 @@
 
 
 <mat-toolbar color="primary" style="display: none">
-  <mat-icon class="material-symbols-outlined" style="padding: .5rem ; cursor: pointer" (click)="closemap()">menu
-  </mat-icon>
-  <span>{{ title }}</span>
+<!--  <mat-icon class="material-symbols-outlined" style="padding: .5rem ; cursor: pointer" (click)="closemap()">menu-->
+<!--  </mat-icon>-->
+  <span></span>
   <!--Nombre del módulo que aparece al inicio, en la barra naranja-->
 </mat-toolbar>
 
@@ -24,10 +24,10 @@
     <div>
       <!--  BARRA -->
       <mat-toolbar color="primary" class="flex justify-between">
-        <span>Detalle Consecutivo Folios Comprobantes Con Forma Pago (Corte Caja)</span>
+        <span>{{ titulo() || 'Titulo' }}</span>
       </mat-toolbar>
     </div>
-    <router-outlet />
+    <router-outlet/>
 <!--    <div class="" >-->
 <!--      <mat-nav-list>-->
 
