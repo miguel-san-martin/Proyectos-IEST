@@ -69,38 +69,50 @@
   </form>
 
   <div class="w-full flex">
-    <button mat-button class="w-1/4 mx-auto mt-4" style="background-color: #5a4b4b; color: white" (click)="submit()">
-      <mat-icon>search</mat-icon> Buscar
+    <button mat-button class="w-1/4 mx-auto mt-4" style="background-color: #fd5900; color: white" (click)="submit()">
+      <mat-icon>search</mat-icon>
+      Buscar
     </button>
   </div>
 
 </mat-card>
 
 
+@if (data() !== null) {
+  <mat-card style="background-color: white; min-height: 769px" class="p-8 m-4">
 
 
-@if (data().length > 0) {
-  <mat-card style="background-color: white" class="p-8 m-4">
-    <div>
-      <button mat-raised-button (click)="getEnlace()">
-        PDF
-      </button>
+    @if (data().at(0)?.error === 1) {
+      <mat-card-content class="m-auto">
+        {{ data()[0]?.mensaje }}
+      </mat-card-content>
+    } @else {
 
-      <button color="primary" mat-raised-button (click)="descargarExcel()"> Descargar
-        asistentes
-      </button>
-    </div>
-<!--    <mat-card-title>Resultados:</mat-card-title>-->
+      <mat-card-title class="flex justify-end">
+        <button mat-icon-button matTooltip="Descargar PDF" (click)="getEnlace()" style="color: #53433e">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+        <button color="primary" matTooltip="Descargar Excel" mat-icon-button (click)="descargarExcel()"
+                style="color: #53433e">
+         <span class="material-symbols-outlined">
+          table
+        </span>
+        </button>
+      </mat-card-title>
 
-    <mat-card-content class="p-4">
-      <div class="flex justify-centers">
-        <shared-table-iest class="w-full" [tableHead]="TABLE_HEAD" [data]="this.data()">
-        </shared-table-iest>
-      </div>
+      <!--    <mat-card-title>Resultados:</mat-card-title>-->
 
-    </mat-card-content>
+      <mat-card-content class="p-4">
+        <div class="flex justify-centers">
+          <shared-table-iest class="w-full" [tableHead]="TABLE_HEAD" [data]="this.data()">
+          </shared-table-iest>
+        </div>
+
+      </mat-card-content>
+    }
   </mat-card>
 }
+
 
 
 

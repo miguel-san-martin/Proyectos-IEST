@@ -108,7 +108,8 @@ export const routes: Routes = [
   //   // redirectTo: 'busqueda',
   // },
   {
-    path: 'mas',
+    path: '',
+    pathMatch: 'full',
     // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
@@ -116,16 +117,16 @@ export const routes: Routes = [
       ).then((c) => c.DetallesEmitidosNotasComponent),
     // redirectTo: 'busqueda',
   },
-  {
-    path: '',
-    pathMatch: 'full',
-    // canActivate: [bibliotecaGuard],
-    loadComponent: () =>
-      import(
-        './modules/comprobantes-consecutivo-forma-pago/comprobantes-consecutivo-forma-pago.component'
-      ).then((c) => c.ComprobantesConsecutivoFormaPagoComponent),
-    // redirectTo: 'busqueda',
-  },
+  // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   // canActivate: [bibliotecaGuard],
+  //   loadComponent: () =>
+  //     import(
+  //       './modules/comprobantes-consecutivo-forma-pago/comprobantes-consecutivo-forma-pago.component'
+  //     ).then((c) => c.ComprobantesConsecutivoFormaPagoComponent),
+  //   // redirectTo: 'busqueda',
+  // },
 
   // {
   //   path: 'programas-liderazgo',

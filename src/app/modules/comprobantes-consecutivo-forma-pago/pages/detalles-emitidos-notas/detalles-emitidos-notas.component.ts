@@ -30,6 +30,9 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderTable } from '@shared/interfaces/header-tables';
 import { SharedModule } from '@shared/shared.module';
+import { ObjExcelFileService } from '@shared/services/obj-excel-file.service';
+import { forkJoin, take } from 'rxjs';
+import { MatTooltip } from '@angular/material/tooltip';
 
 export const MY_FORMATS = {
   parse: {
@@ -98,6 +101,7 @@ export interface Respuesta {
     MatIconModule,
     MatCardModule,
     SharedModule,
+    MatTooltip,
   ],
   providers: [
     provideMomentDateAdapter(),
@@ -112,47 +116,59 @@ export class DetallesEmitidosNotasComponent implements OnInit {
   ordenamiento = signal<ordenamiento[]>([]);
   grados = signal<Grados[]>([]);
   operaciones = signal<Operaciones[]>([]);
+  input = signal<any>('');
+  data = signal<any>(null);
 
   private Service = inject(DetalleComprobanteService);
+  private ExcelService = inject(ObjExcelFileService);
+  // Signal del input del usuario
 
   readonly form = new FormGroup({
     fechaInicial: new FormControl(moment()),
     fechaFinal: new FormControl(moment()),
-    ordenamiento: new FormControl(''),
+    ordenamiento: new FormControl('Nombre'),
     idGrado: new FormControl(0),
     idOperacion: new FormControl(),
   });
-  data = signal<Respuesta[]>([]);
+
+  // Opciones filtradas como un signal computado
+  opcionesFiltradas = computed(() => {
+    const texto = this.input().toLowerCase();
+    return this.operaciones().filter((op) =>
+      op.Operacion.toLowerCase().includes(texto),
+    );
+  });
+
+  error = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.Service.getOrdenamiento().subscribe((x: ordenamiento[]) => {
-      // console.log(x);
-      this.ordenamiento.set(x);
-    });
-    this.Service.getObtieneOperaciones().subscribe((x: Grados[]) => {
-      // console.log(x);
-      this.grados.set(x);
-    });
-    this.Service.getConceptos().subscribe((x: Operaciones[]) => {
-      // console.log(x);
-      this.operaciones.set(x);
-      // this.grados.set(x);
-    });
-    const paylof: operacionRequest = {
-      ordenamiento: 'Nombre',
-      idGrado: 2,
-      fechaFinal: '01/01/2025',
-      fechaInicial: '01/01/2024',
-      idOperacion: 475,
-    };
-    this.Service.getInfo(paylof).subscribe((x: Respuesta[]) => {
-      console.log(x);
-      this.data.set(x);
-    });
+    const servicios = [
+      this.Service.getOrdenamiento(),
+      this.Service.getObtieneOperaciones(),
+      this.Service.getConceptos(),
+    ];
+    forkJoin(servicios)
+      .pipe(take(1))
+      .subscribe((x) => {
+        this.ordenamiento.set(x[0]);
+        this.grados.set(x[1]);
+        this.operaciones.set(x[2]);
+      });
   }
 
   submit() {
-    const payload: operacionRequest = {
+    this.Service.getInfo(this.getPayload())
+      .pipe(take(1))
+      .subscribe((x: any) => {
+        if (x.error > 0) {
+          this.error.set(true);
+        }
+        this.data.set(x);
+      });
+  }
+
+  private getPayload(): operacionRequest {
+    return {
       idGrado: this.form.value.idGrado || 0,
       idOperacion: this.form.value.idOperacion?.idOperacion,
       fechaInicial: moment(this.form.get('fechaInicial')?.value).format(
@@ -163,21 +179,7 @@ export class DetallesEmitidosNotasComponent implements OnInit {
       ),
       ordenamiento: this.form.value.ordenamiento || '',
     };
-    const paylof: operacionRequest = {
-      ordenamiento: 'Nombre',
-      idGrado: 2,
-      fechaFinal: '01/01/2025',
-      fechaInicial: '01/01/2024',
-      idOperacion: 475,
-    };
-    this.Service.getInfo(paylof).subscribe((x: Respuesta[]) => {
-      console.log(x);
-      this.data.set(x);
-    });
   }
-
-  // Signal del input del usuario
-  input = signal<any>('');
 
   //Este metodo es de mat, envia el value actual y devuelve un string con lo que debera decir el input.
   public displayFn(operacion: Operaciones) {
@@ -185,45 +187,12 @@ export class DetallesEmitidosNotasComponent implements OnInit {
     return operacion.Operacion;
   }
 
-  // Opciones filtradas como un signal computado
-  opcionesFiltradas = computed(() => {
-    const texto = this.input().toLowerCase();
-    return this.operaciones().filter((op) =>
-      op.Operacion.toLowerCase().includes(texto),
-    );
-  });
-
   setInput(evento: any) {
     this.input.set(evento.target.value);
   }
 
-  // Opcional: para debug
-  constructor() {}
-
-  protected readonly HTMLInputElement = HTMLInputElement;
-  protected readonly TABLE_HEAD = TABLE_HEAD;
-
   getEnlace() {
-    // const payload: operacionRequest = {
-    //   idGrado: this.form.value.idGrado || 0,
-    //   idOperacion: this.form.value.idOperacion?.idOperacion,
-    //   fechaInicial: moment(this.form.get('fechaInicial')?.value).format(
-    //     'DD/MM/YYYY',
-    //   ),
-    //   fechaFinal: moment(this.form.get('fechaFinal')?.value).format(
-    //     'DD/MM/YYYY',
-    //   ),
-    //   ordenamiento: this.form.value.ordenamiento || '',
-    // };
-    const paylof: operacionRequest = {
-      ordenamiento: 'Nombre',
-      idGrado: 2,
-      fechaFinal: '01/01/2025',
-      fechaInicial: '01/01/2024',
-      idOperacion: 475,
-    };
-    this.Service.getLiga(paylof).subscribe((x: any) => {
-      console.log(x);
+    this.Service.getLiga(this.getPayload()).subscribe((x: any) => {
       if (x.error == 0) {
         window.open(x.liga);
       } else {
@@ -232,7 +201,22 @@ export class DetallesEmitidosNotasComponent implements OnInit {
     });
   }
 
-  descargarExcel() {}
+  descargarExcel() {
+    const columnasMapeo: { [key: string]: string } = {
+      idcaja: 'Caja',
+      login: 'Cajero',
+      idperson: 'IdIest',
+      nombre: 'Nombre',
+      abrcarrera: 'Carrera',
+      precio: 'Monto',
+      folio: 'Folio',
+      fecha: 'Fecha',
+      notacompleta: 'Observaciones',
+    };
+    this.ExcelService.exportAsExcelFile(this.data(), 'reportes', columnasMapeo);
+  }
+
+  protected readonly TABLE_HEAD = TABLE_HEAD;
 }
 export const TABLE_HEAD: HeaderTable[] = [
   {

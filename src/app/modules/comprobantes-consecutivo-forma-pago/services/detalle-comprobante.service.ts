@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DetalleComprobanteService extends ServicioBase {
-  url: string = 'api/contraloria/detallesEmitidosNotas.php';
+  url: string = '/api/contraloria/detallesEmitidosNotas.php';
   constructor() {
     super();
   }
