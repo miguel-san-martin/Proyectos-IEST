@@ -1,8 +1,7 @@
-<div style="margin: -8px;">
-  <!--  BARRA -->
+ <!--  BARRA -->
   <mat-toolbar color="primary" class="flex justify-between">
     <span>Programa de Liderazgo</span>
-    <button mat-icon-button style="background-color: #5a4b4b" (click)="altaAlumno()">
+    <button mat-icon-button style="background-color: #5a4b4b; color: white" (click)="altaAlumno()">
       <mat-icon>add</mat-icon>
     </button>
   </mat-toolbar>
@@ -92,10 +91,11 @@
 
             <mat-chip-listbox>
               @for (estatu of datos().estatus; track estatu) {
-                <mat-chip-option style="background-color: #ffc7a6" [matTooltip]="'descripción'" (click)="( miFormulario.get('idEstatus')?.value == estatu.idEstatus) ?  miFormulario.get('idEstatus')?.setValue(-1)
-                : miFormulario.get('idEstatus')?.setValue(estatu.idEstatus);consultarAlumnos()
-
-">
+                <mat-chip-option style="background-color: #ffc7a6" [matTooltip]="'descripción'"
+                                 (click)="( miFormulario.get('idEstatus')?.value == estatu.idEstatus) ?
+                                 miFormulario.get('idEstatus')?.setValue(-1):
+                                  miFormulario.get('idEstatus')?.setValue(estatu.idEstatus);
+                                  consultarAlumnos()">
                   <span  [ngStyle]="{'color': '#'+estatu.color}">● </span><b>{{estatu.Estatus}} </b></mat-chip-option>
               }
             </mat-chip-listbox>
@@ -310,5 +310,3 @@
       </mat-card-content>
     </mat-card>
   </div>
-
-</div>

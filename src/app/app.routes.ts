@@ -113,8 +113,8 @@ export const routes: Routes = [
     // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
-        './modules/comprobantes-consecutivo-forma-pago/pages/detalles-emitidos-notas/detalles-emitidos-notas.component'
-      ).then((c) => c.DetallesEmitidosNotasComponent),
+        './modules/programas-liderazgo/programas-liderazgo.component'
+      ).then((c) => c.ProgramasLiderazgoComponent),
     // redirectTo: 'busqueda',
   },
   // {
