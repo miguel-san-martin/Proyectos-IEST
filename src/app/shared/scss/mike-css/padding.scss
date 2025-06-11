@@ -1,3 +1,4 @@
+@use "sass:map";
 /*** Spacing ***/
 // Tomado de los estilos de Bootstrap (de la versión 3, creo... se tiene que hacer una revisión). Era justo y necesario.
 
@@ -6,10 +7,10 @@ $spacers: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $map: ();
 @for $i from 0 through 90 {
-  $map: map-merge($map, ($i: $i * .25rem))
+  $map: map.merge($map, ($i: $i * .25rem))
 }
 
-$spacers: map-merge(
+$spacers: map.merge(
     $map,
     $spacers
 );

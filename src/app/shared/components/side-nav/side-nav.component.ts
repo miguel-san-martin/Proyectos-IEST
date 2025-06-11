@@ -28,14 +28,14 @@ export class SideNavComponent implements OnInit {
   modulos!: Node[];
 
   ngOnInit(): void {
-    if (environment.production) {
+    if (!environment.production) {
       this.http
-        .get<Node[]>(`${environment.url}assets/index.json`)
+        .get<Node[]>(`${environment.url}/public/index.json`)
         .subscribe((res: Node[]) => {
           this.modulos = res;
         });
     } else {
-      this.http.get<Node[]>('/assets/index.json').subscribe((res: Node[]) => {
+      this.http.get<Node[]>('/public/index.json').subscribe((res: Node[]) => {
         this.modulos = res;
       });
     }

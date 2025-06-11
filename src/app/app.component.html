@@ -8,28 +8,35 @@
 
 
 <mat-toolbar color="primary" style="display: none">
-  <mat-icon class="material-symbols-outlined" style="padding: .5rem ; cursor: pointer" (click)="closemap()">menu
-  </mat-icon>
-  <span>{{ title }}</span>
+<!--  <mat-icon class="material-symbols-outlined" style="padding: .5rem ; cursor: pointer" (click)="closemap()">menu-->
+<!--  </mat-icon>-->
+  <span></span>
   <!--Nombre del módulo que aparece al inicio, en la barra naranja-->
 </mat-toolbar>
 
-<mat-drawer-container>
+<mat-drawer-container style="background-color: #f8f8f8">
 <!--  <mat-drawer class="movil-size" #drawer mode="side" [opened]="true">-->
 
 <!--    <shrd-side-nav></shrd-side-nav>-->
 <!--  </mat-drawer>-->
 
-  <mat-drawer-content>
-    <div class="grid" style="height: 100vh">
-      <mat-nav-list>
+  <mat-drawer-content style="height: 100vh">
+<!--    <div>-->
+<!--      &lt;!&ndash;  BARRA &ndash;&gt;-->
+<!--      <mat-toolbar color="primary" class="flex justify-between">-->
+<!--        <span>Detalle Comprobantes</span>-->
+<!--      </mat-toolbar>-->
+<!--    </div>-->
+    <router-outlet/>
+<!--    <div class="" >-->
+<!--      <mat-nav-list>-->
 
-      </mat-nav-list>
-      <div class="col-12">
-        <!--      <div class="col-offset-1 col-11">-->
-        <router-outlet />
-      </div>
-    </div>
+<!--      </mat-nav-list>-->
+<!--      <div class="">-->
+<!--        &lt;!&ndash;      <div class="col-offset-1 col-11">&ndash;&gt;-->
+
+<!--      </div>-->
+<!--    </div>-->
   </mat-drawer-content>
 </mat-drawer-container>
 

@@ -35,7 +35,12 @@ export interface DialogData {
 
 @Component({
   templateUrl: './dialog.html',
-  imports: [MaterialModule, ReactiveFormsModule, SharedModule],
+  imports: [
+    MaterialModule,
+    ReactiveFormsModule,
+    SharedModule,
+    ShrdAutocompleteComponent,
+  ],
   standalone: true,
 })
 export class DialogComponent implements OnInit {

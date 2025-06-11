@@ -1,4 +1,20 @@
-# Proyecto prinicipal
+# Proyectos
+
+## Contraloria
+
+## Escolares
+
+### Programas de liderazgo 
+
+Funciones: Filtrado de alumnos , controlar prospectos, bajas etc.
+Ruta:
+https://sie.iest.edu.mx/app/escolar/P_Vertice_V2/registrovertice_V2/programas-liderazgo
+
+
+
+
+
+
 ## Shared
 ### alert-dialog
 ```

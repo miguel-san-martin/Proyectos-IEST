@@ -1,0 +1,119 @@
+<mat-card class="mx-4 mt-4 p-6" style="background-color: white">
+
+  <form class="grid grid-cols-2" style="gap:0.5rem" [formGroup]="form">
+
+    <!--    Grados      -->
+    <mat-form-field class="">
+      <mat-label>
+        <mat-icon>school</mat-icon>
+        Grado
+      </mat-label>
+      <mat-select formControlName="idGrado">
+        @for (grado of grados(); track grado) {
+          <mat-option [value]="grado.idGrado">{{ grado.grado }}</mat-option>
+        } @empty {
+          ERROR
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!--    Orden -->
+    <mat-form-field>
+      <mat-label>
+        <mat-icon>sort</mat-icon>
+        Ordenamiento
+      </mat-label>
+      <mat-select formControlName="ordenamiento">
+        @for (ordenamiento of ordenamiento(); track ordenamiento) {
+          <mat-option [value]="ordenamiento.ordenamiento">
+            {{ ordenamiento.ordenamiento }}
+          </mat-option>
+        } @empty {
+          <mat-option value="ERROR">Error</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!--    Fechas -->
+    <mat-form-field class="col-span-2 cursor" (click)="rangePicker.open()">
+      <mat-label>Rango de Fechas</mat-label>
+      <mat-date-range-input
+        [formGroup]="form"
+        [rangePicker]="rangePicker">
+        <input matStartDate placeholder="Start date" formControlName="fechaInicial">
+        <input matEndDate placeholder="End date" formControlName="fechaFinal">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #rangePicker></mat-date-range-picker>
+    </mat-form-field>
+
+    <!--    Conceptos   -->
+    <mat-form-field class="col-span-2">
+      <mat-label>
+        <mat-icon>text_fields</mat-icon>
+        Concepto
+      </mat-label>
+      <input type="text"
+             [value]="input()"
+             (input)="setInput($event)"
+             matInput
+             formControlName="idOperacion"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (option of opcionesFiltradas(); track option) {
+          <mat-option [value]="option">{{ option.Operacion }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+  </form>
+
+  <div class="w-full flex">
+    <button mat-button class="w-1/4 mx-auto mt-4" style="background-color: #fd5900; color: white" (click)="submit()">
+      <mat-icon>search</mat-icon>
+      Buscar
+    </button>
+  </div>
+
+</mat-card>
+
+
+@if (data() !== null) {
+  <mat-card style="background-color: white; min-height: 769px" class="p-8 m-4">
+
+
+    @if (data().at(0)?.error === 1) {
+      <mat-card-content class="m-auto">
+        {{ data()[0]?.mensaje }}
+      </mat-card-content>
+    } @else {
+
+      <mat-card-title class="flex justify-end">
+        <button mat-icon-button matTooltip="Descargar PDF" (click)="getEnlace()" style="color: #53433e">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+        <button color="primary" matTooltip="Descargar Excel" mat-icon-button (click)="descargarExcel()"
+                style="color: #53433e">
+         <span class="material-symbols-outlined">
+          table
+        </span>
+        </button>
+      </mat-card-title>
+
+      <!--    <mat-card-title>Resultados:</mat-card-title>-->
+
+      <mat-card-content class="p-4">
+        <div class="flex justify-centers">
+          <shared-table-iest class="w-full" [tableHead]="TABLE_HEAD" [data]="this.data()">
+          </shared-table-iest>
+        </div>
+
+      </mat-card-content>
+    }
+  </mat-card>
+}
+
+
+
+
+

@@ -4,12 +4,17 @@ import {
   inject,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
@@ -18,15 +23,24 @@ import {
   _estatus,
   ResponseEditabilityPeriode,
 } from '../../interfaces/responses/response-editability-periode';
+import { MatError, MatFormField, MatInput } from '@angular/material/input';
+import { MatCard, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'form-precio-dependiente',
   templateUrl: './precio-dependiente.component.html',
-  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
+  imports: [
+    MatError,
+    MatFormField,
+    ReactiveFormsModule,
+    MatInput,
+    MatCard,
+    MatCardTitle,
+  ],
 })
 export class PrecioDependienteComponent
   extends SnackbarComponent
-  implements OnChanges, OnInit
+  implements OnChanges
 {
   @ViewChild(SnackbarComponent) snackbar!: SnackbarComponent;
   keysMaternal: any;
@@ -64,28 +78,6 @@ export class PrecioDependienteComponent
     this.buildForm();
   }
 
-  ngOnInit(): void {
-    // this.descuentoSubject
-    //   .pipe(debounceTime(500))
-    //   .subscribe(({ idDescuento, costo }) => {
-    //     this.Service.CheckIfIsEditable(this.Service.thePeriodIsClosed?.idPeriodo).subscribe(
-    //       (response: ResponseEditabilityPeriode[] ) => {
-    //         if(response[0].estatus !== _estatus.Cerrado) {
-    //           this.Service.updateDescount(idDescuento, costo).subscribe((resp: any) => {
-    //             console.log(resp);
-    //             this.openSnackBar()
-    //           });
-    //         }
-    //         else{
-    //           console.error('Periodo se encuentra cerrado');
-    //           this.cerrarPeriodo()
-    //           this.errorSnackBar()
-    //         }
-    //       }
-    //     )
-    //   });
-  }
-
   buildForm() {
     this.initializeFormfromArray(this.data);
   }
@@ -109,7 +101,7 @@ export class PrecioDependienteComponent
 
   initializeFormfromArray(array: ResponseIdDescont[]) {
     if (!array[0]) return;
-    const typo = array[0]?.idtipo;
+    const typo = array[0]?.idtipo; //IDTIPO 1 MATERNO TIPO2 INFANTIL
     this.title = typo == '2' ? 'Precio Infantil' : 'Precio Maternal';
 
     this.fillGaps(array).forEach((row: ResponseIdDescont) => {
@@ -123,6 +115,7 @@ export class PrecioDependienteComponent
         return obj.description;
       });
   }
+
   fillGaps(array: ResponseIdDescont[]): ResponseIdDescont[] {
     const uniqueElements: ResponseIdDescont[] = [];
     array.forEach((row: ResponseIdDescont) => {

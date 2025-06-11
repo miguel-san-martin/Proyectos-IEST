@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { programaLiderasgoGuard } from './modules/programas-liderazgo/guard/liderasgo.guard';
 
 export const routes: Routes = [
   // {
@@ -62,20 +61,20 @@ export const routes: Routes = [
   //       (c) => c.ModuloCerradoComponent,
   //     ),
   // },
-  // {
-  //   path: 'no-permits',
-  //   loadComponent: () =>
-  //     import('./pages/no-permisos/no-permisos.component').then(
-  //       (c) => c.NoPermisosComponent,
-  //     ),
-  // },
-  // {
-  //   path: 'login-screen',
-  //   loadComponent: () =>
-  //     import('./pages/login-screen/login-screen.component').then(
-  //       (c) => c.LoginScreenComponent,
-  //     ),
-  // },
+  {
+    path: 'no-permits',
+    loadComponent: () =>
+      import('./pages/no-permisos/no-permisos.component').then(
+        (c) => c.NoPermisosComponent,
+      ),
+  },
+  {
+    path: 'login-screen',
+    loadComponent: () =>
+      import('./pages/login-screen/login-screen.component').then(
+        (c) => c.LoginScreenComponent,
+      ),
+  },
   // {
   //   path: 'prospectos',
   //   loadComponent: () =>
@@ -98,22 +97,48 @@ export const routes: Routes = [
   //       './modules/busqueda-pagares/components/layout/layout.component'
   //     ).then((c) => c.LayoutComponent),
   // },
+  // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   // canActivate: [bibliotecaGuard],
+  //   loadComponent: () =>
+  //     import(
+  //       './modules/camping/pages/verano-campamento/verano-campamento.component'
+  //     ).then((c) => c.VeranoCampamentoComponent),
+  //   // redirectTo: 'busqueda',
+  // },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'programas-liderazgo',
-  },
-  {
-    path: 'programas-liderazgo',
-    canActivate: [programaLiderasgoGuard],
+    // canActivate: [bibliotecaGuard],
     loadComponent: () =>
       import(
         './modules/programas-liderazgo/programas-liderazgo.component'
       ).then((c) => c.ProgramasLiderazgoComponent),
+    // redirectTo: 'busqueda',
   },
   // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   // canActivate: [bibliotecaGuard],
+  //   loadComponent: () =>
+  //     import(
+  //       './modules/comprobantes-consecutivo-forma-pago/comprobantes-consecutivo-forma-pago.component'
+  //     ).then((c) => c.ComprobantesConsecutivoFormaPagoComponent),
+  //   // redirectTo: 'busqueda',
+  // },
+
+  // {
+  //   path: 'programas-liderazgo',
+  //   canActivate: [programaLiderasgoGuard],
+  //   loadComponent: () =>
+  //     import(
+  //       './modules/programas-liderazgo/programas-liderazgo.component'
+  //     ).then((c) => c.ProgramasLiderazgoComponent),
+  // },
+  // {
   //   path: 'busqueda',
-  //   // canActivate: [programaLiderasgoGuard],
+  //   canActivate: [programaLiderasgoGuard],
   //   loadComponent: () =>
   //     import(
   //       './modules/rep-busca-id-person/rep-busca-id-person.component'

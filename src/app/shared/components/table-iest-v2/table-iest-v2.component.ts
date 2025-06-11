@@ -22,19 +22,17 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-table-iest-v2',
-  styleUrl: 'table-iest-v2.component.scss',
-  templateUrl: 'table-iest-v2.component.html',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ),
-    ]),
-  ],
+    selector: 'app-table-iest-v2',
+    styleUrl: 'table-iest-v2.component.scss',
+    templateUrl: 'table-iest-v2.component.html',
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class TableIestV2Component<T> {
   readonly tableHead: InputSignal<HeaderTable[]> =

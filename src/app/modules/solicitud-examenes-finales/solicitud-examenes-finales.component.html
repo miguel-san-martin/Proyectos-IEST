@@ -1,0 +1,99 @@
+<div>
+  <!--  BARRA -->
+  <mat-toolbar color="primary" class="flex justify-between">
+    <span>Solicitud de Exámenes Finales</span>
+  </mat-toolbar>
+</div>
+
+<div class="p-8 flex flex-col justify-center items-center">
+  @if (response()?.error ) {
+    <mat-card class="color-blue" appearance="outlined"
+              style="background-color: #d4eaff; border-color: #5a6c94 ; max-width: 50%">
+      <mat-card-content class="flex">
+        <mat-icon style="min-width: 40px" class="my-auto">info</mat-icon>
+        <p style="">
+          {{ this.response().mensaje }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+    }
+    @else {
+    <mat-card class="color-brown w-2/3" appearance="outlined">
+      <mat-card-header style="display: grid" class="text-center">
+        <div class="grid-col" style="font: 500 16px / 1.4rem Roboto, sans-serif; color: black">
+          Datos del alumno
+        </div>
+      </mat-card-header>
+      <mat-card-content class="mt-4">
+        <div class="flex justify-center">
+          <div class="grid grid-cols-3 p-4 max-w-2/3" style="gap: 8px">
+            <div class="text-right">
+              <b>Nombre:</b>
+            </div>
+            <div class="col-span-2 text-left">
+              {{ response().nombre }}
+            </div>
+            <div class="text-right">
+              <b>Carrera:</b>
+            </div>
+            <div class="col-span-2 text-left">
+              {{ response().carrera }}
+            </div>
+          </div>
+        </div>
+          <div style="font: 400 16px / 1.5rem Roboto, sans-serif;">
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    @if (responseHistorico()){
+      <mat-card class="color-brown w-2/3 mt-5" appearance="outlined">
+        <mat-card-header style="display: grid" class="text-center">
+          <div class="grid-col" style="font: 500 16px / 1.4rem Roboto, sans-serif; color: black">
+            Historial de exámenes
+          </div>
+        </mat-card-header>
+        <mat-card-content class="mt-4">
+          <div class="flex justify-center">
+            <div class="grid grid-cols-12 p-4 w-3/4" style="gap: 8px">
+
+              <div class="col-span-6 text-center" style="color: black">
+                <b>SOLICITADOS EN EL PERIODO</b>
+              </div>
+              <div class="col-span-6 text-center" style="color: black">
+                <b>SOLICITADOS POR CARRERA</b>
+              </div>
+
+              <div class="col-span-6 text-left flex justify-between pt-6 px-3">
+                <b>Exámenes ExtraOrdinarios:</b>
+                <span>{{this.responseHistorico().extraPorPeriodo}}</span>
+              </div>
+              <div class="col-span-6 text-left flex justify-between pt-6 px-3">
+                <b>Exámenes ExtraOrdinarios:</b>
+                <span>{{this.responseHistorico().extraPorCarrera}}</span>
+              </div>
+
+            </div>
+          </div>
+          <div style="font: 400 16px / 1.5rem Roboto, sans-serif;">
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <mat-card class="color-brown w-2/3 mt-5" appearance="outlined">
+      <mat-card-header style="display: grid" class="text-center">
+        <div class="grid-col" style="font: 500 16px / 1.4rem Roboto, sans-serif; color: black">
+          Materias Reprobadas
+        </div>
+      </mat-card-header>
+      <mat-card-content class="mt-4">
+        <div class="flex justify-center">
+        <shared-table-iest class="w-full" [data]="data()" [tableHead]="Head" ></shared-table-iest>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+
+

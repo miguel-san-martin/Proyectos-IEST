@@ -18,8 +18,24 @@ import {
   switchMap,
 } from 'rxjs';
 import { ServicioBase } from '../../../services/servicio-base.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
+import { MatOption } from '@angular/material/core';
+import {
+  MatFormField,
+  MatHint,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import { MatIconButton } from '@angular/material/button';
+import { MatLabel } from '@angular/material/form-field';
+import { NgTemplateOutlet } from '@angular/common';
 
 export interface senalError {
   mensaje: string;
@@ -30,6 +46,21 @@ export interface senalError {
   selector: 'app-shrd-autocomplete',
   templateUrl: './shrd-autocomplete.component.html',
   styleUrl: './shrd-autocomplete.component.scss',
+  imports: [
+    MatOption,
+    MatHint,
+    MatIcon,
+    MatFormField,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    MatInput,
+    MatAutocomplete,
+    MatIconButton,
+    MatLabel,
+    NgTemplateOutlet,
+    MatSuffix,
+  ],
+  standalone: true,
 })
 export class ShrdAutocompleteComponent
   extends ServicioBase
@@ -40,6 +71,9 @@ export class ShrdAutocompleteComponent
   filteredOptions: WritableSignal<any> = signal<any>('');
   functionDisplayName!: (item: { [key: string]: string }) => string;
   searchControl: FormControl<any> = new FormControl();
+  placeholder = input(
+    'Encuentra a la persona por su nombre, su cuenta o por su ID-IEST*',
+  );
 
   public error = input<senalError | null>({
     bool: false,

@@ -5,11 +5,10 @@ import { tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-no-permisos',
-  standalone: true,
-  imports: [MatIcon],
-  templateUrl: './no-permisos.component.html',
-  styleUrl: './no-permisos.component.scss',
+    selector: 'app-no-permisos',
+    imports: [MatIcon],
+    templateUrl: './no-permisos.component.html',
+    styleUrl: './no-permisos.component.scss'
 })
 export class NoPermisosComponent implements OnInit {
   Service = inject(CampamentoIestService);

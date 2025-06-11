@@ -1,0 +1,30 @@
+<div class="m-3">
+
+  <mat-card style="background-color: rgba(255,248,248,0.73)">
+    <mat-card-content>
+
+      <div class="flex w-full justify-between">
+
+        <div class="flex items-center">
+        <button  mat-button style="background-color: #a73900 ; color: white" (click)="openDialog()">
+          Agregar Incidencia
+        </button>
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Filtrar los resultados</mat-label>
+          <input (keydown)="updateValue($event)" matInput placeholder="Filtrar tabla.">
+        </mat-form-field>
+
+      </div>
+
+      <div>
+
+      </div>
+
+      <div>
+        <shared-table-iest [data]="data()" [tableHead]="HEAD" [filtering]="filter" #tabla></shared-table-iest>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

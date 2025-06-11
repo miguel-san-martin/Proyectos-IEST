@@ -1,0 +1,34 @@
+<mat-dialog-content>
+
+  <h2 class="mx-auto"> Agregar nueva incidencia</h2>
+
+  <div class="w-full">
+    @if (!data?.nombreApellido) {
+
+      <app-shrd-autocomplete [service]="Servicio.buscador.bind(this.Servicio)" (outputItem)="autoComplete($event)"
+                             [placeholder]="'Busqueda por ID o Nombre.'"
+                             keyTitle="nombre">
+        <ng-template appBodyTemplate let-element>
+          <small><strong>ID IEST</strong>: {{ element.idperson }} </small><br>
+          <span>{{ element.nombre }} </span>
+        </ng-template>
+      </app-shrd-autocomplete>
+    } @else {
+
+      <small> Nombre del Alumno: </small><h2 class="px-2"> {{data?.nombreApellido }}</h2>
+    }
+
+    <mat-form-field appearance="fill" class="" style="width: 100%">
+      <mat-label>Motivo</mat-label>
+      <textarea matInput type="textarea" [(ngModel)]="motivo"></textarea>
+    </mat-form-field>
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions [align]="'center'">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button style="background-color: rgba(255,255,255,0.91)" (click)="sendIncicencia()" cdkFocusInitial>
+    Guardar
+  </button>
+</mat-dialog-actions>

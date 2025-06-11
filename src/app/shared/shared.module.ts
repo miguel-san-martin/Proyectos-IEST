@@ -6,7 +6,6 @@ import { TablaContraloriaComponent } from './components/tabla-contraloria/tabla-
 import { PagoVerdeDirective } from './directives/directives.directive';
 import { MaterialModule } from '../shared-material-module/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
@@ -14,11 +13,11 @@ import { TableIESTComponent } from '@shared/components/table-iest/table-iest.com
 import { ShrdSpinnerComponent } from '@shared/components/shrd-spinner/shrd-spinner.component';
 import { ToastIestComponent } from '@shared/components/toast-iest/toast-iest.component';
 import { NumberToMxnPipe } from '@shared/pipes/number-to-mxn.pipe';
-import { ShrdAutocompleteComponent } from '@shared/components/shrd-autocomplete/shrd-autocomplete.component';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ContainerIconComponent } from '@shared/components/container-icon/container-icon.component';
 import { TableIestV2Component } from '@shared/components/table-iest-v2/table-iest-v2.component';
 import { BodyTemplateDirective } from '@shared/directives/body-template.directive';
+import { PaginadorDirective } from '@shared/components/table-iest/paginador.directive';
 
 @NgModule({
   declarations: [
@@ -27,13 +26,8 @@ import { BodyTemplateDirective } from '@shared/directives/body-template.directiv
     FormatoamdhhFormatodmaPipe,
     PagoVerdeDirective,
     TablaContraloriaComponent,
-    SideNavComponent,
-    AlertDialogComponent,
     SnackBarComponent,
-    TableIESTComponent,
-    ShrdSpinnerComponent,
     ToastIestComponent,
-    ShrdAutocompleteComponent,
     ContainerIconComponent,
     TableIestV2Component,
   ],
@@ -50,6 +44,11 @@ import { BodyTemplateDirective } from '@shared/directives/body-template.directiv
     MatMenu,
     MatMenuTrigger,
     BodyTemplateDirective,
+    PaginadorDirective,
+    TableIESTComponent,
+    TableIESTComponent,
+    ShrdSpinnerComponent,
+    AlertDialogComponent,
   ],
   exports: [
     NumberToMxnPipe,
@@ -60,12 +59,10 @@ import { BodyTemplateDirective } from '@shared/directives/body-template.directiv
     PagoVerdeDirective,
     ReactiveFormsModule,
     TablaContraloriaComponent,
-    SideNavComponent,
     AlertDialogComponent,
     TableIESTComponent,
     ShrdSpinnerComponent,
     ToastIestComponent,
-    ShrdAutocompleteComponent,
     ContainerIconComponent,
     TableIestV2Component,
     BodyTemplateDirective,

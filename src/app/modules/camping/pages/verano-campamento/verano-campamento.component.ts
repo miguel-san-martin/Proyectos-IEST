@@ -6,7 +6,14 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { environment } from 'environments/environment';
 import { forkJoin, map, tap } from 'rxjs';
 import { PrecioDependienteComponent } from '../../components/precio-dependiente/precio-dependiente.component';
@@ -19,10 +26,26 @@ import { ResponseGetFee } from '../../interfaces/responses/response-get-fee';
 import { ResponseIdDescont } from '../../interfaces/responses/response-mother-child-price';
 import { SelectedCatalog } from '../../interfaces/selected-catalog';
 import { CampamentoIestService } from '../../services/campamento-iest.service';
+import { SharedModule } from '@shared/shared.module';
+import { MatOption } from '@angular/material/core';
+import { MatFormField, MatLabel, MatSelect } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   templateUrl: './verano-campamento.component.html',
-  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss',
+  imports: [
+    SharedModule,
+    PreciosExtraComponent,
+    PrecioDependienteComponent,
+    PrecioExternoComponent,
+    MatOption,
+    MatSelect,
+    MatLabel,
+    MatFormField,
+    MatButton,
+    MatIconModule,
+  ],
 })
 export class VeranoCampamentoComponent implements OnInit {
   Service = inject(CampamentoIestService);
@@ -118,6 +141,7 @@ export class VeranoCampamentoComponent implements OnInit {
       next: (response: any) => {
         this.formIsVisible = true;
         this.$emitSelectedCatalog(this.selectedCatalog);
+        window.location.reload();
       },
       error: (error) => {
         console.error(error);
@@ -184,6 +208,14 @@ export class VeranoCampamentoComponent implements OnInit {
 //? Pone
 @Component({
   templateUrl: 'dialog.html',
+  imports: [
+    MatDialogActions,
+    MatDialogContent,
+    MatButton,
+    MatDialogClose,
+    MatDialogTitle,
+    MatIconModule,
+  ],
 })
 export class DialogAnimationsExampleDialog {
   Service = inject(CampamentoIestService);
@@ -194,6 +226,7 @@ export class DialogAnimationsExampleDialog {
     const idRegistro = this.Service.thePeriodIsClosed?.idRegistro;
     this.Service.closePeriod(idRegistro).subscribe((respose) => {
       console.warn('El periodo se ha cerrado');
+      window.location.reload();
     });
 
     this.dialogRef.close('yes');

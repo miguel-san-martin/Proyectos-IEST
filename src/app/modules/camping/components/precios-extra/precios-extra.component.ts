@@ -1,54 +1,62 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { FormArray, Validators } from '@angular/forms';
+import { Component, Input, OnChanges, OnInit, signal } from '@angular/core';
+import { FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   _estatus,
   ResponseEditabilityPeriode,
 } from '../../interfaces/responses/response-editability-periode';
 import { ResponseExtraFee } from '../../interfaces/responses/response-extra-fee';
 import { FormBase } from '../form-base';
+import { MatFormField } from '@angular/material/select';
+import { MatError, MatInput } from '@angular/material/input';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'form-extra-fee',
   templateUrl: './precios-extra.component.html',
-  // styleUrl: '../../../../shared/scss/custom-template-miguel-v2.scss'
+  imports: [
+    MatFormField,
+    MatInput,
+    ReactiveFormsModule,
+    MatError,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+  ],
 })
 export class PreciosExtraComponent
   extends FormBase
   implements OnChanges, OnInit
 {
-  //private baseSubject: Subject<{ idcosto: string; costo: string }> = new Subject<any>();
-
   @Input() data!: ResponseExtraFee[];
   @Input() priceIsEditable: boolean | null = null;
+  private formulario = signal<any>(this.fb.array([]));
 
   constructor() {
     super();
-    this.form = this.fb.array([]);
-    console.log(this.form);
+    // this.form = this.fb.array([]);
   }
 
-  get getFormControl() {
-    if (Array.isArray(this.form)) {
-      return this.form as FormArray;
-    } else {
-      return new FormArray([]);
-    }
+  ngOnInit(): void {
+    // console.log(this.data);
+    this.formulario.set(
+      this.fb.group({
+        costos: this.fb.array([]),
+      }),
+    );
+    this.setAdditionalCostToForm(this.data);
+  }
+
+  get costos() {
+    return this.formulario().get('costos') as FormArray;
   }
 
   setAdditionalCostToForm(array: ResponseExtraFee[]) {
     array.sort((a: any, b: any) => a.descripcion.localeCompare(b.descripcion));
-
-    if (!Array.isArray(this.form)) return;
-    const form = this.form;
+    // if (!Array.isArray(this.form)) return;
+    // const form = this.form;
     array.forEach(({ idcosto, descripcion, precio }: ResponseExtraFee) => {
       const precioFixed = Number(precio).toFixed(2);
-      form.push(
+      this.costos.push(
         this.fb.group({
           idCost: idcosto,
           description: descripcion,
@@ -61,38 +69,13 @@ export class PreciosExtraComponent
     });
   }
 
-  ngOnInit(): void {
-    // this.baseSubject
-    // .pipe(debounceTime(500))
-    // .subscribe(({ idcosto, costo }) => {
-    //   this.Service.CheckIfIsEditable(this.Service.thePeriodIsClosed?.idPeriodo).subscribe(
-    //     (response: ResponseEditabilityPeriode[] ) => {
-    //       if(response[0].estatus !== _estatus.Cerrado) {
-    //         this.Service.updateCost(idcosto, costo).subscribe((resp: any) => {
-    //           console.log(resp);
-    //           this.openSnackBar()
-    //         });
-    //       }
-    //       else{
-    //         console.error('Periodo se encuentra cerrado');
-    //         this.errorSnackBar();
-    //         this.cerrarPeriodo();
-    //       }
-    //     }
-    //   )
-    // });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.form = this.fb.array([]);
+  ngOnChanges(): void {
+    this.formulario.set(this.fb.array([]));
     this.setAdditionalCostToForm(this.data);
   }
 
   onInputChange(costo: any, idCosto: string) {
     this.sumitData(costo.value, idCosto.toString());
-    // const costoEnviado: string = costo.value;
-    // const datos = { idcosto: idCosto.toString(), costo: costoEnviado };
-    // this.baseSubject.next(datos);
   }
   sumitData(costo: string, idCosto: string) {
     this.Service.CheckIfIsEditable(
@@ -110,12 +93,4 @@ export class PreciosExtraComponent
       }
     });
   }
-
-  // cerrarPeriodo(){
-  //   this.form.disable()
-  // }
-
-  // openPeriodo(){
-  //   this.form.enable()
-  // }
 }
