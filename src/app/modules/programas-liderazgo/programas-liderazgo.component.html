@@ -109,10 +109,16 @@
 
           </div>
 
-          <button class="mx-4" mat-flat-button style="background-color: #b87f5b; color: white; height: 56px"
+          <button class="mx-2" mat-flat-button style="background-color: #b87f5b; color: white; height: 56px"
                   (click)="mandarCorreo()">
             <mat-icon>mail</mat-icon>
             Enviar Correo
+          </button>
+
+          <button matTooltip="Descargar la tabla con los filtros actuales" class="mx-2" mat-flat-button style="background-color: #3e9e2a; color: white; height: 56px"
+                  (click)="descargarTabla(alumnos())">
+            <mat-icon>download</mat-icon>
+            Descargar Tabla
           </button>
 
           <!--    BUSQUEDA POR NOMBRE-->

@@ -32,6 +32,7 @@ import { DialogInfoComponent } from './dialogs/dialog-info/dialog.component';
 import { GenDialogComponent } from './dialogs/dialog-alta-gen/dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { PROGRAMASLIDERASGO_Alumno } from './interfaces/Alumno';
+import { ObjExcelFileService } from '@shared/services/obj-excel-file.service';
 
 export type tipo_baja =
   | 'temporal'
@@ -68,6 +69,7 @@ export class ProgramasLiderazgoComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   readonly fb = inject(FormBuilder);
   readonly snackBar = inject(MatSnackBar);
+  readonly ExcelService = inject(ObjExcelFileService);
 
   @ViewChild('table') table!: TableIestV2Component<any>;
   @ViewChild('input') input!: ElementRef;
@@ -265,5 +267,22 @@ export class ProgramasLiderazgoComponent implements OnInit {
       duration: 3000,
     };
     this.snackBar.open(message, action, config);
+  }
+
+  descargarTabla() {
+    const columnasMapeo: { [key: string]: string } = {
+      idPerson: 'IDIEST',
+      Nombre: 'NOMBRE',
+      abrCarrera: 'CARRERA',
+      generacion: 'GENERACION',
+      semestreInicio: 'PERIODO',
+      statusPago: 'PAGADO',
+      programa: 'PROGRAMA',
+    };
+    this.ExcelService.exportAsExcelFile(
+      this.alumnos(),
+      'reportes',
+      columnasMapeo,
+    );
   }
 }
